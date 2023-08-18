@@ -1,39 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';  
-import { setLoggedInAction, setSpotifyPlaylistsAction } from '../model/actions';
-import { getAccessToken, getAuthURL, getPlaylistsByQuery } from '../services/api-service';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAuthURL } from '../services/api-service';
+import { AppState } from '../model/state';
+import { setSpotifyPlaylistsAction } from '../model/actions'; // Import this action if not done already
 
 const Spotify: React.FC = () => {
-  const [playlists, setPlaylists] = useState<any[]>([]);
   const dispatch = useDispatch();
-  const location = useLocation();
-  const query = '70s funk';
+  const playlists = useSelector((state: AppState) => state.spotifyPlaylists);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const code = params.get('code');
-  
-    if (code) {
-      getAccessToken(code)
-        .then(accessToken => {
-          // Store the access token in the state
-          dispatch(setLoggedInAction(true, accessToken));
-  
-          // Fetch the playlists when the token is available
-          return getPlaylistsByQuery(query, accessToken);
-        })
-        .then(data => {
-          // Dispatch the playlists to the Redux store
-          dispatch(setSpotifyPlaylistsAction(data));
-          // If you also want to store the playlists in local component state
-          setPlaylists(data);
-        })
-        .catch(err => console.error("Error:", err));
+    // On component load, check localStorage
+    const storedPlaylists = localStorage.getItem('spotifyPlaylists');
+    if (storedPlaylists) {
+      // If playlists exist in localStorage, dispatch them to Redux
+      dispatch(setSpotifyPlaylistsAction(JSON.parse(storedPlaylists)));
     }
-  }, [dispatch, location.search]);
+  }, [dispatch]);
 
-
+  useEffect(() => {
+    // When playlists change, update localStorage
+    if (Array.isArray(playlists)) {
+      localStorage.setItem('spotifyPlaylists', JSON.stringify(playlists));
+    }
+  }, [playlists]);
 
   const handleLogin = () => {
     window.location.href = getAuthURL();
@@ -41,12 +30,11 @@ const Spotify: React.FC = () => {
 
   return (
     <div>
-      <div>Spotify view here!</div>
-      {playlists.map(playlist => (
+      {Array.isArray(playlists) && playlists.map((playlist: any) => (
         <div key={playlist.id}>
-          <h3>{playlist.name}</h3>
-          <img src={playlist.images[0]?.url} alt={playlist.name} width={100} />
-          <p>{playlist.description}</p>
+          <h3>{playlist?.name}</h3>
+          <img src={playlist?.images?.[0]?.url} alt={playlist?.name || 'Spotify Playlist'} width={100} />
+          <p>{playlist?.description}</p>
         </div>
       ))}
       <button onClick={handleLogin}>Login with Spotify</button>

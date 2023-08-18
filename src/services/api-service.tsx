@@ -15,7 +15,7 @@ export const getAuthURL = () => {
   return `${SPOTIFY_AUTH_ENDPOINT}?${params.toString()}`;
 };
 
-export const getAccessToken = async (code: string): Promise<string> => {
+export const getSpotifyAccessToken = async (code: string): Promise<string> => {
   const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
   const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_SECRET; // You need this from your Spotify Dashboard
 
@@ -41,8 +41,6 @@ export const getAccessToken = async (code: string): Promise<string> => {
   const data = await response.json();
   return data.access_token;
 };
-
-
 
 export const getWeatherByLocation = (lat: number, long: number): Promise<any> => {
   return new Promise(async (resolve, reject) => {

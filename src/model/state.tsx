@@ -11,4 +11,5 @@ export const initialState: AppState = {
   sunCalcData: {},
   spotifyPlaylists: {},
   isLoggedIn: false,
+  spotifyToken: undefined,
 };
