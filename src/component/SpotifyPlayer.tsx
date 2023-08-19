@@ -39,7 +39,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
     }).catch(error => {
       console.error("Error fetching current playback:", error);
     });
-  }, [accessToken]);
+  }, [accessToken, dispatch]);
 
   const togglePlayPause = () => {
     const action = isPlaying ? pauseTrack : playTrack;

@@ -1,6 +1,4 @@
 import * as SunCalc from 'suncalc';
-import { setLoggedInAction } from '../model/actions';
-import { useDispatch } from 'react-redux';
 
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT;
