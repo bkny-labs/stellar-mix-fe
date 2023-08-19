@@ -80,6 +80,75 @@ export const getPlaylistsByQuery = (query: string, token: string): Promise<any> 
   });
 };
 
+export const getCurrentlyPlaying = async (accessToken: string) => {
+  const API_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing`;
+  const headers = {
+    'Authorization': `Bearer ${accessToken}`
+  };
+
+  const response = await fetch(API_ENDPOINT, { method: 'GET', headers: headers });
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch current playback');
+  }
+
+  const data = await response.json();
+  return {
+    item: data.item,         // the track details
+    isPlaying: data.is_playing  // playback status
+  };
+};
+
+
+export const playTrack = async (accessToken: string) => {
+  const API_ENDPOINT = `https://api.spotify.com/v1/me/player/play`;
+  const headers = {
+    'Authorization': `Bearer ${accessToken}`,
+    'Content-Type': 'application/json'
+  };
+
+  return fetch(API_ENDPOINT, {
+    method: 'PUT',
+    headers: headers,
+  });
+};
+
+export const pauseTrack = async (accessToken: string) => {
+  const API_ENDPOINT = `https://api.spotify.com/v1/me/player/pause`;
+  const headers = {
+    'Authorization': `Bearer ${accessToken}`,
+    'Content-Type': 'application/json'
+  };
+
+  return fetch(API_ENDPOINT, {
+    method: 'PUT',
+    headers: headers,
+  });
+};
+
+export const setSpotifyVolume = async (accessToken: string, volume: number) => {
+  const endpoint = `https://api.spotify.com/v1/me/player/volume?volume_percent=${volume}`;
+
+  const headers = new Headers();
+  headers.append('Authorization', `Bearer ${accessToken}`);
+  headers.append('Content-Type', 'application/json');
+
+  try {
+    const response = await fetch(endpoint, {
+      method: 'PUT',
+      headers: headers
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to set volume. Status: ${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    console.error("Error setting volume:", error);
+    throw error;
+  }
+};
+
 export const getSunCalcData = (lat: number, long: number): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {

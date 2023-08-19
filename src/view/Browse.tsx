@@ -1,23 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAuthURL, playSpotifyPlaylist } from '../services/api-service';
 import { AppState } from '../model/state';
 import { setSpotifyPlaylistsAction } from '../model/actions';
 import { FaPlay, FaSpotify } from 'react-icons/fa';
+import { SpotifyPlayer } from '../component/SpotifyPlayer';
 
 const Browse: React.FC = () => {
   const dispatch = useDispatch();
   const playlists = useSelector((state: AppState) => state.spotifyPlaylists);
   const accessToken = useSelector((state: AppState) => state.spotifyToken);
+  const [playlistPlayed, setPlaylistPlayed] = useState(false);
 
   const playPlaylist = (playlistURI: string) => {
     if (accessToken) {
-      playSpotifyPlaylist(playlistURI, accessToken);
-      console.log("Playing playlist:", playlistURI);
+      playSpotifyPlaylist(playlistURI, accessToken)
+        .then(() => {
+          console.log("Playing playlist:", playlistURI);
+          setPlaylistPlayed(prev => !prev); // Toggle the state
+        })
+        .catch(error => {
+          console.error("Error playing playlist:", error);
+        });
     } else {
       console.error("Access token is not available.");
     }
-  }
+  };
+  
 
   useEffect(() => {
     // On component load, check localStorage
@@ -65,6 +74,7 @@ const Browse: React.FC = () => {
         </div>
       ))}
       </div>
+      {accessToken && <SpotifyPlayer accessToken={accessToken} playlistPlayed={playlistPlayed} />}
     </div>
   );
 };
