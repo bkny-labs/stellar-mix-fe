@@ -7,9 +7,9 @@ import {
 } from 'react-router-dom';
 import Home from './view/Home';
 import Weather from './view/Weather';
-import Spotify from './view/Spotify';
 import MainController from './controller/main-controller'; // Import the new MainController
 import './App.css';
+import Browse from './view/Browse';
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
                   <Link to="/weather">Weather</Link>
                 </li>
                 <li>
-                  <Link to="/spotify">Spotify</Link>
+                  <Link to="/browse">Browse</Link>
                 </li>
               </ul>
             </nav>
@@ -34,7 +34,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/weather" element={<Weather />} />
-              <Route path="/spotify" element={<Spotify />} />
+              <Route path="/browse" element={<Browse />} />
             </Routes>
           </MainController>
         </header>

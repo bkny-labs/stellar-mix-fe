@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { getWeather } from '../model/selectors';
+import { selectWeather } from '../model/selectors';
 
 const Weather: React.FC = () => {
-  const weatherData = useSelector(getWeather);
+  const weatherData = useSelector(selectWeather);
 
   if (!weatherData) return <div>Loading...</div>;
 

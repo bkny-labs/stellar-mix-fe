@@ -1,6 +1,6 @@
 import { AppState } from './state';
 
-export const getWeather = (state: AppState) => state.weather;
-export const getSunCalcData = (state: AppState) => state.sunCalcData;
-export const getSpotifyPlaylists = (state: AppState) => state.spotifyPlaylists;
-export const getSpotifyAccessToken = (state: AppState) => state.spotifyToken;
+export const selectWeather = (state: AppState) => state.weather;
+export const selectSunCalcData = (state: AppState) => state.sunCalcData;
+export const selectSpotifyPlaylists = (state: AppState) => state.spotifyPlaylists;
+export const selectSpotifyAccessToken = (state: AppState) => state.spotifyToken;

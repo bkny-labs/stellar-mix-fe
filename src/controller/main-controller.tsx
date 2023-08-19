@@ -7,6 +7,7 @@ import { setLoggedInAction, setSpotifyPlaylistsAction, setSunCalcAction, setWeat
 import { AppState } from '../model/state';
 import { setSpotifyPlaylists } from '../model/slice';
 import { useLocation } from 'react-router-dom';
+import { buildPlaylistQuery, getMusicalMood } from '../utils/generate-spotify-query';
 
 // Define the type for props
 interface MainControllerProps {
@@ -15,7 +16,9 @@ interface MainControllerProps {
 
 const MainController: React.FC<MainControllerProps> = ({ children }) => {
   const spotifyToken = useSelector((state: AppState) => state.spotifyToken);
-  const query = '70s funk';
+  const moods = getMusicalMood(useSelector((store: AppState) => store));
+  const playlistQuery = buildPlaylistQuery(moods);
+
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -29,7 +32,6 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
         dispatch(setWeatherAction(weatherData));
       } catch (error) {
         console.error('Failed to fetch weather data:', error);
-        // Handle error, if necessary
       }
     };
 
@@ -39,7 +41,6 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
         dispatch(setSunCalcAction(data));
       } catch (error) {
         console.error('Failed to fetch SunCalc data:', error);
-        // Handle error, if necessary
       }
     };
 
@@ -50,27 +51,29 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
 
   useEffect(() => {
     if (spotifyToken) {
-      getPlaylistsByQuery(query, spotifyToken)
+      getPlaylistsByQuery(playlistQuery, spotifyToken)
         .then(data => {
           dispatch(setSpotifyPlaylistsAction(data));
         })
         .catch(err => console.error("Error fetching playlists:", err));
     }
-  }, [dispatch, spotifyToken]);
+  }, [dispatch, playlistQuery, spotifyToken]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const code = params.get('code');
   
     if (code) {
+      console.log("Using code for token:", code);
       getSpotifyAccessToken(code)
         .then(accessToken => {
           // Store the access token in the state
+          console.log("Fetched Access Token: ", accessToken);
           dispatch(setLoggedInAction(true, accessToken));
           localStorage.setItem('spotifyToken', accessToken);
   
           // Fetch the playlists when the token is available
-          return getPlaylistsByQuery(query, accessToken);
+          return getPlaylistsByQuery(playlistQuery, accessToken);
         })
         .then(data => {
           // Dispatch the playlists to the Redux store
@@ -80,7 +83,7 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
         })
         .catch(err => console.error("Error:", err));
     }
-  }, [dispatch, location.search]);
+  }, [dispatch, location.search, playlistQuery]);
   
 
   return (<>{children}</>);
