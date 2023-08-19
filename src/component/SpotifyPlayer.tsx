@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume } from '../services/api-service';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
 import './SpotifyPlayer.css';
+import { useDispatch } from 'react-redux';
 
 type Artist = {
     name: string;
@@ -29,9 +30,10 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(10);
+  const dispatch = useDispatch();
 
   const updatePlaybackStatus = useCallback(() => {
-    getCurrentlyPlaying(accessToken).then(data => {
+    getCurrentlyPlaying(accessToken, dispatch).then(data => {
       setCurrentTrack(data.item);
       setIsPlaying(data.isPlaying);
     }).catch(error => {
@@ -62,7 +64,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
     playNextTrack(accessToken)
       .then(() => {
         // Optionally update the currently playing song if you want
-        getCurrentlyPlaying(accessToken).then(data => {
+        getCurrentlyPlaying(accessToken, dispatch).then(data => {
           setCurrentTrack(data.item);
           setIsPlaying(data.isPlaying);
         });
@@ -76,7 +78,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
     playPreviousTrack(accessToken)
       .then(() => {
         // Optionally update the currently playing song if you want
-        getCurrentlyPlaying(accessToken).then(data => {
+        getCurrentlyPlaying(accessToken, dispatch).then(data => {
           setCurrentTrack(data.item);
           setIsPlaying(data.isPlaying);
         });

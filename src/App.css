@@ -5,6 +5,33 @@ body {
   color: #484848;
 }
 
+.header {
+  position: fixed;
+  width: 80%;
+  background: #111111;
+  top: 0;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  height: 60px;
+}
+
+.browse-grid {
+  padding-top: 50px; /* offset header height */
+}
+
+.user-image {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  border: 2px solid rgb(119, 119, 119);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
 .App {
   text-align: center;
 }
@@ -42,7 +69,16 @@ body {
   margin-top: 10px;
 }
 .column .controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 8px;
   margin-right: 10px;
+  width: 25px;
+  height: 25px;
+  border-radius: 100px;
+  background: #4f4f4f;
+  cursor: pointer;
 }
 
 .container {
@@ -50,10 +86,29 @@ body {
   width: 100%;
 }
 
-.nav {
-  width: 200px;
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80vh;
   padding-top: 30px;
-  background: #111111;
+}
+
+.nav-container ul {
+  padding: 0 15px;
+}
+
+.sun-calc-data {
+  text-align: left;
+  padding: 0 15px;
+}
+
+.nav {
+  position: fixed;
+  width: 180px;
+  height: 100%;
+  padding-top: 30px;
+  background: #161515;
 }
 
 .nav li {
@@ -64,6 +119,8 @@ body {
 }
 
 .nav li a {
+  display: flex;
+  gap: 10px;
   color: #484848;
   text-decoration: none;
 }
@@ -73,6 +130,7 @@ body {
 }
 
 .content {
+  margin-left: 170px; /* same as nav width */
   flex: auto;
   padding: 20px;
   margin-bottom: 70px; /* offsets the player */
@@ -80,16 +138,23 @@ body {
 
 .row {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
   width: 100%;
+}
+
+.row.five {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.row.four {
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .login {
   text-align: center;
   padding-bottom: 10px;
   height: 80vh;
-  width: 75vw;
+  width: 80%;
   display: flex;
   justify-content: center;
   align-items: center;

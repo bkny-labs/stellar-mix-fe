@@ -1,4 +1,6 @@
 import * as SunCalc from 'suncalc';
+import { setLoggedInAction } from '../model/actions';
+import { useDispatch } from 'react-redux';
 
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT;
@@ -10,7 +12,7 @@ export const getAuthURL = () => {
     response_type: "code",
     redirect_uri: REDIRECT_URI,
     scope: "user-read-private user-read-email user-read-currently-playing user-read-playback-state app-remote-control user-modify-playback-state",
-    show_dialog: "true"
+    // show_dialog: "true"
   });  
   return `${SPOTIFY_AUTH_ENDPOINT}?${params.toString()}`;
 };
@@ -66,6 +68,23 @@ export const logout = (token: string): Promise<void> => {
   });
 }
 
+export const fetchUserProfile = async (accessToken: string) => {
+  const response = await fetch('https://api.spotify.com/v1/me', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch user profile');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+
 
 export const getWeatherByLocation = (lat: number, long: number): Promise<any> => {
   return new Promise(async (resolve, reject) => {
@@ -87,7 +106,7 @@ export const getWeatherByLocation = (lat: number, long: number): Promise<any> =>
 
 export const getPlaylistsByQuery = (query: string, token: string): Promise<any> => {
   return new Promise(async (resolve, reject) => {
-    const API_ENDPOINT = `https://api.spotify.com/v1/search?q=${query}&type=playlist&limit=10`;
+    const API_ENDPOINT = `https://api.spotify.com/v1/search?q=${query}&type=playlist&limit=20`;
     const headers = {
       'Authorization': `Bearer ${token}`
     };
@@ -111,7 +130,7 @@ export const getPlaylistsByQuery = (query: string, token: string): Promise<any> 
   });
 };
 
-export const getCurrentlyPlaying = async (accessToken: string) => {
+export const getCurrentlyPlaying = async (accessToken: string, dispatch: any) => {
   const API_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing`;
   const headers = {
     'Authorization': `Bearer ${accessToken}`
@@ -120,6 +139,7 @@ export const getCurrentlyPlaying = async (accessToken: string) => {
   const response = await fetch(API_ENDPOINT, { method: 'GET', headers: headers });
   
   if (!response.ok) {
+    // dispatch(setLoggedInAction(false));
     throw new Error('Failed to fetch current playback');
   }
 

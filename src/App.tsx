@@ -14,6 +14,7 @@ import { Navigation } from './component/Navigation';
 import Logout from './view/Logout';
 import { useSelector } from 'react-redux';
 import { AppState } from './model/state';
+import Header from './component/Header';
 
 function App() {
   const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
@@ -33,6 +34,7 @@ function App() {
                 <Navigation />
               </nav>
               <div className="content">
+                <Header />
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/weather" element={<Weather />} />

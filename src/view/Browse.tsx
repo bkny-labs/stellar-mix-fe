@@ -50,14 +50,14 @@ const Browse: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className='browse-grid'>
       {!isLoggedIn &&
       <div className="login">
          <button onClick={handleLogin}><FaSpotify /> Connect to Spotify</button> 
       </div> 
       }
       {isLoggedIn &&
-      <div className="row">
+      <div className="row four">
       {Array.isArray(playlists) && playlists.map((playlist: any) => (
         <div className="column" key={playlist.id}>
           <div 
@@ -71,7 +71,7 @@ const Browse: React.FC = () => {
           ></div>
           <div className="controls">
             <button onClick={() => playPlaylist(playlist.uri)}>
-              <FaPlay size={18} color='#fff' />
+              <FaPlay size={13} color='#202020' />
             </button>
             <h4>{playlist?.name}</h4>
           </div>

@@ -26,7 +26,6 @@ const Home: React.FC = () => {
           <p>Sunset: {new Date(sunCalcData.sunset).toLocaleTimeString()}</p>
           <p>Moon Phase: {getMoonPhaseLabel(sunCalcData.moonPhase)}</p>
       </div>
-
       )}
 
     </div>
