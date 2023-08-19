@@ -1,7 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 
-export function Navigation() {
-  const location = useLocation();
+interface NavigationProps {
+    showLogout?: boolean;
+  }
+
+export const Navigation: React.FC<NavigationProps> = ({ showLogout = false }) => {
+    const location = useLocation();
 
   return (
     <ul>
@@ -45,6 +49,14 @@ export function Navigation() {
           Settings
         </Link>
       </li>
+      {showLogout?? <li>
+        <Link 
+          to="/logout" 
+          className={location.pathname === "/logout" ? "active" : ""}
+        >
+          Logout
+        </Link>
+      </li>}
     </ul>
   );
 }

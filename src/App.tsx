@@ -11,8 +11,13 @@ import MainController from './controller/main-controller'; // Import the new Mai
 import './App.css';
 import Browse from './view/Browse';
 import { Navigation } from './component/Navigation';
+import Logout from './view/Logout';
+import { useSelector } from 'react-redux';
+import { AppState } from './model/state';
 
 function App() {
+  const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
+  console.log('logged in?', isLoggedIn);
   return (
     <Router>
       <div className="App">
@@ -32,6 +37,7 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/weather" element={<Weather />} />
                   <Route path="/browse" element={<Browse />} />
+                  <Route path="/logout" element={<Logout />} />
                 </Routes>
               </div>
             </div>

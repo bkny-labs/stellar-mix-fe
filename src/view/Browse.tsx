@@ -9,6 +9,7 @@ import { SpotifyPlayer } from '../component/SpotifyPlayer';
 const Browse: React.FC = () => {
   const dispatch = useDispatch();
   const playlists = useSelector((state: AppState) => state.spotifyPlaylists);
+  const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
   const accessToken = localStorage.getItem('spotifyToken');
   const [playlistPlayed, setPlaylistPlayed] = useState(false);
 
@@ -48,13 +49,14 @@ const Browse: React.FC = () => {
     window.location.href = getAuthURL();
   }
 
-  console.log('access token from browse', accessToken);
-
   return (
     <div>
+      {!isLoggedIn &&
       <div className="login">
-        <button onClick={handleLogin}><FaSpotify /> Connect to Spotify</button>
-      </div>
+         <button onClick={handleLogin}><FaSpotify /> Connect to Spotify</button> 
+      </div> 
+      }
+      {isLoggedIn &&
       <div className="row">
       {Array.isArray(playlists) && playlists.map((playlist: any) => (
         <div className="column" key={playlist.id}>
@@ -75,8 +77,8 @@ const Browse: React.FC = () => {
           </div>
         </div>
       ))}
-      </div>
-      {accessToken && <SpotifyPlayer accessToken={accessToken} playlistPlayed={playlistPlayed} />}
+      </div>}
+      {accessToken && isLoggedIn && <SpotifyPlayer accessToken={accessToken} playlistPlayed={playlistPlayed} />}
     </div>
   );
 };

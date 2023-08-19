@@ -48,6 +48,25 @@ export const getSpotifyAccessToken = async (code: string): Promise<string> => {
 };
 
 
+export const logout = (token: string): Promise<void> => {
+  const revokeURL = 'https://accounts.spotify.com/api/token/revoke';
+
+  return fetch(revokeURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': `Basic ${btoa('<Your_Client_ID>:<Your_Client_Secret>')}`,
+    },
+    body: `token_type_hint=access_token&token=${token}`,
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Failed to revoke token');
+    }
+  });
+}
+
+
 export const getWeatherByLocation = (lat: number, long: number): Promise<any> => {
   return new Promise(async (resolve, reject) => {
     const API_KEY = '868555d60c85896c6af99f0e8e6b8f12';

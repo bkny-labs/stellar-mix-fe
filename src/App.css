@@ -24,10 +24,6 @@ body {
   width: 100%;
 }
 
-.login {
-  text-align: right;
-  padding-bottom: 10px;
-}
 
 .column {
   display: flex;
@@ -89,12 +85,48 @@ body {
   width: 100%;
 }
 
+.login {
+  text-align: center;
+  padding-bottom: 10px;
+  height: 80vh;
+  width: 75vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 button {
   background: none;
   border: none;
-  color: white;
-  cursor: pointer;
 }
+
+.login button {
+  background: #1DB954;
+  border: none;
+  border-radius: 24px;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.login button:hover {
+  background: #1aa34a;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+.login button:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
 
 h4 {
   color: white;
