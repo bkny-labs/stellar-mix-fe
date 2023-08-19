@@ -1,3 +1,10 @@
+body {
+  margin: 0;
+  background: #111111;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #484848;
+}
+
 .App {
   text-align: center;
 }
@@ -13,15 +20,85 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.full-width {
+  width: 100%;
+}
+
+.login {
+  text-align: right;
+  padding-bottom: 10px;
+}
+
+.column {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding: 10px;
+}
+.column img {
+  width: 100%;
+  height: auto;
+}
+.column .controls {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-top: 10px;
+}
+.column .controls button {
+  margin-right: 10px;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.nav {
+  width: 200px;
+  padding-top: 30px;
+  background: #111111;
+}
+
+.nav li {
+  list-style: none;
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.nav li a {
+  color: #484848;
+  text-decoration: none;
+}
+
+.nav li a.active, .nav li a:hover {
   color: white;
+}
+
+.content {
+  flex: auto;
+  padding: 20px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+h4 {
+  color: white;
+  margin: 0;
+  padding: 0;
 }
 
 .App-link {

@@ -9,7 +9,7 @@ export const getAuthURL = () => {
     client_id: CLIENT_ID as string,
     response_type: "code",
     redirect_uri: REDIRECT_URI,
-    scope: "user-read-private user-read-email",
+    scope: "user-read-private user-read-email user-read-currently-playing user-read-playback-state app-remote-control user-modify-playback-state",
     show_dialog: "true"
   });  
 
@@ -36,7 +36,9 @@ export const getSpotifyAccessToken = async (code: string): Promise<string> => {
   });
 
   if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    const errorData = await response.json();
+    console.error("Spotify API Error Response:", errorData);
+    throw new Error(`HTTP error! Status: ${response.status}`);
   }
 
   const data = await response.json();
@@ -99,7 +101,6 @@ export const getSunCalcData = (lat: number, long: number): Promise<any> => {
 
 export const playSpotifyPlaylist = async (playlistURI: string, accessToken: string) => {
   const getActiveDevices = async () => {
-      console.log("Token being sent for active devices:", accessToken);
       const DEVICES_ENDPOINT = `https://api.spotify.com/v1/me/player/devices`;
       const headers = {
           'Authorization': `Bearer ${accessToken}`
@@ -107,6 +108,7 @@ export const playSpotifyPlaylist = async (playlistURI: string, accessToken: stri
 
       const response = await fetch(DEVICES_ENDPOINT, { method: 'GET', headers: headers });
       const data = await response.json();
+      console.log("Active devices:", data.devices);
       return data.devices;
   };
 

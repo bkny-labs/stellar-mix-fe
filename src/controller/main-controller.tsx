@@ -59,7 +59,7 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
     }
   }, [dispatch, playlistQuery, spotifyToken]);
 
-  useEffect(() => {
+  const fetchSpotifyData = () => {
     const params = new URLSearchParams(location.search);
     const code = params.get('code');
   
@@ -67,23 +67,31 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
       console.log("Using code for token:", code);
       getSpotifyAccessToken(code)
         .then(accessToken => {
-          // Store the access token in the state
           console.log("Fetched Access Token: ", accessToken);
           dispatch(setLoggedInAction(true, accessToken));
           localStorage.setItem('spotifyToken', accessToken);
-  
-          // Fetch the playlists when the token is available
           return getPlaylistsByQuery(playlistQuery, accessToken);
         })
         .then(data => {
-          // Dispatch the playlists to the Redux store
           dispatch(setSpotifyPlaylistsAction(data));
-          // If you also want to store the playlists in local component state
           setSpotifyPlaylists(data);
         })
-        .catch(err => console.error("Error:", err));
+        .catch(err => {
+          if (err.response) {
+            err.response.json().then((errorData: any) => {
+              console.error("Detailed Spotify Error:", errorData);
+            });
+          } else {
+            console.error("Error:", err);
+          }
+        });
     }
-  }, [dispatch, location.search, playlistQuery]);
+  };
+  
+  useEffect(() => {
+    fetchSpotifyData();
+  }, []);
+  
   
 
   return (<>{children}</>);

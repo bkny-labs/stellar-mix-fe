@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAuthURL, playSpotifyPlaylist } from '../services/api-service';
 import { AppState } from '../model/state';
-import { setSpotifyPlaylistsAction } from '../model/actions'; // Import this action if not done already
+import { setSpotifyPlaylistsAction } from '../model/actions';
+import { FaPlay, FaSpotify } from 'react-icons/fa';
 
 const Browse: React.FC = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,6 @@ const Browse: React.FC = () => {
     if (accessToken) {
       playSpotifyPlaylist(playlistURI, accessToken);
       console.log("Playing playlist:", playlistURI);
-      console.log("Access Token is:", accessToken);
     } else {
       console.error("Access token is not available.");
     }
@@ -41,15 +41,30 @@ const Browse: React.FC = () => {
 
   return (
     <div>
-      <button onClick={handleLogin}>Login with Spotify</button>
+      <div className="login">
+        <button onClick={handleLogin}><FaSpotify /> Connect to Spotify</button>
+      </div>
+      <div className="row">
       {Array.isArray(playlists) && playlists.map((playlist: any) => (
-        <div key={playlist.id}>
-          <h3>{playlist?.name}</h3>
-          <img src={playlist?.images?.[0]?.url} alt={playlist?.name || 'Spotify Playlist'} width={100} />
-          <p>{playlist?.description}</p>
-          <button onClick={() => playPlaylist(playlist.uri)}>Play</button>
+        <div className="column" key={playlist.id}>
+          <div 
+            style={{
+              width: '100%',
+              paddingBottom: '100%',
+              backgroundImage: `url(${playlist?.images?.[0]?.url})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          ></div>
+          <div className="controls">
+            <button onClick={() => playPlaylist(playlist.uri)}>
+              <FaPlay size={18} color='#fff' />
+            </button>
+            <h4 style={{fontSize: '14px'}}>{playlist?.name}</h4>
+          </div>
         </div>
       ))}
+      </div>
     </div>
   );
 };
