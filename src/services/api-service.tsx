@@ -12,13 +12,12 @@ export const getAuthURL = () => {
     scope: "user-read-private user-read-email user-read-currently-playing user-read-playback-state app-remote-control user-modify-playback-state",
     show_dialog: "true"
   });  
-
   return `${SPOTIFY_AUTH_ENDPOINT}?${params.toString()}`;
 };
 
 export const getSpotifyAccessToken = async (code: string): Promise<string> => {
   const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
-  const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_SECRET; // You need this from your Spotify Dashboard
+  const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_SECRET;
 
   const body = new URLSearchParams();
   body.append("grant_type", "authorization_code");
@@ -42,8 +41,12 @@ export const getSpotifyAccessToken = async (code: string): Promise<string> => {
   }
 
   const data = await response.json();
+  // Set the token in localStorage immediately after obtaining it
+  localStorage.setItem('spotifyToken', data.access_token);
+
   return data.access_token;
 };
+
 
 export const getWeatherByLocation = (lat: number, long: number): Promise<any> => {
   return new Promise(async (resolve, reject) => {
@@ -72,9 +75,18 @@ export const getPlaylistsByQuery = (query: string, token: string): Promise<any> 
 
     try {
       const response = await fetch(API_ENDPOINT, { headers });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Spotify API Error Response:", errorData);
+        reject(`Error ${response.status}: ${errorData.error.message}`);
+        return;
+      }
+
       const data = await response.json();
       resolve(data.playlists.items);
     } catch (error) {
+      console.error("Error fetching playlists:", error);
       reject(error);
     }
   });
@@ -125,6 +137,53 @@ export const pauseTrack = async (accessToken: string) => {
     headers: headers,
   });
 };
+
+// Move to next track
+export const playNextTrack = async (accessToken: string) => {
+  const endpoint = 'https://api.spotify.com/v1/me/player/next';
+
+  const headers = new Headers();
+  headers.append('Authorization', `Bearer ${accessToken}`);
+  
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: headers
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to skip to the next track. Status: ${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    console.error("Error playing the next track:", error);
+    throw error;
+  }
+};
+
+// Move to previous track
+export const playPreviousTrack = async (accessToken: string) => {
+  const endpoint = 'https://api.spotify.com/v1/me/player/previous';
+
+  const headers = new Headers();
+  headers.append('Authorization', `Bearer ${accessToken}`);
+  
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: headers
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to skip to the previous track. Status: ${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    console.error("Error playing the previous track:", error);
+    throw error;
+  }
+};
+
 
 export const setSpotifyVolume = async (accessToken: string, volume: number) => {
   const endpoint = `https://api.spotify.com/v1/me/player/volume?volume_percent=${volume}`;

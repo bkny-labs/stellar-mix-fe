@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { getCurrentlyPlaying, pauseTrack, playTrack, setSpotifyVolume } from '../services/api-service';
-import { FaPlay, FaPause } from 'react-icons/fa';
+import { useState, useEffect, useCallback } from 'react';
+import { getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume } from '../services/api-service';
+import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
 import './SpotifyPlayer.css';
 
 type Artist = {
@@ -30,14 +30,14 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(10);
 
-  const updatePlaybackStatus = () => {
+  const updatePlaybackStatus = useCallback(() => {
     getCurrentlyPlaying(accessToken).then(data => {
       setCurrentTrack(data.item);
       setIsPlaying(data.isPlaying);
     }).catch(error => {
       console.error("Error fetching current playback:", error);
     });
-  };
+  }, [accessToken]);
 
   const togglePlayPause = () => {
     const action = isPlaying ? pauseTrack : playTrack;
@@ -57,29 +57,59 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
       console.error("Failed to change volume:", error);
     });
   };
+
+  const handleNextTrack = () => {
+    playNextTrack(accessToken)
+      .then(() => {
+        // Optionally update the currently playing song if you want
+        getCurrentlyPlaying(accessToken).then(data => {
+          setCurrentTrack(data.item);
+          setIsPlaying(data.isPlaying);
+        });
+      })
+      .catch(error => {
+        console.error("Error playing the next track:", error);
+      });
+  };
+  
+  const handlePreviousTrack = () => {
+    playPreviousTrack(accessToken)
+      .then(() => {
+        // Optionally update the currently playing song if you want
+        getCurrentlyPlaying(accessToken).then(data => {
+          setCurrentTrack(data.item);
+          setIsPlaying(data.isPlaying);
+        });
+      })
+      .catch(error => {
+        console.error("Error playing the previous track:", error);
+      });
+  };
+  
   
   
 
   useEffect(() => {
     updatePlaybackStatus();
-  }, [accessToken, playlistPlayed]);
+  }, [accessToken, playlistPlayed, updatePlaybackStatus]);
   
-
-  if (!currentTrack) return null;
 
   return (
     <div className="spotify-player">
       <div className="track-info">
-        <img src={currentTrack.album.images[0].url} alt="album-cover" />
-        <span>{currentTrack.name}</span>
-        <span>{currentTrack.artists[0].name}</span>
+        <img src={currentTrack?.album.images[0].url} alt="album-cover" />
+        <span>{currentTrack?.name}</span>
+        <span>{currentTrack?.artists[0].name}</span>
       </div>
       <div className="player-play">
+          <FaStepBackward color={'#6f6f6f'} size={32} onClick={handlePreviousTrack} />
           {isPlaying 
-                ? <FaPause color={'#6f6f6f'} size={50} onClick={togglePlayPause} />
-                : <FaPlay color={'#6f6f6f'} size={50} onClick={togglePlayPause} />
-            }
+              ? <FaPause color={'#aaa'} size={42} onClick={togglePlayPause} />
+              : <FaPlay color={'#aaa'} size={42} onClick={togglePlayPause} />
+          }
+          <FaStepForward color={'#6f6f6f'} size={32} onClick={handleNextTrack} />
       </div>
+
       <div className="player-controls">
         <input 
           type="range" 

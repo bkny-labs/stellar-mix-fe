@@ -9,7 +9,7 @@ import { SpotifyPlayer } from '../component/SpotifyPlayer';
 const Browse: React.FC = () => {
   const dispatch = useDispatch();
   const playlists = useSelector((state: AppState) => state.spotifyPlaylists);
-  const accessToken = useSelector((state: AppState) => state.spotifyToken);
+  const accessToken = localStorage.getItem('spotifyToken');
   const [playlistPlayed, setPlaylistPlayed] = useState(false);
 
   const playPlaylist = (playlistURI: string) => {
@@ -47,6 +47,8 @@ const Browse: React.FC = () => {
   const handleLogin = () => {
     window.location.href = getAuthURL();
   }
+
+  console.log('access token from browse', accessToken);
 
   return (
     <div>

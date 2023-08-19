@@ -63,7 +63,7 @@ export const getMusicalMood = (data: AppState): string[] => {
 };
 
 export const buildPlaylistQuery = (moods: string[]): string => {
-    console.log('CURRENT MOODS', moods);
+    // console.log('CURRENT MOODS', moods);
     // TODO dispatch current moods to store probably
   return moods.join(' ');
 };

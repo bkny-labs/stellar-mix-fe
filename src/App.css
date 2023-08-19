@@ -79,6 +79,7 @@ body {
 .content {
   flex: auto;
   padding: 20px;
+  margin-bottom: 70px; /* offsets the player */
 }
 
 .row {
