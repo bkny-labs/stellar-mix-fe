@@ -71,7 +71,7 @@ const Browse: React.FC = () => {
             <button onClick={() => playPlaylist(playlist.uri)}>
               <FaPlay size={18} color='#fff' />
             </button>
-            <h4 style={{fontSize: '14px'}}>{playlist?.name}</h4>
+            <h4>{playlist?.name}</h4>
           </div>
         </div>
       ))}

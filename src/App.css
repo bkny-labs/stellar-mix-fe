@@ -84,7 +84,7 @@ body {
 
 .row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
   width: 100%;
 }
@@ -98,6 +98,7 @@ button {
 
 h4 {
   color: white;
+  font-size: 12px;
   margin: 0;
   padding: 0;
 }
