@@ -1,12 +1,14 @@
 import React from 'react';
+import Sun from '../component/Sun';
 
 const Home: React.FC = () => {
 
   return (
     <div>
-      <h1>Welcome to StellarMix</h1>
+      <Sun />
     </div>
   );
 };
 
 export default Home;
+ 

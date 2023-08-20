@@ -26,7 +26,7 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
     if (!spotifyToken) return;
 
     try {
-        const data = await getPlaylistsByQuery(playlistQuery, spotifyToken);
+        const data = await getPlaylistsByQuery(playlistQuery, spotifyToken, dispatch);
         dispatch(setSpotifyPlaylistsAction(data));
     } catch (err) {
         console.error("Error fetching playlists:", err);
@@ -69,7 +69,7 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
     if (!code) return;
 
     try {
-      await getSpotifyAccessToken(code);
+      await getSpotifyAccessToken(code, dispatch);
       const storedToken = localStorage.getItem('spotifyToken');
       if (storedToken) {
         dispatch(setLoggedInAction(true, storedToken));

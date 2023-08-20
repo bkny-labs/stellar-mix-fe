@@ -44,9 +44,9 @@ export const getMusicalMood = (data: AppState): string[] => {
   // Determine time of day
   const hours = new Date().getHours();
   if (hours >= 6 && hours <= 18) {
-    moods.push('bright', 'happy');
+    moods.push('creative', 'happy', 'light', 'energetic');
   } else {
-    moods.push('relaxed', 'chill');
+    moods.push('relaxed', 'chill', 'calming');
   }
 
   // Adjusting for the moon phase based on the sunCalcData
@@ -58,6 +58,8 @@ export const getMusicalMood = (data: AppState): string[] => {
       moods.push('dark', 'introspective');
       break;
   }
+
+  console.log('MOODS', moods);
 
   return moods;
 };

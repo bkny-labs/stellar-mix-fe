@@ -1,7 +1,9 @@
 import * as SunCalc from 'suncalc';
+import { setLoggedInAction } from '../model/actions';
 
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT;
+const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_SECRET;
 const REDIRECT_URI = "http://localhost:3000/browse"; 
 
 export const getAuthURL = () => {
@@ -15,9 +17,8 @@ export const getAuthURL = () => {
   return `${SPOTIFY_AUTH_ENDPOINT}?${params.toString()}`;
 };
 
-export const getSpotifyAccessToken = async (code: string): Promise<string> => {
+export const getSpotifyAccessToken = async (code: string, dispatch: any): Promise<string> => {
   const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
-  const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_SECRET;
 
   const body = new URLSearchParams();
   body.append("grant_type", "authorization_code");
@@ -37,6 +38,7 @@ export const getSpotifyAccessToken = async (code: string): Promise<string> => {
   if (!response.ok) {
     const errorData = await response.json();
     console.error("Spotify API Error Response:", errorData);
+    dispatch(setLoggedInAction(false));
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
 
@@ -47,26 +49,27 @@ export const getSpotifyAccessToken = async (code: string): Promise<string> => {
   return data.access_token;
 };
 
+// export const logout = (token: string): Promise<void> => {
+//   const revokeURL = 'https://accounts.spotify.com/api/token/revoke';
 
-export const logout = (token: string): Promise<void> => {
-  const revokeURL = 'https://accounts.spotify.com/api/token/revoke';
+//   return fetch(revokeURL, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/x-www-form-urlencoded',
+//       'Authorization': `Bearer ${token}`
+//     },
+//     body: `token_type_hint=access_token&token=${token}`,
+//   })
+//   .then(response => {
+//     if (!response.ok) {
+//       return response.json().then(err => {
+//         throw new Error(err.error_description || 'Failed to revoke token');
+//       });
+//     }
+//   });
+// }
 
-  return fetch(revokeURL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Basic ${btoa('<Your_Client_ID>:<Your_Client_Secret>')}`,
-    },
-    body: `token_type_hint=access_token&token=${token}`,
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Failed to revoke token');
-    }
-  });
-}
-
-export const fetchUserProfile = async (accessToken: string) => {
+export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
   const response = await fetch('https://api.spotify.com/v1/me', {
     method: 'GET',
     headers: {
@@ -75,14 +78,13 @@ export const fetchUserProfile = async (accessToken: string) => {
   });
 
   if (!response.ok) {
+    dispatch(setLoggedInAction(false));
     throw new Error('Failed to fetch user profile');
   }
 
   const data = await response.json();
   return data;
 };
-
-
 
 export const getWeatherByLocation = (lat: number, long: number): Promise<any> => {
   return new Promise(async (resolve, reject) => {
@@ -102,7 +104,7 @@ export const getWeatherByLocation = (lat: number, long: number): Promise<any> =>
   });
 };
 
-export const getPlaylistsByQuery = (query: string, token: string): Promise<any> => {
+export const getPlaylistsByQuery = (query: string, token: string, dispatch: any): Promise<any> => {
   return new Promise(async (resolve, reject) => {
     const API_ENDPOINT = `https://api.spotify.com/v1/search?q=${query}&type=playlist&limit=20`;
     const headers = {
@@ -113,6 +115,9 @@ export const getPlaylistsByQuery = (query: string, token: string): Promise<any> 
       const response = await fetch(API_ENDPOINT, { headers });
 
       if (!response.ok) {
+        if (response.status === 401) {
+          dispatch(setLoggedInAction(false));
+        }
         const errorData = await response.json();
         console.error("Spotify API Error Response:", errorData);
         reject(`Error ${response.status}: ${errorData.error.message}`);
@@ -137,7 +142,7 @@ export const getCurrentlyPlaying = async (accessToken: string, dispatch: any) =>
   const response = await fetch(API_ENDPOINT, { method: 'GET', headers: headers });
   
   if (!response.ok) {
-    // dispatch(setLoggedInAction(false));
+    dispatch(setLoggedInAction(false));
     throw new Error('Failed to fetch current playback');
   }
 

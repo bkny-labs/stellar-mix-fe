@@ -4,12 +4,13 @@ import { AppState } from '../model/state';
 import { FaCog, FaHome, FaMixcloud, FaMusic, FaRegHeart, FaRegMoon } from 'react-icons/fa';
 import { IoLogOutOutline } from 'react-icons/io5';
 import { GiSunrise, GiSunset } from 'react-icons/gi';
+import { useEffect } from 'react';
 
 interface NavigationProps {
-    showLogout?: boolean;
+    loggedIn?: boolean;
   }
 
-export const Navigation: React.FC<NavigationProps> = ({ showLogout = false }) => {
+export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false }) => {
     const location = useLocation();
     const sunCalcData = useSelector((state: AppState) => state.sunCalcData);
 
@@ -24,6 +25,11 @@ export const Navigation: React.FC<NavigationProps> = ({ showLogout = false }) =>
     if (phase > 0.75) return 'Waning Crescent';
     return 'Unknown Phase';
   }
+
+  useEffect(() => {
+    // uhh
+  }, [loggedIn]);
+
 
   return (
     <div className='nav-container'>
@@ -44,22 +50,15 @@ export const Navigation: React.FC<NavigationProps> = ({ showLogout = false }) =>
           <FaMusic /> Browse
         </Link>
       </li>
-      <li>
-        <Link 
-          to="/weather" 
-          className={location.pathname === "/weather" ? "active" : ""}
-        >
-          <FaMixcloud /> Weather
-        </Link>
-      </li>
-      <li>
+      {/* <li>
         <Link 
           to="/favorites" 
           className={location.pathname === "/favorites" ? "active" : ""}
         >
           <FaRegHeart /> Favorites
         </Link>
-      </li>
+      </li> */}
+      {loggedIn && (
       <li>
         <Link 
           to="/settings" 
@@ -68,14 +67,8 @@ export const Navigation: React.FC<NavigationProps> = ({ showLogout = false }) =>
           <FaCog /> Settings
         </Link>
       </li>
-      {showLogout?? <li>
-        <Link 
-          to="/logout" 
-          className={location.pathname === "/logout" ? "active" : ""}
-        >
-          <IoLogOutOutline /> Logout
-        </Link>
-      </li>}
+      )}
+
     </ul>
 
     {sunCalcData && (

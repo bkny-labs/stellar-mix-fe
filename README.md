@@ -36,7 +36,7 @@ APIs: Spotify API, Weather API (if you have one)
 
 
 ## 🌌 Future Plans
-1. Mood Detection: Recommend playlists based on user's mood using AI.
+1. Mood Detection: Recommend playlists based on user's mood based on factors like "what I'm doing today" etc. Read calendar?
 2. Social Integration: Share your celestial playlist with friends and compare what the universe has chosen for you both.
 3. Backend: Express, Node.js
 4. Lighting controls for your smart home devices.

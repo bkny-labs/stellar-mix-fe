@@ -98,18 +98,20 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
 
   return (
     <div className="spotify-player">
+      {currentTrack && (
       <div className="track-info">
         <img src={currentTrack?.album.images[0].url} alt="album-cover" />
         <span>{currentTrack?.name}</span>
         <span>{currentTrack?.artists[0].name}</span>
       </div>
+      )}
       <div className="player-play">
-          <FaStepBackward color={'#6f6f6f'} size={32} onClick={handlePreviousTrack} />
+          <FaStepBackward color={'#6f6f6f'} size={25} onClick={handlePreviousTrack} />
           {isPlaying 
-              ? <FaPause color={'#aaa'} size={42} onClick={togglePlayPause} />
-              : <FaPlay color={'#aaa'} size={42} onClick={togglePlayPause} />
+              ? <FaPause color={'#aaa'} size={32} onClick={togglePlayPause} />
+              : <FaPlay color={'#aaa'} size={32} onClick={togglePlayPause} />
           }
-          <FaStepForward color={'#6f6f6f'} size={32} onClick={handleNextTrack} />
+          <FaStepForward color={'#6f6f6f'} size={25} onClick={handleNextTrack} />
       </div>
 
       <div className="player-controls">
