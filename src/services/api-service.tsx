@@ -114,25 +114,47 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any)
 };
 
 export const getCurrentlyPlaying = async (accessToken: string, dispatch: any) => {
-  const API_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing`;
+  const API_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing?market=US`;
   const headers = {
-    'Authorization': `Bearer ${accessToken}`
+    'Authorization': `Bearer ${accessToken}`,
+    'Accept-Language': 'en-US'
   };
 
-  const response = await fetch(API_ENDPOINT, { method: 'GET', headers: headers });
-  
-  if (!response.ok) {
-    dispatch(setLoggedInAction(false));
-    throw new Error('Failed to fetch current playback');
+  try {
+    const response = await fetch(API_ENDPOINT, { method: 'GET', headers: headers });
+
+    if (response.status === 204) {
+        return { status: 'no-track-playing' };
+    }
+
+    if (!response.ok) {
+      dispatch(setLoggedInAction(false));
+      throw new Error(`Failed to fetch current playback: ${response.statusText}`);
+    }
+
+    let data;
+    try {
+        data = await response.json();
+    } catch (parseError) {
+        console.warn('Failed to parse response. The response might be empty.');
+        return { status: 'no-data' };
+    }
+
+    return {
+      status: 'success',
+      item: data.item,
+      isPlaying: data.is_playing
+    };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error fetching currently playing track:", error.message);
+      return { status: 'error', message: error.message };
+    } else {
+      console.error("An unexpected error occurred:", error);
+      return { status: 'error', message: 'An unexpected error occurred.' };
+    }
   }
-
-  const data = await response.json();
-  return {
-    item: data.item,         // the track details
-    isPlaying: data.is_playing  // playback status
-  };
 };
-
 
 export const playTrack = async (accessToken: string) => {
   const API_ENDPOINT = `https://api.spotify.com/v1/me/player/play`;

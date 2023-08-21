@@ -4,21 +4,54 @@ import {
   Routes
 } from 'react-router-dom';
 import Home from './view/Home';
-import Weather from './view/Weather';
-import MainController from './controller/main-controller'; // Import the new MainController
+import MainController from './controller/main-controller';
 import './App.css';
 import Browse from './view/Browse';
 import { Navigation } from './component/Navigation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from './model/state';
 import Header from './component/Header';
 import Settings from './view/Settings';
+import Toast from './component/Toast';
+import { useEffect, useState } from 'react';
+import { fetchUserProfile } from './services/api-service';
+import { UserProfile } from './types';
 
 function App() {
   const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [showToast, setShowToast] = useState(isLoggedIn);
+  const token = localStorage.getItem('spotifyToken');
+  const dispatch = useDispatch();
   console.log('logged in?', isLoggedIn);
+
+  useEffect(() => {
+    if (token) {
+      fetchUserProfile(token, dispatch)
+      .then(data => setUserProfile(data))
+      .catch(error => console.error("Error fetching user profile:", error));
+      console.log(userProfile);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token, dispatch]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setShowToast(true);
+    }
+  }, [isLoggedIn]); 
+  
   return (
     <Router>
+      {showToast && (
+        <Toast
+          message={'Welcome to StellarMix, ' + userProfile?.display_name + '!' }
+          type="success"
+          duration={5000}
+          position="top-center"
+          onClose={() => setShowToast(false)}
+        />
+      )}
       <div className="App">
         <MainController>
           <div className="container">

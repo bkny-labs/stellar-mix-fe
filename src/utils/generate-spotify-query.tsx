@@ -1,6 +1,6 @@
 import { AppState } from "../model/state";
 
-export const getMusicalMood = (data: AppState): string[] => {
+export const getMusicalMood = (data: AppState): { moods: string[], genres: string[] } => {
   let moods: string[] = [];
   const userGenres = data.userSettings.genres;
   const mainWeather = data?.weather?.weather?.[0]?.main.toLowerCase();
@@ -8,10 +8,10 @@ export const getMusicalMood = (data: AppState): string[] => {
     if (data.weather && mainWeather) {
         switch (mainWeather) {
             case 'clear':
-                moods.push('upbeat', 'energetic', 'bright');
+                moods.push('upbeat', 'energetic', 'bright', 'happy', 'jam', 'vivid', 'cheerful', 'sunny', 'warm', 'summer', 'fun', 'dance', 'party', 'groovy', 'bouncy', 'lively', 'playful', 'optimistic', 'joyful', 'silly', 'excited', 'ecstatic', 'euphoric', 'blissful', 'carefree', 'free', 'inspired', 'hopeful', 'dreamy', 'contemplative', 'smooth', 'soft', 'creative', 'light', 'energetic');
                 break;
             case 'clouds' || 'broken clouds':
-                moods.push('moody', 'dreamy', 'contemplative', 'hopeful');
+                moods.push('moody', 'dreamy', 'contemplative', 'hopeful', 'smooth', 'soft', 'creative', 'light', 'reflective', 'introspective', 'soothing', 'calm', 'mellow', 'chill', 'relaxed', 'calming', 'restful', 'mystical', 'ambient', 'ethereal', 'winter', 'snowboarding', 'chill', 'mysterious', 'dense', 'hazy', 'blurry', 'slow', 'distant', 'dark', 'introspective');
                 break;
             case 'drizzle':
                 moods.push('mellow', 'calm', 'soft');
@@ -60,11 +60,25 @@ export const getMusicalMood = (data: AppState): string[] => {
       break;
   }
 
-  return moods;
+  return {
+    moods,
+    genres: userGenres
+  };
 };
 
-export const buildPlaylistQuery = (moods: string[]): string => {
-    console.log('MOODS', moods);
-    // TODO dispatch current moods to store probably
-  return moods.join(' ');
+export const buildPlaylistQuery = (moodData: { moods: string[], genres: string[] }): string => {
+  console.log('MOODS', moodData.moods);
+  console.log('GENRES', moodData.genres);
+  
+  const moodQuery = moodData.moods.join(' ');
+  const genreQuery = moodData.genres.join(',');
+
+  // Forming the final query string
+  let queryString = `q=${moodQuery}`;
+  if (genreQuery) {
+    queryString += `&genre=${genreQuery}`;
+  }
+
+  return queryString;
 };
+

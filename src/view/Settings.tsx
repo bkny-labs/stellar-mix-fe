@@ -15,6 +15,46 @@ function Settings() {
     const token = localStorage.getItem('spotifyToken');
     const dispatch = useDispatch();
     const [allGenres, setAllGenres] = useState<string[]>([]);
+    const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
+    const allActivities = [
+      "party",
+      "sleep",
+      "workout",
+      "study",
+      "chill",
+      "travel",
+      "focus",
+      "romance",
+      "dinner",
+      "reading",
+      "hiking",
+      "cooking",
+      "gaming",
+      "shopping",
+      "meditation",
+      "yoga",
+      "driving",
+      "dancing",
+      "writing",
+      "crafting",
+      "gardening"
+    ];
+
+    const toggleActivity = (activity: string) => {
+      setSelectedActivities(prev => 
+          prev.includes(activity) 
+          ? prev.filter(a => a !== activity)
+          : [...prev, activity]
+      );
+    };
+      const selectAllActivities = () => {
+          setSelectedActivities(allActivities);
+      }
+
+      const deselectAllActivities = () => {
+          setSelectedActivities([]);
+      }
+
 
     useEffect(() => {
       async function fetchGenres() {
@@ -48,6 +88,7 @@ function Settings() {
         .catch(error => console.error("Error fetching user profile:", error));
         console.log(userProfile);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, dispatch]);
   
     if (!userProfile) return null;
@@ -63,14 +104,14 @@ function Settings() {
     const selectAllGenres = () => {
       setSelectedGenres(allGenres);
     }
-    
+
     const deselectAllGenres = () => {
       setSelectedGenres([]);
     }
 
-
     const handleSave = () => {
         dispatch(setUserGenresAction(selectedGenres));
+        localStorage.setItem('userGenres', JSON.stringify(selectedGenres));
     };
 
     return (
@@ -91,11 +132,11 @@ function Settings() {
 
             <h2>Favorite Genres</h2>
             <p>Below is a list of recommended genres based on your Spotify plays. You can choose to include/remove any you want to fine tune StellarMix.</p>
-            <div className="genre-select-buttons">
+            <div className="checkbox-select-buttons">
                 <button onClick={selectAllGenres}>Select All</button> |
                 <button onClick={deselectAllGenres}>Select None</button>
               </div>
-            <div className="genres-list">
+            <div className="checkbox-list">
             {allGenres.map(genre => (
                 <div key={genre}>
                   <input 
@@ -111,7 +152,32 @@ function Settings() {
                 </div>
             ))}
             </div>
-            <button className="save-button" onClick={handleSave}>Save Settings</button>
+
+            <h2>Favorite Activities</h2>
+            <p>Below is a list of activities to help us curate playlists better on StellarMix.</p>
+            <div className="checkbox-select-buttons">
+                <button onClick={selectAllActivities}>Select All</button> |
+                <button onClick={deselectAllActivities}>Select None</button>
+            </div>
+            <div className="checkbox-list">
+            {allActivities.map(activity => (
+                <div key={activity}>
+                  <input 
+                    type="checkbox"
+                    id={activity + 'A'}
+                    className="checkbox"
+                    checked={selectedActivities.includes(activity)}
+                    onChange={() => toggleActivity(activity)}
+                  />
+                  <label htmlFor={activity + 'A'} className="activity-label">
+                    {activity}
+                  </label>
+                </div>
+            ))}
+            </div>
+            <div className="action-bar">
+              <button className="save-button" onClick={handleSave}>Save Settings</button>
+            </div>
         </div>
     );
 }

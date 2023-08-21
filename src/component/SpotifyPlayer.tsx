@@ -87,14 +87,10 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
         console.error("Error playing the previous track:", error);
       });
   };
-  
-  
-  
 
   useEffect(() => {
     updatePlaybackStatus();
-  }, [accessToken, playlistPlayed, updatePlaybackStatus]);
-  
+  }, [accessToken, playlistPlayed, updatePlaybackStatus, setCurrentTrack]);
 
   return (
     <div className="spotify-player">

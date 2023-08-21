@@ -8,11 +8,6 @@ const Header: React.FC = () => {
   const token = localStorage.getItem('spotifyToken');
   const dispatch = useDispatch;
 
-  setTimeout(() => {
-    const toast = document.querySelector('.toast');
-    toast?.classList.add('hide');
-  }, 3000);
-
   useEffect(() => {
     if (token) {
       fetchUserProfile(token, dispatch)
@@ -29,11 +24,6 @@ const Header: React.FC = () => {
         <div 
             className="user-image"
             style={{ backgroundImage: `url(${userProfile.images[0]?.url})` }}></div>
-        {/* <span>{userProfile.display_name}</span> */}
-        {/* ... other header elements */}
-        </div>
-        <div className="toast">
-            <span>{userProfile.display_name}</span>
         </div>
     </>
   );

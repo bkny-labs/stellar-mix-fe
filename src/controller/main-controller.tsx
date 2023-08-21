@@ -17,19 +17,19 @@ interface MainControllerProps {
 
 const MainController: React.FC<MainControllerProps> = ({ children }) => {
   const spotifyToken = useSelector((state: AppState) => state.spotifyToken);
-  const moods = getMusicalMood(useSelector((store: AppState) => store));
-  const playlistQuery = buildPlaylistQuery(moods);
+  const moodData = getMusicalMood(useSelector((store: AppState) => store));
+  const playlistQuery = buildPlaylistQuery(moodData);
 
   const dispatch = useDispatch();
 
   const fetchSpotifyPlaylists = async () => {
-    if (!spotifyToken) return;
+    if (!spotifyToken || !playlistQuery) return;
 
     try {
-        const data = await getPlaylistsByQuery(playlistQuery, spotifyToken, dispatch);
-        dispatch(setSpotifyPlaylistsAction(data));
+      const data = await getPlaylistsByQuery(playlistQuery, spotifyToken, dispatch);
+      dispatch(setSpotifyPlaylistsAction(data));
     } catch (err) {
-        console.error("Error fetching playlists:", err);
+      console.error("Error fetching playlists:", err);
     }
   };
 
@@ -94,13 +94,26 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
 
     fetchWeatherAndSunCalcData();
     fetchSpotifyPlaylists();
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
+  useEffect(() => {
+    // Attempt to get genres from localStorage
+    const storedGenres = localStorage.getItem('genres');
 
+    if (storedGenres) {
+      // If genres exist in localStorage, parse and dispatch to Redux
+      const parsedGenres = JSON.parse(storedGenres);
+      dispatch(setGenresAction(parsedGenres));
+    }
+  }, [dispatch]);
 
 
   return (<>{children}</>);
 };
 
 export default MainController;
+function setGenresAction(parsedGenres: any): any {
+  throw new Error('Function not implemented.');
+}
+

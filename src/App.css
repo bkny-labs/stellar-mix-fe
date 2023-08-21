@@ -1,14 +1,15 @@
 body {
   margin: 0;
-  background: #201e1e;
+  background: #121212;
   font-family: Arial, Helvetica, sans-serif;
   color: #5d5d5d;
 }
 
 .header {
   position: fixed;
+  z-index: 1;
   width: 100%;
-  background: #161515;
+  background: #1f1e1e;
   top: 0;
   text-align: right;
   display: flex;
@@ -20,6 +21,7 @@ body {
 
 .browse-grid {
   padding-top: 50px; /* offset header height */
+  padding-bottom: 100px; /* offsets the player */
 }
 
 .user-image {
@@ -111,7 +113,7 @@ body {
   width: 180px;
   height: 100%;
   padding-top: 30px;
-  background: #161515;
+  background: #1f1e1e;
 }
 
 .nav li {
@@ -134,11 +136,11 @@ body {
 }
 
 .content {
-  background: #201e1e;
+  background: #121212;
   padding-top: 12px;
   padding-right: 12px;
-  padding-left: 185px; /* same as nav width */
-  padding-bottom: 100px; /* offsets the player */ 
+  padding-left: 180px; /* same as nav width */
+  padding-bottom: 0;
   flex: auto;
 }
 
@@ -160,6 +162,34 @@ body {
   grid-template-columns: repeat(4, 1fr);
 }
 
+/* Tablet Viewports */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .row.five {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .row.four {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile Viewports */
+@media (max-width: 767px) {
+  .nav {
+    background: transparent;
+  }
+  .nav-container {
+    display: none;
+  }
+  .content {
+    padding-left: 12px;
+  }
+  .row.five,
+  .row.four {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
 .login {
   text-align: center;
   padding-bottom: 10px;
@@ -175,7 +205,7 @@ button {
   border: none;
 }
 
-.login button {
+.spotify-login {
   background: #1DB954;
   border: none;
   border-radius: 24px;
@@ -190,14 +220,14 @@ button {
   transition: all 0.3s ease;
 }
 
-.login button:hover {
+.spotify-login:hover {
   background: #1aa34a;
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 
-.login button:active {
+.spotify-login:active {
   transform: translateY(0);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
@@ -206,6 +236,7 @@ button {
 h4 {
   color: white;
   font-size: 12px;
+  text-align: left;
   margin: 0;
   padding: 0;
 }
@@ -225,17 +256,35 @@ h4 {
 
 .settings {
   text-align: left;
-  padding-left: 40px;
-  padding-top: 60px;
+  padding-left: 25px;
+  padding-top: 50px;
+  padding-right: 12px;
 }
 
 .settings h1 {
   font-size: 40px;
+  color: white;
 }
 
 .settings h2 {
+  color: white;
   font-size: 28px;
-  margin-top: 50px;
+  margin-top: 40px;
+}
+
+.settings p {
+  color: white;
+}
+
+.settings .action-bar {
+  width: 96%;
+  background: #1f1e1e;
+  padding: 18px;
+  display: flex;
+  justify-content: flex-start;
+  position: sticky;
+  bottom: 15px;
+  margin-top: 2rem;
 }
 
 .settings .save-button {
@@ -248,8 +297,7 @@ h4 {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    outline: none; /* Remember to provide alternative focus styles for accessibility */
-    margin-top: 20px;
+    outline: none;
 }
 
 .settings .save-button:hover {
@@ -271,34 +319,34 @@ h4 {
   box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.4); /* Slight glow using Spotify green */
 }
 
-.genres-list {
+.checkbox-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columns with equal width */
-  gap: 10px; /* space between rows and columns */
-  max-height: 420px;
-  max-width: 420px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-height: 320px;
   overflow-y: scroll;
   background: #131313;
   box-shadow: 0px 4px 10px #00000082;
   padding: 20px;
 }
 
-.genres-list label {
+.checkbox-list label {
   display: block;
   padding: 5px 0;
+  color: white;
 }
 
-.genres-list .checkbox {
+.checkbox-list .checkbox {
   display: none; /* hide the default checkbox */
 }
 
-.genres-list .checkbox + label {
+.checkbox-list .checkbox + label {
   position: relative;
   padding-left: 30px; /* space for custom checkbox */
   cursor: pointer;
 }
 
-.genres-list .checkbox + label::before {
+.checkbox-list .checkbox + label::before {
   content: "";
   position: absolute;
   left: 0;
@@ -309,7 +357,7 @@ h4 {
   background: #fff;
 }
 
-.genres-list .checkbox:checked + label::after {
+.checkbox-list .checkbox:checked + label::after {
   content: "";
   position: absolute;
   left: 6px;
@@ -321,12 +369,12 @@ h4 {
   transform: rotate(45deg);
 }
 
-.genre-select-buttons button {
+.checkbox-select-buttons button {
   color: #5d5d5d;
   cursor: pointer;
   margin-bottom: 10px;
 }
-.genre-select-buttons button:hover {
+.checkbox-select-buttons button:hover {
   color:white;
 }
 
@@ -334,10 +382,10 @@ h4 {
 .contact-card {
   display: flex;
   align-items: center;
-  padding: 20px;
-  border: 1px solid #e0e0e0;
+  padding: 10px;
+  border: 1px solid #161515;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
   background-color: #1db9540a;
   max-width: 500px;
   margin: 0;
@@ -396,4 +444,18 @@ h4 {
 .home {
   padding: 90px 0;
   color: white;
+}
+
+.toast {
+  width: 420px;
+  position: absolute;
+  left: 100px;
+  right: 0;
+  top: 100px;
+  z-index: 999;
+  background: #262630;
+  display: block;
+  margin: 0 auto;
+  height: auto;
+  padding: 15px;
 }

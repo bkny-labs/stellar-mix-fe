@@ -1,0 +1,87 @@
+.landing {
+    background-color: #121212;
+    width: 100%;
+    color: #fff;
+    font-family: 'Circular Std', sans-serif;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 810px;
+    margin: 0 auto;
+  }
+  
+  .hero {
+    width: 100%;
+    margin-top: 2rem;
+  }
+  .hero img {
+    margin-bottom: 1rem;
+    width: 220px;
+  }
+  .hero h1 {
+    font-size: 75px;
+    margin: 0 0 20px;
+  }
+  .hero p {
+    margin: 0 0 25px;
+  }
+  
+  .spotifyBtn {
+    background-color: #1DB954;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 2rem;
+  }
+  
+  .features {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 3rem;
+  }
+  
+  .feature {
+    text-align: center;
+  }
+  
+  .featureIcon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .about {
+    width: 70%;
+    margin-top: 3rem;
+    text-align: center;
+    /* background-image: url('path_to_celestial_image'); */
+    background-size: cover;
+    padding: 3rem;
+    border-radius: 5px;
+  }
+  
+  footer {
+    margin-top: auto;
+    padding: 2rem 0;
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .about a, .about a:visited {
+    color: #1DB954;
+    text-decoration: none;
+  }
+  .about .github, .about .github:visited {
+    color: white;
+  }
+  
+  .about a:hover {
+    text-decoration: underline;
+  }
+  
+  .about .small {
+    color:#7c7c7c;
+    font-size: 11px;
+  }

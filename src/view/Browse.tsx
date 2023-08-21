@@ -45,6 +45,12 @@ const Browse: React.FC = () => {
     }
   }, [playlists]);
 
+  useEffect(() => {
+    console.log("Browse component mounted");
+}, []);
+  
+
+
   const handleLogin = () => {
     window.location.href = getAuthURL();
   }
@@ -53,7 +59,7 @@ const Browse: React.FC = () => {
     <div className='browse-grid'>
       {!isLoggedIn &&
       <div className="login">
-         <button onClick={handleLogin}><FaSpotify /> Connect to Spotify</button> 
+         <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 
       </div> 
       }
       {isLoggedIn &&
