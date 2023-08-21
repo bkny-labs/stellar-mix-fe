@@ -1,15 +1,22 @@
+// state.ts
 export interface AppState {
-  weather: Record<string, any>;
-  sunCalcData: Record<string, any>;
-  spotifyPlaylists: Record<string, any>;
+  weather: any;
+  sunCalcData: any;
+  spotifyPlaylists: any[];
   isLoggedIn: boolean;
-  spotifyToken?: string;
+  spotifyToken: string | null | undefined;
+  userSettings: {
+    genres: string[];
+  };
 }
 
 export const initialState: AppState = {
-  weather: {},
-  sunCalcData: {},
-  spotifyPlaylists: {},
+  weather: null,
+  sunCalcData: null,
+  spotifyPlaylists: [],
   isLoggedIn: false,
-  spotifyToken: undefined,
+  spotifyToken: null,
+  userSettings: {
+    genres: []
+  }
 };

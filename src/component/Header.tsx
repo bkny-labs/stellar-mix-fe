@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchUserProfile } from '../services/api-service';
 import { useDispatch } from 'react-redux';
-
-type UserProfile = {
-  display_name: string;
-  images: { url: string }[];
-};
+import { UserProfile } from '../types';
 
 const Header: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);

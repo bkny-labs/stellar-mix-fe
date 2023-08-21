@@ -18,8 +18,19 @@ export const appReducer = (state: AppState = initialState, action: AppAction): A
         return { ...state, spotifyPlaylists: action.payload };
       }
       return state;
+    case 'SET_USER_GENRES':
+      if ('payload' in action) {
+        return { 
+          ...state, 
+          userSettings: {
+            ...state.userSettings,
+            genres: action.payload 
+          }
+        };
+      }
+      return state;      
     case 'SET_LOGGED_IN':
-      return { ...state, isLoggedIn: action.isLoggedIn, spotifyToken: action.token };
+      return { ...state, isLoggedIn: action.isLoggedIn, spotifyToken: action.token ?? null };
     default:
       return state;
   }

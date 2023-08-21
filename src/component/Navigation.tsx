@@ -4,7 +4,12 @@ import { AppState } from '../model/state';
 import { FaCog, FaHome, FaMixcloud, FaMusic, FaRegHeart, FaRegMoon } from 'react-icons/fa';
 import { IoLogOutOutline } from 'react-icons/io5';
 import { GiSunrise, GiSunset } from 'react-icons/gi';
+import { TiWeatherPartlySunny } from 'react-icons/ti';
+import { BsThermometerSun } from 'react-icons/bs';
+import { WiHumidity } from 'react-icons/wi';
 import { useEffect } from 'react';
+import { selectWeather } from '../model/selectors';
+import { DateTime } from 'luxon';
 
 interface NavigationProps {
     loggedIn?: boolean;
@@ -13,6 +18,10 @@ interface NavigationProps {
 export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false }) => {
     const location = useLocation();
     const sunCalcData = useSelector((state: AppState) => state.sunCalcData);
+    const weatherData = useSelector((state: AppState) => state.weather);
+    const sunriseTime = DateTime.fromISO(sunCalcData?.sunrise, { setZone: true }).toLocaleString(DateTime.TIME_SIMPLE);
+    const localSunset = DateTime.fromISO(sunCalcData?.sunset).setZone('local');
+    const sunsetTime = localSunset.toLocaleString(DateTime.TIME_24_SIMPLE);
 
   function getMoonPhaseLabel(phase: number): string {
     if (phase === 0) return 'New Moon';
@@ -70,14 +79,22 @@ export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false }) => {
       )}
 
     </ul>
-
-    {sunCalcData && (
     <div className='sun-calc-data'>
-        <p><GiSunrise /> {new Date(sunCalcData.sunrise).toLocaleTimeString()}</p>
-        <p><GiSunset /> {new Date(sunCalcData.sunset).toLocaleTimeString()}</p>
-        <p><FaRegMoon /> {getMoonPhaseLabel(sunCalcData.moonPhase)}</p>
+      {weatherData && (
+        <>  
+        <p><BsThermometerSun /> {((weatherData?.main?.temp - 273.15) * 9/5 + 32).toFixed(2)}°F</p>
+        <p><TiWeatherPartlySunny /> {weatherData?.weather?.[0]?.description}</p>
+        <p><WiHumidity /> {weatherData?.main?.humidity}%</p>
+        </>
+      )}
+      {sunCalcData && (
+        <>
+        <p><GiSunrise /> {sunriseTime}</p>
+        <p><GiSunset /> {sunsetTime}PM</p>
+        <p><FaRegMoon /> {getMoonPhaseLabel(sunCalcData?.moonPhase)}</p>
+        </>
+        )}
     </div>
-    )}
     </div>
   );
 }

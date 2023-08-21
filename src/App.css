@@ -91,7 +91,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 80vh;
+  height: 86%;
   padding-top: 30px;
 }
 
@@ -221,4 +221,179 @@ h4 {
   to {
     transform: rotate(360deg);
   }
+}
+
+.settings {
+  text-align: left;
+  padding-left: 40px;
+  padding-top: 60px;
+}
+
+.settings h1 {
+  font-size: 40px;
+}
+
+.settings h2 {
+  font-size: 28px;
+  margin-top: 50px;
+}
+
+.settings .save-button {
+    background-color: #1DB954; /* Spotify green */
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    outline: none; /* Remember to provide alternative focus styles for accessibility */
+    margin-top: 20px;
+}
+
+.settings .save-button:hover {
+    background-color: #1aa34a; /* Slightly darker green on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.settings .save-button:active {
+    transform: scale(0.98); /* Slight "push" effect on click */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.settings .save-button:disabled {
+    background-color: #B2B2B2; /* Greyed out */
+    cursor: not-allowed;
+}
+
+.settings .save-button:focus:not(:active) {
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.4); /* Slight glow using Spotify green */
+}
+
+.genres-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns with equal width */
+  gap: 10px; /* space between rows and columns */
+  max-height: 420px;
+  max-width: 420px;
+  overflow-y: scroll;
+  background: #131313;
+  box-shadow: 0px 4px 10px #00000082;
+  padding: 20px;
+}
+
+.genres-list label {
+  display: block;
+  padding: 5px 0;
+}
+
+.genres-list .checkbox {
+  display: none; /* hide the default checkbox */
+}
+
+.genres-list .checkbox + label {
+  position: relative;
+  padding-left: 30px; /* space for custom checkbox */
+  cursor: pointer;
+}
+
+.genres-list .checkbox + label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #333;
+  background: #fff;
+}
+
+.genres-list .checkbox:checked + label::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 3px;
+  width: 8px;
+  height: 12px;
+  border: solid #333;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.genre-select-buttons button {
+  color: #5d5d5d;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.genre-select-buttons button:hover {
+  color:white;
+}
+
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #1db9540a;
+  max-width: 500px;
+  margin: 0;
+}
+
+.contact-card .user-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  margin-right: 20px;
+  border: 2px solid #e0e0e0;
+}
+.contact-card a {
+  color: white;
+  text-decoration: none;
+}
+.contact-card .user-info {
+  flex-grow: 1;
+}
+
+.contact-card .user-info p {
+  margin: 5px 0;
+}
+
+.contact-card .user-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.contact-card .user-bio {
+  margin-bottom: 10px;
+  color: #cacaca;
+  font-style: italic;
+}
+
+.contact-card .user-activity {
+  display: flex;
+  font-size: 13px;
+  gap: 10px;
+}
+
+.contact-card .user-activity span {
+  display: flex;
+  align-items: center;
+}
+
+.contact-card .fas {
+  margin-right: 5px;
+}
+
+
+.home {
+  padding: 90px 0;
+  color: white;
 }

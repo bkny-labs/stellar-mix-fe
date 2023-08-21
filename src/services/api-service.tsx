@@ -49,26 +49,6 @@ export const getSpotifyAccessToken = async (code: string, dispatch: any): Promis
   return data.access_token;
 };
 
-// export const logout = (token: string): Promise<void> => {
-//   const revokeURL = 'https://accounts.spotify.com/api/token/revoke';
-
-//   return fetch(revokeURL, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/x-www-form-urlencoded',
-//       'Authorization': `Bearer ${token}`
-//     },
-//     body: `token_type_hint=access_token&token=${token}`,
-//   })
-//   .then(response => {
-//     if (!response.ok) {
-//       return response.json().then(err => {
-//         throw new Error(err.error_description || 'Failed to revoke token');
-//       });
-//     }
-//   });
-// }
-
 export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
   const response = await fetch('https://api.spotify.com/v1/me', {
     method: 'GET',
@@ -323,3 +303,26 @@ export const playSpotifyPlaylist = async (playlistURI: string, accessToken: stri
   }
 };
 
+export const  fetchAvailableGenres = async (token: string): Promise<string[] | null> => {
+  const endpoint = "https://api.spotify.com/v1/recommendations/available-genre-seeds";
+  const headers = {
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json"
+  };
+
+  try {
+    const response = await fetch(endpoint, { headers });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    // Assuming that the API returns the genres in an object with a key named 'genres'.
+    return data.genres;
+  } catch (error) {
+    console.error("Error fetching available genres:", error);
+    return null;
+  }
+}

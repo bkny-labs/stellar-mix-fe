@@ -2,6 +2,7 @@ import { AppState } from "../model/state";
 
 export const getMusicalMood = (data: AppState): string[] => {
   let moods: string[] = [];
+  const userGenres = data.userSettings.genres;
   const mainWeather = data?.weather?.weather?.[0]?.main.toLowerCase();
     // Mood tags based on weather
     if (data.weather && mainWeather) {
@@ -9,8 +10,8 @@ export const getMusicalMood = (data: AppState): string[] => {
             case 'clear':
                 moods.push('upbeat', 'energetic', 'bright');
                 break;
-            case 'clouds':
-                moods.push('moody', 'dreamy', 'contemplative');
+            case 'clouds' || 'broken clouds':
+                moods.push('moody', 'dreamy', 'contemplative', 'hopeful');
                 break;
             case 'drizzle':
                 moods.push('mellow', 'calm', 'soft');
@@ -46,11 +47,11 @@ export const getMusicalMood = (data: AppState): string[] => {
   if (hours >= 6 && hours <= 18) {
     moods.push('creative', 'happy', 'light', 'energetic');
   } else {
-    moods.push('relaxed', 'chill', 'calming');
+    moods.push('relaxed', 'chill', 'calming', 'restful');
   }
 
   // Adjusting for the moon phase based on the sunCalcData
-  switch (data.sunCalcData.moonPhase) { 
+  switch (data.sunCalcData?.moonPhase) { 
     case 'full':
       moods.push('mysterious', 'magical');
       break;
@@ -59,13 +60,11 @@ export const getMusicalMood = (data: AppState): string[] => {
       break;
   }
 
-  console.log('MOODS', moods);
-
   return moods;
 };
 
 export const buildPlaylistQuery = (moods: string[]): string => {
-    // console.log('CURRENT MOODS', moods);
+    console.log('MOODS', moods);
     // TODO dispatch current moods to store probably
   return moods.join(' ');
 };

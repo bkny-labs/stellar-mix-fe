@@ -13,7 +13,12 @@ export const setSpotifyPlaylistsAction = (playlists: any[]) => ({
   payload: playlists,
 }) as const;
 
-export const setLoggedInAction = (isLoggedIn: boolean, token?: string) => ({
+export const setUserGenresAction = (genres: any[]) => ({
+  type: 'SET_USER_GENRES',
+  payload: genres,
+}) as const;
+
+export const setLoggedInAction = (isLoggedIn: boolean, token?: string | null) => ({
   type: 'SET_LOGGED_IN',
   isLoggedIn,
   token,
@@ -23,4 +28,5 @@ export type AppAction =
   | ReturnType<typeof setWeatherAction>
   | ReturnType<typeof setSunCalcAction>
   | ReturnType<typeof setSpotifyPlaylistsAction>
+  | ReturnType<typeof setUserGenresAction>
   | ReturnType<typeof setLoggedInAction>;

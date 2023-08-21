@@ -12,6 +12,7 @@ import { Navigation } from './component/Navigation';
 import { useSelector } from 'react-redux';
 import { AppState } from './model/state';
 import Header from './component/Header';
+import Settings from './view/Settings';
 
 function App() {
   const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
@@ -36,6 +37,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/browse" element={<Browse />} />
+                <Route path="/settings" element={<Settings />} />
               </Routes>
             </div>
           </div>
