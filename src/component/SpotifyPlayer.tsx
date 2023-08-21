@@ -6,19 +6,16 @@ import { useDispatch } from 'react-redux';
 
 type Artist = {
     name: string;
-    // add other fields you need
   };
   
   type Album = {
     images: { url: string }[];
-    // add other fields you need
   };
   
   type Track = {
     name: string;
     album: Album;
     artists: Artist[];
-    // add other fields you need
   };
 
   type SpotifyPlayerProps = {
@@ -54,7 +51,6 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
     const newVolume = Number(event.target.value);
     setVolume(newVolume);
   
-    // Now, update the Spotify volume using the new function
     setSpotifyVolume(accessToken, newVolume).catch(error => {
       console.error("Failed to change volume:", error);
     });
@@ -63,7 +59,6 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
   const handleNextTrack = () => {
     playNextTrack(accessToken)
       .then(() => {
-        // Optionally update the currently playing song if you want
         getCurrentlyPlaying(accessToken, dispatch).then(data => {
           setCurrentTrack(data.item);
           setIsPlaying(data.isPlaying);
@@ -77,7 +72,6 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
   const handlePreviousTrack = () => {
     playPreviousTrack(accessToken)
       .then(() => {
-        // Optionally update the currently playing song if you want
         getCurrentlyPlaying(accessToken, dispatch).then(data => {
           setCurrentTrack(data.item);
           setIsPlaying(data.isPlaying);

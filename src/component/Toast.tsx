@@ -4,7 +4,7 @@ import './Toast.css';
 interface ToastProps {
   message: string;
   type: 'success' | 'error' | 'info' | 'warning';
-  duration?: number; // default duration will be 3000ms (3 seconds)
+  duration?: number;
   position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'top-center' | 'bottom-center';
   onClose: () => void;
 }
