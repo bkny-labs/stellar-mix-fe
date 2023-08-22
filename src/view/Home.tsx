@@ -44,8 +44,7 @@ function Home() {
       </div>
 
       <div className="about">
-        <h2>About StellarMix</h2>
-        <p>StellarMix is free to use and is an open source project created by <a href="https://mikefortuna.com" target='_blank' rel="noreferrer">Mike Fortuna</a>.</p>
+        <p className='small'>StellarMix is a free to use open source project by <a href="https://mikefortuna.com" target='_blank' rel="noreferrer">Mike Fortuna</a>.</p>
         <p className='small'>Powered by: <a href='https://spotify.com' target='_blank' rel="noreferrer">Spotify</a> | <a href='https://openweathermap.org/' target='_blank' rel="noreferrer">OpenWeather</a> | <a href='http://suncalc.net/' target='_blank' rel="noreferrer">SunCalc</a></p>
         <a className="github" href='https://github.com/bkny-labs/stellar-mix-fe' target='_blank' rel="noreferrer"><FaGithub size={25} /></a>
       </div>
