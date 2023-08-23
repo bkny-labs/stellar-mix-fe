@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAuthURL, playSpotifyPlaylist } from '../services/api-service';
+import { playSpotifyPlaylist } from '../services/api-service';
 import { AppState } from '../model/state';
 import { setSpotifyPlaylistsAction } from '../model/actions';
-import { FaPlay, FaSpotify } from 'react-icons/fa';
+import { FaPlay } from 'react-icons/fa';
 import { SpotifyPlayer } from '../component/SpotifyPlayer';
 
 const Browse: React.FC = () => {
   const dispatch = useDispatch();
   const playlists = useSelector((state: AppState) => state.spotifyPlaylists);
-  const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
   const accessToken = localStorage.getItem('spotifyToken');
   const [playlistPlayed, setPlaylistPlayed] = useState(false);
 
@@ -46,23 +45,12 @@ const Browse: React.FC = () => {
   }, [playlists]);
 
   useEffect(() => {
-    console.log("Browse component mounted");
+    console.log('Browse view mounted');
 }, []);
-  
 
-
-  const handleLogin = () => {
-    window.location.href = getAuthURL();
-  }
 
   return (
     <div className='browse-grid'>
-      {!isLoggedIn &&
-      <div className="login">
-         <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 
-      </div> 
-      }
-      {isLoggedIn &&
       <div className="row four">
       {Array.isArray(playlists) && playlists.map((playlist: any) => (
         <div className="column" key={playlist.id}>
@@ -83,10 +71,11 @@ const Browse: React.FC = () => {
           </div>
         </div>
       ))}
-      </div>}
-      {accessToken && isLoggedIn && <SpotifyPlayer accessToken={accessToken} playlistPlayed={playlistPlayed} />}
+      </div>
+      {accessToken && <SpotifyPlayer accessToken={accessToken} playlistPlayed={playlistPlayed} />}
     </div>
   );
 };
 
 export default Browse;
+

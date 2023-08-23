@@ -1,9 +1,10 @@
 import * as SunCalc from 'suncalc';
-import { setLoggedInAction } from '../model/actions';
+import { setLoggedInAction, setSpotifyPlaylistsAction } from '../model/actions';
 
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT;
 const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_SECRET;
+const OPEN_WEATHER_API_KEY = process.env.REACT_APP_OPEN_WEATHER_API_KEY;
 const REDIRECT_URI = "http://localhost:3000/browse"; 
 
 export const getAuthURL = () => {
@@ -12,7 +13,7 @@ export const getAuthURL = () => {
     response_type: "code",
     redirect_uri: REDIRECT_URI,
     scope: "user-read-private user-read-email user-read-currently-playing user-read-playback-state app-remote-control user-modify-playback-state",
-    // show_dialog: "true"
+    show_dialog: "true"
   });  
   return `${SPOTIFY_AUTH_ENDPOINT}?${params.toString()}`;
 };
@@ -45,6 +46,7 @@ export const getSpotifyAccessToken = async (code: string, dispatch: any): Promis
   const data = await response.json();
   // Set the token in localStorage immediately after obtaining it
   localStorage.setItem('spotifyToken', data.access_token);
+  dispatch(setLoggedInAction(true));
 
   return data.access_token;
 };
@@ -68,7 +70,7 @@ export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
 
 export const getWeatherByLocation = (lat: number, long: number): Promise<any> => {
   return new Promise(async (resolve, reject) => {
-    const API_KEY = '868555d60c85896c6af99f0e8e6b8f12';
+    const API_KEY = OPEN_WEATHER_API_KEY;
     const endpoint = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${API_KEY}`;
     try {
       const response = await fetch(endpoint);
@@ -112,6 +114,75 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any)
     }
   });
 };
+
+// export const getPlaylistsByQuery = async (query: string, token: string, dispatch: any, userSelectedGenres: string[] = []): Promise<any[]> => {
+//   const headers = {
+//     'Authorization': `Bearer ${token}`
+//   };
+
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       // Fetch the user's playlists
+//       const userPlaylistsResponse = await fetch('https://api.spotify.com/v1/me/playlists', { headers });
+//       if (!userPlaylistsResponse.ok) {
+//         const errorData = await userPlaylistsResponse.json();
+//         throw new Error(`Error fetching user playlists. Status: ${userPlaylistsResponse.status}. Message: ${errorData.error.message}`);
+//       }
+//       const userPlaylistsData = await userPlaylistsResponse.json();
+//       const userPlaylists = userPlaylistsData.items;
+
+//       // If user has selected genres, prioritize using them over top artists
+//       let searchQuery = query;
+//       if (userSelectedGenres.length > 0) {
+//         searchQuery = `genre:"${userSelectedGenres[0]}"`;
+//       } else {
+//         // Fetch user's top artists if no selected genres provided
+//         const artistsResponse = await fetch('https://api.spotify.com/v1/me/top/artists?limit=5', { headers });
+//         if (!artistsResponse.ok) {
+//           const errorData = await artistsResponse.json();
+//           throw new Error(`Error fetching top artists. Status: ${artistsResponse.status}. Message: ${errorData.error.message}`);
+//         }
+//         const artistsData = await artistsResponse.json();
+//         const topGenres = artistsData.items.reduce((allGenres: string[], artist: any) => {
+//           return [...allGenres, ...artist.genres];
+//         }, []);
+//         searchQuery = `genre:"${topGenres[0]}"`;
+//       }
+
+//       const playlistResponse = await fetch(`https://api.spotify.com/v1/search?q=${searchQuery}&type=playlist&limit=20`, { headers });
+//       if (!playlistResponse.ok) {
+//         if (playlistResponse.status === 401) {
+//           dispatch(setLoggedInAction(false));
+//         }
+//         const errorData = await playlistResponse.json();
+//         reject(`Error ${playlistResponse.status}: ${errorData.error.message}`);
+//         return;
+//       }
+
+//       const playlistData = await playlistResponse.json();
+
+//       // Combine user playlists and Spotify playlists
+//       const combinedPlaylists = [...userPlaylists, ...playlistData.playlists.items];
+//       console.log("Combined playlists:", combinedPlaylists);
+//       console.log("User playlists:", userPlaylists);
+//       console.log("Spotify playlists:", playlistData.playlists.items);
+
+//       // Shuffle the playlists
+//       for (let i = combinedPlaylists.length - 1; i > 0; i--) {
+//         const j = Math.floor(Math.random() * (i + 1));
+//         [combinedPlaylists[i], combinedPlaylists[j]] = [combinedPlaylists[j], combinedPlaylists[i]];
+//       }
+
+//       dispatch(setSpotifyPlaylistsAction(combinedPlaylists));
+
+//       resolve(combinedPlaylists);
+//     } catch (error) {
+//       console.error("Error fetching combined playlists:", error);
+//       reject(error);
+//     }
+//   });
+// };
+
 
 export const getCurrentlyPlaying = async (accessToken: string, dispatch: any) => {
   const API_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing?market=US`;
@@ -325,7 +396,7 @@ export const playSpotifyPlaylist = async (playlistURI: string, accessToken: stri
   }
 };
 
-export const  fetchAvailableGenres = async (token: string): Promise<string[] | null> => {
+export const fetchAvailableGenres = async (token: string): Promise<string[] | null> => {
   const endpoint = "https://api.spotify.com/v1/recommendations/available-genre-seeds";
   const headers = {
     "Authorization": `Bearer ${token}`,

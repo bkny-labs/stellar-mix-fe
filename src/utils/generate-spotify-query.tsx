@@ -1,16 +1,24 @@
 import { AppState } from "../model/state";
 
-export const getMusicalMood = (data: AppState): { moods: string[], genres: string[] } => {
+interface MusicalMood {
+  moods: string[];
+  genres: string[] | null;
+}
+
+export const getMusicalMood = (data: AppState): MusicalMood => {
   let moods: string[] = [];
-  const userGenres = data.userSettings.genres;
-  const mainWeather = data?.weather?.weather?.[0]?.main.toLowerCase();
+  const userGenres = localStorage.getItem('userGenres');
+  const mainWeather = data?.weather?.weather?.[0]?.description.toLowerCase();
     // Mood tags based on weather
     if (data.weather && mainWeather) {
+      console.log('WEATHER', mainWeather);
         switch (mainWeather) {
             case 'clear':
-                moods.push('upbeat', 'energetic', 'bright', 'happy', 'jam', 'vivid', 'cheerful', 'sunny', 'warm', 'summer', 'fun', 'dance', 'party', 'groovy', 'bouncy', 'lively', 'playful', 'optimistic', 'joyful', 'silly', 'excited', 'ecstatic', 'euphoric', 'blissful', 'carefree', 'free', 'inspired', 'hopeful', 'dreamy', 'contemplative', 'smooth', 'soft', 'creative', 'light', 'energetic');
+            case 'scattered clouds':
+                moods.push('upbeat', 'energetic', 'bright', 'happy', 'jam', 'vivid', 'cheerful', 'sunny', 'warm', 'summer', 'fun', 'dance', 'party', 'groovy', 'bouncy', 'lively', 'playful', 'optimistic', 'joyful', 'silly', 'excited', 'ecstatic', 'blissful', 'carefree', 'free', 'inspired', 'hopeful', 'smooth', 'soft', 'creative', 'light', 'energetic');
                 break;
-            case 'clouds' || 'broken clouds':
+            case 'clouds':
+            case 'broken clouds':
                 moods.push('moody', 'dreamy', 'contemplative', 'hopeful', 'smooth', 'soft', 'creative', 'light', 'reflective', 'introspective', 'soothing', 'calm', 'mellow', 'chill', 'relaxed', 'calming', 'restful', 'mystical', 'ambient', 'ethereal', 'winter', 'snowboarding', 'chill', 'mysterious', 'dense', 'hazy', 'blurry', 'slow', 'distant', 'dark', 'introspective');
                 break;
             case 'drizzle':
@@ -62,7 +70,7 @@ export const getMusicalMood = (data: AppState): { moods: string[], genres: strin
 
   return {
     moods,
-    genres: userGenres
+    genres: userGenres ? JSON.parse(userGenres) : null
   };
 };
 

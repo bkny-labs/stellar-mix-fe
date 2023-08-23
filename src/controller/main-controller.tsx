@@ -10,6 +10,7 @@ import {
 } from '../model/actions';
 import { AppState } from '../model/state';
 import { buildPlaylistQuery, getMusicalMood } from '../utils/generate-spotify-query';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface MainControllerProps {
   children: ReactNode;
@@ -18,7 +19,14 @@ interface MainControllerProps {
 const MainController: React.FC<MainControllerProps> = ({ children }) => {
   const spotifyToken = useSelector((state: AppState) => state.spotifyToken);
   const moodData = getMusicalMood(useSelector((store: AppState) => store));
-  const playlistQuery = buildPlaylistQuery(moodData);
+  const userGenres = localStorage.getItem('userGenres') || "defaultGenre";
+  const navigate = useNavigate();
+  const location = useLocation();
+  const playlistQuery = buildPlaylistQuery({
+    ...moodData,
+    genres: moodData.genres || []
+  });
+  
 
   const dispatch = useDispatch();
 
@@ -26,12 +34,15 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
     if (!spotifyToken || !playlistQuery) return;
 
     try {
-      const data = await getPlaylistsByQuery(playlistQuery, spotifyToken, dispatch);
-      dispatch(setSpotifyPlaylistsAction(data));
+        const data = await getPlaylistsByQuery(playlistQuery, spotifyToken, dispatch);
+        dispatch(setSpotifyPlaylistsAction(data));
+        localStorage.setItem('spotifyPlaylists', JSON.stringify(data));
+        console.log('Fetched Spotify playlists:', data);
     } catch (err) {
-      console.error("Error fetching playlists:", err);
+        handleSpotifyError(err);
     }
   };
+
 
   const handleSpotifyError = (err: any) => {
     if (err.response) {
@@ -79,11 +90,13 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
     }
 };
 
+  // Handling Access Token and URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
 
     if (code) {
+        navigate(location.pathname, { replace: true });
         handleAccessToken();
     } else {
         const tokenFromStorage = localStorage.getItem('spotifyToken');
@@ -91,11 +104,18 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
             dispatch(setLoggedInAction(true, tokenFromStorage));
         }
     }
+    // Only run this when component mounts and unmounts
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    fetchWeatherAndSunCalcData();
-    fetchSpotifyPlaylists();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  // Fetching data when Spotify Token exists or changes
+  useEffect(() => {
+    if (spotifyToken) {
+        fetchWeatherAndSunCalcData();
+        fetchSpotifyPlaylists();
+    }
+    // Only listen for spotifyToken changes
+  }, [spotifyToken]);
 
   useEffect(() => {
     // Attempt to get genres from localStorage

@@ -1,5 +1,18 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  /* overflow: hidden; */
+}
+
+.space-background {
+  position: fixed;   /* or absolute depending on your preference */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;       /* ensures it's behind other content */
+}
 .landing {
-    background-color: #121212;
     width: 100%;
     color: #fff;
     font-family: 'Circular Std', sans-serif;
@@ -24,6 +37,8 @@
     margin: 0 0 20px;
   }
   .hero p {
+    font-size: 20px;
+    line-height: 26px;
     margin: 0 0 25px;
   }
   
@@ -37,10 +52,13 @@
   }
   
   .features {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     justify-content: space-between;
     width: 100%;
     margin-top: 3rem;
+    
   }
   
   .feature {

@@ -136,7 +136,7 @@ body {
 }
 
 .content {
-  background: #121212;
+  /* background: #121212; */
   padding-top: 12px;
   padding-right: 12px;
   padding-left: 180px; /* same as nav width */
