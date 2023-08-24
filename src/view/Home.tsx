@@ -5,12 +5,21 @@ import { getAuthURL } from '../services/api-service';
 import { FaCompass, FaGithub, FaSpotify, FaUserAstronaut } from 'react-icons/fa';
 import logo from '../assets/sm_logo.png';
 import SpaceBackground from '../component/Space';
+import { useEffect } from 'react';
 
 function Home() {
   const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
   const handleLogin = () => {
     window.location.href = getAuthURL();
+    // console.log('Login clicked', getAuthURL());
   }
+
+  // useEffect(() => { 
+  //   if(isLoggedIn) {
+  //     window.location.href = '/browse';
+  //   }
+  // }, [isLoggedIn]); 
+
   return (
     <>
     <div className="space-background">

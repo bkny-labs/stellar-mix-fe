@@ -39,9 +39,11 @@ export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false }) => {
     });
   }
 
-  useEffect(() => {
-    // uhh
-  }, [loggedIn]);
+  // useEffect(() => { 
+  //   if(loggedIn) {
+      
+  //   }
+  // }, [loggedIn]); 
 
 
   return (

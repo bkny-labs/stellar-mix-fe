@@ -11,6 +11,7 @@ const Browse: React.FC = () => {
   const playlists = useSelector((state: AppState) => state.spotifyPlaylists);
   const accessToken = localStorage.getItem('spotifyToken');
   const [playlistPlayed, setPlaylistPlayed] = useState(false);
+  const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
 
   const playPlaylist = (playlistURI: string) => {
     if (accessToken) {
@@ -44,9 +45,11 @@ const Browse: React.FC = () => {
     }
   }, [playlists]);
 
-  useEffect(() => {
-    console.log('Browse view mounted');
-}, []);
+  // useEffect(() => { 
+  //   if(!isLoggedIn) {
+  //     window.location.href = '/';
+  //   }
+  // }, [isLoggedIn]); 
 
 
   return (

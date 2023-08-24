@@ -23,7 +23,7 @@ function App() {
   const [showToast, setShowToast] = useState(isLoggedIn);
   const token = localStorage.getItem('spotifyToken');
   const dispatch = useDispatch();
-  console.log('logged in?', isLoggedIn);
+  console.log('logged in when app.component mounts?', isLoggedIn);
 
   useEffect(() => {
     if (token) {

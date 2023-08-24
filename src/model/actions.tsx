@@ -24,9 +24,15 @@ export const setLoggedInAction = (isLoggedIn: boolean, token?: string | null) =>
   token,
 });
 
+export const setSpotifyToken = (token: string) => ({
+  type: 'SET_SPOTIFY_TOKEN',
+  payload: token,
+});
+
 export type AppAction = 
   | ReturnType<typeof setWeatherAction>
   | ReturnType<typeof setSunCalcAction>
   | ReturnType<typeof setSpotifyPlaylistsAction>
   | ReturnType<typeof setUserGenresAction>
+  | ReturnType<typeof setSpotifyToken>
   | ReturnType<typeof setLoggedInAction>;

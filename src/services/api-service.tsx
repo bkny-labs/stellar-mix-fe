@@ -14,7 +14,7 @@ export const getAuthURL = () => {
     redirect_uri: REDIRECT_URI,
     scope: "user-read-private user-read-email user-read-currently-playing user-read-playback-state app-remote-control user-modify-playback-state",
     show_dialog: "true"
-  });  
+  });
   return `${SPOTIFY_AUTH_ENDPOINT}?${params.toString()}`;
 };
 
@@ -46,7 +46,8 @@ export const getSpotifyAccessToken = async (code: string, dispatch: any): Promis
   const data = await response.json();
   // Set the token in localStorage immediately after obtaining it
   localStorage.setItem('spotifyToken', data.access_token);
-  dispatch(setLoggedInAction(true));
+  console.log('spotifyAccessToken???? ', data.access_token);
+  dispatch(setLoggedInAction(true, data.access_token));
 
   return data.access_token;
 };
@@ -59,9 +60,9 @@ export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
         'Authorization': `Bearer ${accessToken}`
       }
     });
-
+    
     if (!response.ok) {
-      dispatch(setLoggedInAction(false));
+      // dispatch(setLoggedInAction(false));
       throw new Error('Failed to fetch user profile');
     }
 
@@ -70,7 +71,6 @@ export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
 
   } catch (error) {
     console.error("Error fetching user profile:", error);
-    dispatch(setLoggedInAction(false));
     return null;
   }
 };

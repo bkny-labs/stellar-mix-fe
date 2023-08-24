@@ -1,12 +1,12 @@
 // state.ts
 export interface AppState {
-  weather: any;
+  weather: any; // replace 'any' with actual type if available
   sunCalcData: any;
-  spotifyPlaylists: any[];
+  spotifyPlaylists: any;
   isLoggedIn: boolean;
-  spotifyToken: string | null | undefined;
+  spotifyToken: string | null;
   userSettings: {
-    genres: string[];
+    genres: any;
   };
 }
 

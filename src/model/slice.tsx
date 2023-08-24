@@ -20,6 +20,6 @@ export const appSlice = createSlice({
   },
 });
 
-export const { setWeather, setSunCalcData, setSpotifyPlaylists } = appSlice.actions;
+export const { setWeather, setSunCalcData, setSpotifyPlaylists, setSpotifyAccessToken } = appSlice.actions;
 
 export default appSlice.reducer;

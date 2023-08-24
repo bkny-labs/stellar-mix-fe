@@ -11,6 +11,7 @@ import {
 import { AppState } from '../model/state';
 import { buildPlaylistQuery, getMusicalMood } from '../utils/generate-spotify-query';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { setSpotifyAccessToken } from '../model/slice';
 
 interface MainControllerProps {
   children: ReactNode;
@@ -19,7 +20,8 @@ interface MainControllerProps {
 const MainController: React.FC<MainControllerProps> = ({ children }) => {
   const spotifyToken = useSelector((state: AppState) => state.spotifyToken);
   const moodData = getMusicalMood(useSelector((store: AppState) => store));
-  const userGenres = useSelector((state: AppState) => state.userSettings.genres);
+  // TODO Wire up genres to playlist recommendations
+  //const userGenres = useSelector((state: AppState) => state.userSettings.genres);
   const navigate = useNavigate();
   const location = useLocation();
   const playlistQuery = buildPlaylistQuery({
@@ -44,7 +46,6 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
     }
   };
 
-
   const handleSpotifyError = (err: any) => {
     if (err.response) {
       err.response.json().then((errorData: any) => {
@@ -52,25 +53,6 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
       });
     } else {
       console.error("Error:", err);
-    }
-  };
-
-  const fetchWeatherAndSunCalcData = async () => {
-    const lat = 40.732542;
-    const lon = -73.978773;
-
-    try {
-      const weatherData = await getWeatherByLocation(lat, lon);
-      dispatch(setWeatherAction(weatherData));
-    } catch (error) {
-      console.error('Failed to fetch weather data:', error);
-    }
-
-    try {
-      const data = await getSunCalcData(lon, lat);
-      dispatch(setSunCalcAction(data));
-    } catch (error) {
-      console.error('Failed to fetch SunCalc data:', error);
     }
   };
 
@@ -82,13 +64,33 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
 
     try {
       await getSpotifyAccessToken(code, dispatch);
-      const storedToken = localStorage.getItem('spotifyToken');
-      if (storedToken) {
-        dispatch(setLoggedInAction(true, storedToken));
+      if (spotifyToken) {
+        console.log('handleAccessToken:', spotifyToken);
+        dispatch(setLoggedInAction(true, spotifyToken));
+        dispatch(setSpotifyAccessToken(spotifyToken));
       }
     } catch (error) {
       handleSpotifyError(error);
     }
+};
+
+const fetchWeatherAndSunCalcData = async () => {
+  const lat = 40.732542;
+  const lon = -73.978773;
+
+  try {
+    const weatherData = await getWeatherByLocation(lat, lon);
+    dispatch(setWeatherAction(weatherData));
+  } catch (error) {
+    console.error('Failed to fetch weather data:', error);
+  }
+
+  try {
+    const data = await getSunCalcData(lon, lat);
+    dispatch(setSunCalcAction(data));
+  } catch (error) {
+    console.error('Failed to fetch SunCalc data:', error);
+  }
 };
 
   // Handling Access Token and URL
@@ -96,19 +98,23 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
 
+    console.log('MainController:', code);
+
     if (code) {
-        navigate(location.pathname, { replace: true });
-        handleAccessToken();
+        // First handle the access token
+        handleAccessToken().then(() => {
+            // After the access token is handled, navigate to the clean URL.
+            navigate(location.pathname, { replace: true });
+        });
     } else {
-        const tokenFromStorage = localStorage.getItem('spotifyToken');
-        if (tokenFromStorage) {
-            dispatch(setLoggedInAction(true, tokenFromStorage));
+        if (spotifyToken) {
+            dispatch(setLoggedInAction(true, spotifyToken));
         }
     }
     // Only run this when component mounts and unmounts
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
   // Fetching data when Spotify Token exists or changes
   useEffect(() => {
     if (spotifyToken) {
