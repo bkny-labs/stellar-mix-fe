@@ -15,11 +15,13 @@ export const getMusicalMood = (data: AppState): MusicalMood => {
         switch (mainWeather) {
             case 'clear':
             case 'scattered clouds':
-                moods.push('upbeat', 'energetic', 'bright', 'happy', 'jam', 'vivid', 'cheerful', 'sunny', 'warm', 'summer', 'fun', 'dance', 'party', 'groovy', 'bouncy', 'lively', 'playful', 'optimistic', 'joyful', 'silly', 'excited', 'ecstatic', 'blissful', 'carefree', 'free', 'inspired', 'hopeful', 'smooth', 'soft', 'creative', 'light', 'energetic');
+                moods.push('upbeat', 'energetic', 'bright');
+                // 'happy', 'jam', 'vivid', 'cheerful', 'sunny', 'warm', 'summer', 'fun', 'dance', 'party', 'groovy', 'bouncy', 'lively', 'playful', 'optimistic', 'joyful', 'silly', 'excited', 'ecstatic', 'blissful', 'carefree', 'free', 'inspired', 'hopeful', 'smooth', 'soft', 'creative', 'light', 'energetic'
                 break;
             case 'clouds':
             case 'broken clouds':
-                moods.push('moody', 'dreamy', 'contemplative', 'hopeful', 'smooth', 'soft', 'creative', 'light', 'reflective', 'introspective', 'soothing', 'calm', 'mellow', 'chill', 'relaxed', 'calming', 'restful', 'mystical', 'ambient', 'ethereal', 'winter', 'snowboarding', 'chill', 'mysterious', 'dense', 'hazy', 'blurry', 'slow', 'distant', 'dark', 'introspective');
+                moods.push('moody', 'dreamy', 'contemplative');
+                // , 'hopeful', 'smooth', 'soft', 'creative', 'light', 'reflective', 'introspective', 'soothing', 'calm', 'mellow', 'chill', 'relaxed', 'calming', 'restful', 'mystical', 'ambient', 'ethereal', 'winter', 'snowboarding', 'chill', 'mysterious', 'dense', 'hazy', 'blurry', 'slow', 'distant', 'dark', 'introspective'
                 break;
             case 'drizzle':
                 moods.push('mellow', 'calm', 'soft');

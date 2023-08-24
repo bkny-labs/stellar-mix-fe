@@ -6,7 +6,7 @@ import { UserProfile } from '../types';
 const Header: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const token = localStorage.getItem('spotifyToken');
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (token) {

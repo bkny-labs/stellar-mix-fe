@@ -52,20 +52,27 @@ export const getSpotifyAccessToken = async (code: string, dispatch: any): Promis
 };
 
 export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
-  const response = await fetch('https://api.spotify.com/v1/me', {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${accessToken}`
+  try {
+    const response = await fetch('https://api.spotify.com/v1/me', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+
+    if (!response.ok) {
+      dispatch(setLoggedInAction(false));
+      throw new Error('Failed to fetch user profile');
     }
-  });
 
-  if (!response.ok) {
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
     dispatch(setLoggedInAction(false));
-    throw new Error('Failed to fetch user profile');
+    return null;
   }
-
-  const data = await response.json();
-  return data;
 };
 
 export const getWeatherByLocation = (lat: number, long: number): Promise<any> => {
@@ -120,69 +127,66 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any)
 //     'Authorization': `Bearer ${token}`
 //   };
 
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       // Fetch the user's playlists
-//       const userPlaylistsResponse = await fetch('https://api.spotify.com/v1/me/playlists', { headers });
-//       if (!userPlaylistsResponse.ok) {
-//         const errorData = await userPlaylistsResponse.json();
-//         throw new Error(`Error fetching user playlists. Status: ${userPlaylistsResponse.status}. Message: ${errorData.error.message}`);
-//       }
-//       const userPlaylistsData = await userPlaylistsResponse.json();
-//       const userPlaylists = userPlaylistsData.items;
+//   const getJSONResponse = async (response: Response) => {
+//     const responseBody = await response.text(); 
+//     return responseBody ? JSON.parse(responseBody) : {};
+//   };
 
-//       // If user has selected genres, prioritize using them over top artists
-//       let searchQuery = query;
-//       if (userSelectedGenres.length > 0) {
-//         searchQuery = `genre:"${userSelectedGenres[0]}"`;
-//       } else {
-//         // Fetch user's top artists if no selected genres provided
-//         const artistsResponse = await fetch('https://api.spotify.com/v1/me/top/artists?limit=5', { headers });
-//         if (!artistsResponse.ok) {
-//           const errorData = await artistsResponse.json();
-//           throw new Error(`Error fetching top artists. Status: ${artistsResponse.status}. Message: ${errorData.error.message}`);
-//         }
-//         const artistsData = await artistsResponse.json();
-//         const topGenres = artistsData.items.reduce((allGenres: string[], artist: any) => {
-//           return [...allGenres, ...artist.genres];
-//         }, []);
-//         searchQuery = `genre:"${topGenres[0]}"`;
-//       }
-
-//       const playlistResponse = await fetch(`https://api.spotify.com/v1/search?q=${searchQuery}&type=playlist&limit=20`, { headers });
-//       if (!playlistResponse.ok) {
-//         if (playlistResponse.status === 401) {
-//           dispatch(setLoggedInAction(false));
-//         }
-//         const errorData = await playlistResponse.json();
-//         reject(`Error ${playlistResponse.status}: ${errorData.error.message}`);
-//         return;
-//       }
-
-//       const playlistData = await playlistResponse.json();
-
-//       // Combine user playlists and Spotify playlists
-//       const combinedPlaylists = [...userPlaylists, ...playlistData.playlists.items];
-//       console.log("Combined playlists:", combinedPlaylists);
-//       console.log("User playlists:", userPlaylists);
-//       console.log("Spotify playlists:", playlistData.playlists.items);
-
-//       // Shuffle the playlists
-//       for (let i = combinedPlaylists.length - 1; i > 0; i--) {
-//         const j = Math.floor(Math.random() * (i + 1));
-//         [combinedPlaylists[i], combinedPlaylists[j]] = [combinedPlaylists[j], combinedPlaylists[i]];
-//       }
-
-//       dispatch(setSpotifyPlaylistsAction(combinedPlaylists));
-
-//       resolve(combinedPlaylists);
-//     } catch (error) {
-//       console.error("Error fetching combined playlists:", error);
-//       reject(error);
+//   try {
+//     const userPlaylistsResponse = await fetch('https://api.spotify.com/v1/me/playlists', { headers });
+//     if (!userPlaylistsResponse.ok) {
+//       const errorData = await getJSONResponse(userPlaylistsResponse);
+//       throw new Error(`Error fetching user playlists. Status: ${userPlaylistsResponse.status}. Message: ${errorData.error?.message}`);
 //     }
-//   });
-// };
+//     const userPlaylistsData = await getJSONResponse(userPlaylistsResponse);
+//     const userPlaylists = userPlaylistsData.items || [];
+//     let searchQuery = query;
 
+//     // 2. If user has selected genres, prioritize using them over top artists
+//     if (userSelectedGenres.length > 0) {
+//       searchQuery = `genre:"${userSelectedGenres[0]}"`;
+//     } else {
+//       // 3. Fetch user's top artists if no selected genres provided
+//       const artistsResponse = await fetch('https://api.spotify.com/v1/me/top/artists?limit=5', { headers });
+//       if (!artistsResponse.ok) {
+//         const errorData = await getJSONResponse(artistsResponse);
+//         throw new Error(`Error fetching top artists. Status: ${artistsResponse.status}. Message: ${errorData.error.message}`);
+//       }
+//       const artistsData = await getJSONResponse(artistsResponse);
+//       const topGenres = artistsData.items.reduce((allGenres: string[], artist: any) => {
+//         return [...allGenres, ...artist.genres];
+//       }, []);
+//       searchQuery = `genre:"${topGenres[0]}"`;
+//     }
+
+//     const playlistResponse = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(searchQuery)}&type=playlist&limit=20`, { headers });
+//     if (!playlistResponse.ok) {
+//       if (playlistResponse.status === 401) {
+//         dispatch(setLoggedInAction(false));
+//       }
+//       const errorData = await getJSONResponse(playlistResponse);
+//       throw new Error(`Error ${playlistResponse.status}: ${errorData.error.message}`);
+//     }
+
+//     const playlistData = await getJSONResponse(playlistResponse);
+
+//     // 4. Combine user playlists and Spotify playlists
+//     const combinedPlaylists = [...userPlaylists, ...playlistData.playlists.items];
+
+//     // 5. Shuffle the playlists
+//     for (let i = combinedPlaylists.length - 1; i > 0; i--) {
+//       const j = Math.floor(Math.random() * (i + 1));
+//       [combinedPlaylists[i], combinedPlaylists[j]] = [combinedPlaylists[j], combinedPlaylists[i]];
+//     }
+
+//     dispatch(setSpotifyPlaylistsAction(combinedPlaylists));
+
+//     return combinedPlaylists;
+//   } catch (error) {
+//     console.error("Error fetching combined playlists:", error);
+//     throw error;
+//   }
+// };
 
 export const getCurrentlyPlaying = async (accessToken: string, dispatch: any) => {
   const API_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing?market=US`;
@@ -332,7 +336,6 @@ export const getSunCalcData = (lat: number, long: number): Promise<any> => {
         sunrise: sunTimes.sunrise.toISOString(),
         sunset: sunTimes.sunset.toISOString(),
         moonPhase: moonIllumination.phase
-        // ... any other data you want
       };
 
       resolve(data);

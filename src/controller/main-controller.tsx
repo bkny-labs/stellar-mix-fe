@@ -19,7 +19,7 @@ interface MainControllerProps {
 const MainController: React.FC<MainControllerProps> = ({ children }) => {
   const spotifyToken = useSelector((state: AppState) => state.spotifyToken);
   const moodData = getMusicalMood(useSelector((store: AppState) => store));
-  const userGenres = localStorage.getItem('userGenres') || "defaultGenre";
+  const userGenres = useSelector((state: AppState) => state.userSettings.genres);
   const navigate = useNavigate();
   const location = useLocation();
   const playlistQuery = buildPlaylistQuery({
@@ -34,6 +34,7 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
     if (!spotifyToken || !playlistQuery) return;
 
     try {
+        // const data = await getPlaylistsByQuery(playlistQuery, spotifyToken, dispatch, userGenres);
         const data = await getPlaylistsByQuery(playlistQuery, spotifyToken, dispatch);
         dispatch(setSpotifyPlaylistsAction(data));
         localStorage.setItem('spotifyPlaylists', JSON.stringify(data));
