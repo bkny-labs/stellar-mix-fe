@@ -26,9 +26,16 @@ export const appReducer = (state: AppState = initialState, action: AppAction): A
         } 
         : state;
 
-      case 'SET_LOGGED_IN':
-        return { ...state ?? null };
-
+  case 'SET_LOGGED_IN':
+    if ("isLoggedIn" in action) {
+      return { 
+        ...state, 
+        isLoggedIn: action.isLoggedIn, 
+        spotifyToken: action.token !== undefined ? action.token : state.spotifyToken 
+      };
+    }
+    return state;
+    
     default:
       return state;
   }
