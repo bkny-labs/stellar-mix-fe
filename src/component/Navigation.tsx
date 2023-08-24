@@ -39,13 +39,6 @@ export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false }) => {
     });
   }
 
-  // useEffect(() => { 
-  //   if(loggedIn) {
-      
-  //   }
-  // }, [loggedIn]); 
-
-
   return (
     <div className='nav-container'>
       {loggedIn && (

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume } from '../services/api-service';
-import { FaPlay, FaPause, FaStepBackward, FaStepForward } from 'react-icons/fa';
+import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaRandom, FaHeart, FaRegHeart } from 'react-icons/fa';
+import { IoAlbums } from 'react-icons/io5';
 import './SpotifyPlayer.css';
 import { useDispatch } from 'react-redux';
 
@@ -26,6 +27,8 @@ type Artist = {
 export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProps) {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isFavorited, setIsFavorited] = useState<boolean>(false);
+  const [isShuffle, setIsShuffle] = useState<boolean>(true);
   const [volume, setVolume] = useState<number>(10);
   const dispatch = useDispatch();
 
@@ -45,6 +48,14 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
       .catch(error => {
         console.error(`Error ${isPlaying ? 'pausing' : 'playing'} track:`, error);
       });
+  };
+
+  const toggleFavorite = () => {
+    setIsFavorited(!isFavorited);
+  };
+
+  const toggleShuffle = () => {
+    setIsShuffle(!isShuffle);
   };
 
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,12 +107,20 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
       </div>
       )}
       <div className="player-play">
+          { isShuffle 
+          ? <FaRandom onClick={toggleShuffle} color={'#1DB954'} size={25} />
+          : <IoAlbums onClick={toggleShuffle} color={'#6f6f6f'} size={25} />
+          }
           <FaStepBackward color={'#6f6f6f'} size={25} onClick={handlePreviousTrack} />
           {isPlaying 
               ? <FaPause color={'#aaa'} size={32} onClick={togglePlayPause} />
               : <FaPlay color={'#aaa'} size={32} onClick={togglePlayPause} />
           }
           <FaStepForward color={'#6f6f6f'} size={25} onClick={handleNextTrack} />
+          { isFavorited 
+            ? <FaHeart onClick={toggleFavorite} color={'#1DB954'} size={20} />
+            : <FaRegHeart onClick={toggleFavorite} color={'#6f6f6f'} size={20} />
+          }
       </div>
 
       <div className="player-controls">
