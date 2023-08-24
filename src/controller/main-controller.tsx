@@ -1,89 +1,119 @@
-// controller/MainController.tsx
-
 import React, { useEffect, ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPlaylistsByQuery, getSpotifyAccessToken, getSunCalcData, getWeatherByLocation } from '../services/api-service';
-import { setLoggedInAction, setSpotifyPlaylistsAction, setSunCalcAction, setWeatherAction } from '../model/actions';
+import {
+  getPlaylistsByQuery, getSpotifyAccessToken,
+  getSunCalcData, getWeatherByLocation
+} from '../services/api-service';
+import {
+  setLoggedInAction, setSpotifyPlaylistsAction,
+  setSunCalcAction, setWeatherAction
+} from '../model/actions';
 import { AppState } from '../model/state';
-import { setSpotifyPlaylists } from '../model/slice';
-import { useLocation } from 'react-router-dom';
+import { buildPlaylistQuery, getMusicalMood } from '../utils/generate-spotify-query';
 
-// Define the type for props
 interface MainControllerProps {
   children: ReactNode;
 }
 
 const MainController: React.FC<MainControllerProps> = ({ children }) => {
   const spotifyToken = useSelector((state: AppState) => state.spotifyToken);
-  const query = '70s funk';
-  const dispatch = useDispatch();
-  const location = useLocation();
+  const moodData = getMusicalMood(useSelector((store: AppState) => store));
+  const playlistQuery = buildPlaylistQuery(moodData);
 
-  useEffect(() => {
+  const dispatch = useDispatch();
+
+  const fetchSpotifyPlaylists = async () => {
+    if (!spotifyToken || !playlistQuery) return;
+
+    try {
+      const data = await getPlaylistsByQuery(playlistQuery, spotifyToken, dispatch);
+      dispatch(setSpotifyPlaylistsAction(data));
+    } catch (err) {
+      console.error("Error fetching playlists:", err);
+    }
+  };
+
+  const handleSpotifyError = (err: any) => {
+    if (err.response) {
+      err.response.json().then((errorData: any) => {
+        console.error("Detailed Spotify Error:", errorData);
+      });
+    } else {
+      console.error("Error:", err);
+    }
+  };
+
+  const fetchWeatherAndSunCalcData = async () => {
     const lat = 40.732542;
     const lon = -73.978773;
 
-    const fetchWeather = async () => {
-      try {
-        const weatherData = await getWeatherByLocation(lat, lon);
-        dispatch(setWeatherAction(weatherData));
-      } catch (error) {
-        console.error('Failed to fetch weather data:', error);
-        // Handle error, if necessary
+    try {
+      const weatherData = await getWeatherByLocation(lat, lon);
+      dispatch(setWeatherAction(weatherData));
+    } catch (error) {
+      console.error('Failed to fetch weather data:', error);
+    }
+
+    try {
+      const data = await getSunCalcData(lon, lat);
+      dispatch(setSunCalcAction(data));
+    } catch (error) {
+      console.error('Failed to fetch SunCalc data:', error);
+    }
+  };
+
+  const handleAccessToken = async () => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+
+    if (!code) return;
+
+    try {
+      await getSpotifyAccessToken(code, dispatch);
+      const storedToken = localStorage.getItem('spotifyToken');
+      if (storedToken) {
+        dispatch(setLoggedInAction(true, storedToken));
       }
-    };
+    } catch (error) {
+      handleSpotifyError(error);
+    }
+};
 
-    const fetchSunCalc = async () => {
-      try {
-        const data = await getSunCalcData(lon, lat);
-        dispatch(setSunCalcAction(data));
-      } catch (error) {
-        console.error('Failed to fetch SunCalc data:', error);
-        // Handle error, if necessary
-      }
-    };
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
 
-    fetchWeather();
-    fetchSunCalc();
+    if (code) {
+        handleAccessToken();
+    } else {
+        const tokenFromStorage = localStorage.getItem('spotifyToken');
+        if (tokenFromStorage) {
+            dispatch(setLoggedInAction(true, tokenFromStorage));
+        }
+    }
 
+    fetchWeatherAndSunCalcData();
+    fetchSpotifyPlaylists();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   useEffect(() => {
-    if (spotifyToken) {
-      getPlaylistsByQuery(query, spotifyToken)
-        .then(data => {
-          dispatch(setSpotifyPlaylistsAction(data));
-        })
-        .catch(err => console.error("Error fetching playlists:", err));
-    }
-  }, [dispatch, spotifyToken]);
+    // Attempt to get genres from localStorage
+    const storedGenres = localStorage.getItem('genres');
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const code = params.get('code');
-  
-    if (code) {
-      getSpotifyAccessToken(code)
-        .then(accessToken => {
-          // Store the access token in the state
-          dispatch(setLoggedInAction(true, accessToken));
-          localStorage.setItem('spotifyToken', accessToken);
-  
-          // Fetch the playlists when the token is available
-          return getPlaylistsByQuery(query, accessToken);
-        })
-        .then(data => {
-          // Dispatch the playlists to the Redux store
-          dispatch(setSpotifyPlaylistsAction(data));
-          // If you also want to store the playlists in local component state
-          setSpotifyPlaylists(data);
-        })
-        .catch(err => console.error("Error:", err));
+    if (storedGenres) {
+      // If genres exist in localStorage, parse and dispatch to Redux
+      const parsedGenres = JSON.parse(storedGenres);
+      dispatch(setGenresAction(parsedGenres));
     }
-  }, [dispatch, location.search]);
-  
+  }, [dispatch]);
+
 
   return (<>{children}</>);
 };
 
 export default MainController;
+function setGenresAction(parsedGenres: any): any {
+  throw new Error('Function not implemented.');
+}
+

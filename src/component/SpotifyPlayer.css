@@ -1,0 +1,58 @@
+.spotify-player {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 42px;
+  background-color: #282828;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.spotify-player .player-controls {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 15px;
+}
+
+.spotify-player .track-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 33%;
+  text-overflow: ellipsis;
+}
+
+.spotify-player img {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+}
+
+.track-info span {
+  font-size: 15px;
+  color: white;
+  margin-right: 10px;
+}
+
+.player-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.player-play svg:hover {
+  fill: white;
+  cursor: pointer;
+}

@@ -1,3 +1,40 @@
+body {
+  margin: 0;
+  background: #121212;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #5d5d5d;
+}
+
+.header {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  background: #1f1e1e;
+  top: 0;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  height: 60px;
+}
+
+.browse-grid {
+  padding-top: 50px; /* offset header height */
+  padding-bottom: 100px; /* offsets the player */
+}
+
+.user-image {
+  margin-right: 15px;
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  border: 2px solid rgb(119, 119, 119);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
 .App {
   text-align: center;
 }
@@ -13,15 +50,195 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.full-width {
+  width: 100%;
+}
+
+
+.column {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 10px;
+}
+.column img {
+  width: 100%;
+  height: auto;
+}
+.column .controls {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-top: 10px;
+}
+.column .controls button {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding-left: 8px;
+  margin-right: 10px;
+  width: 25px;
+  height: 25px;
+  border-radius: 100px;
+  background: #4f4f4f;
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 86%;
+  padding-top: 30px;
+}
+
+.nav-container ul {
+  padding: 0 15px;
+}
+
+.sun-calc-data {
+  text-align: left;
+  padding: 0 15px;
+  color: #5d5d5d;
+}
+
+.nav {
+  position: fixed;
+  z-index: 5;
+  width: 180px;
+  height: 100%;
+  padding-top: 30px;
+  background: #1f1e1e;
+}
+
+.nav li {
+  list-style: none;
+  padding: 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.nav li a {
+  display: flex;
+  gap: 10px;
+  color: #5d5d5d;
+  text-decoration: none;
+  transition: 0.2s all ease-in-out
+}
+
+.nav li a.active, .nav li a:hover {
   color: white;
+}
+
+.content {
+  background: #121212;
+  padding-top: 12px;
+  padding-right: 12px;
+  padding-left: 180px; /* same as nav width */
+  padding-bottom: 0;
+  flex: auto;
+}
+
+.hide {
+  display: none;
+}
+
+.row {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.row.five {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.row.four {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Tablet Viewports */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .row.five {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .row.four {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile Viewports */
+@media (max-width: 767px) {
+  .nav {
+    background: transparent;
+  }
+  .nav-container {
+    display: none;
+  }
+  .content {
+    padding-left: 12px;
+  }
+  .row.five,
+  .row.four {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.login {
+  text-align: center;
+  padding-bottom: 10px;
+  height: 80vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  background: none;
+  border: none;
+}
+
+.spotify-login {
+  background: #1DB954;
+  border: none;
+  border-radius: 24px;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.spotify-login:hover {
+  background: #1aa34a;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+.spotify-login:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+h4 {
+  color: white;
+  font-size: 12px;
+  text-align: left;
+  margin: 0;
+  padding: 0;
 }
 
 .App-link {
@@ -35,4 +252,210 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.settings {
+  text-align: left;
+  padding-left: 25px;
+  padding-top: 50px;
+  padding-right: 12px;
+}
+
+.settings h1 {
+  font-size: 40px;
+  color: white;
+}
+
+.settings h2 {
+  color: white;
+  font-size: 28px;
+  margin-top: 40px;
+}
+
+.settings p {
+  color: white;
+}
+
+.settings .action-bar {
+  width: 96%;
+  background: #1f1e1e;
+  padding: 18px;
+  display: flex;
+  justify-content: flex-start;
+  position: sticky;
+  bottom: 15px;
+  margin-top: 2rem;
+}
+
+.settings .save-button {
+    background-color: #1DB954; /* Spotify green */
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+.settings .save-button:hover {
+    background-color: #1aa34a; /* Slightly darker green on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.settings .save-button:active {
+    transform: scale(0.98); /* Slight "push" effect on click */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.settings .save-button:disabled {
+    background-color: #B2B2B2; /* Greyed out */
+    cursor: not-allowed;
+}
+
+.settings .save-button:focus:not(:active) {
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.4); /* Slight glow using Spotify green */
+}
+
+.checkbox-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-height: 320px;
+  overflow-y: scroll;
+  background: #131313;
+  box-shadow: 0px 4px 10px #00000082;
+  padding: 20px;
+}
+
+.checkbox-list label {
+  display: block;
+  padding: 5px 0;
+  color: white;
+}
+
+.checkbox-list .checkbox {
+  display: none; /* hide the default checkbox */
+}
+
+.checkbox-list .checkbox + label {
+  position: relative;
+  padding-left: 30px; /* space for custom checkbox */
+  cursor: pointer;
+}
+
+.checkbox-list .checkbox + label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #333;
+  background: #fff;
+}
+
+.checkbox-list .checkbox:checked + label::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 3px;
+  width: 8px;
+  height: 12px;
+  border: solid #333;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-select-buttons button {
+  color: #5d5d5d;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.checkbox-select-buttons button:hover {
+  color:white;
+}
+
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #161515;
+  border-radius: 10px;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+  background-color: #1db9540a;
+  max-width: 500px;
+  margin: 0;
+}
+
+.contact-card .user-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  margin-right: 20px;
+  border: 2px solid #e0e0e0;
+}
+.contact-card a {
+  color: white;
+  text-decoration: none;
+}
+.contact-card .user-info {
+  flex-grow: 1;
+}
+
+.contact-card .user-info p {
+  margin: 5px 0;
+}
+
+.contact-card .user-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.contact-card .user-bio {
+  margin-bottom: 10px;
+  color: #cacaca;
+  font-style: italic;
+}
+
+.contact-card .user-activity {
+  display: flex;
+  font-size: 13px;
+  gap: 10px;
+}
+
+.contact-card .user-activity span {
+  display: flex;
+  align-items: center;
+}
+
+.contact-card .fas {
+  margin-right: 5px;
+}
+
+
+.home {
+  padding: 90px 0;
+  color: white;
+}
+
+.toast {
+  width: 420px;
+  position: absolute;
+  left: 100px;
+  right: 0;
+  top: 100px;
+  z-index: 999;
+  background: #262630;
+  display: block;
+  margin: 0 auto;
+  height: auto;
+  padding: 15px;
 }

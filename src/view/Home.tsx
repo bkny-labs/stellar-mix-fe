@@ -1,36 +1,55 @@
 import React from 'react';
+import './Home.css';
 import { useSelector } from 'react-redux';
 import { AppState } from '../model/state';
+import { getAuthURL } from '../services/api-service';
+import { FaCloudRain, FaGithub, FaMoon, FaSpotify } from 'react-icons/fa';
+import logo from '../assets/sm_logo.png';
 
-const Home: React.FC = () => {
-  const sunCalcData = useSelector((state: AppState) => state.sunCalcData);
-
-  function getMoonPhaseLabel(phase: number): string {
-    if (phase === 0) return 'New Moon';
-    if (phase > 0 && phase < 0.25) return 'Waxing Crescent';
-    if (phase === 0.25) return 'First Quarter';
-    if (phase > 0.25 && phase < 0.5) return 'Waxing Gibbous';
-    if (phase === 0.5) return 'Full Moon';
-    if (phase > 0.5 && phase < 0.75) return 'Waning Gibbous';
-    if (phase === 0.75) return 'Last Quarter';
-    if (phase > 0.75) return 'Waning Crescent';
-    return 'Unknown Phase';
+function Home() {
+  const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
+  const handleLogin = () => {
+    window.location.href = getAuthURL();
   }
-
   return (
-    <div>
+    <div className="landing">
 
-      {sunCalcData && (
-        <div>
-          <p>Sunrise: {new Date(sunCalcData.sunrise).toLocaleTimeString()}</p>
-          <p>Sunset: {new Date(sunCalcData.sunset).toLocaleTimeString()}</p>
-          <p>Moon Phase: {getMoonPhaseLabel(sunCalcData.moonPhase)}</p>
+      <div className="hero">
+        <img src={logo} alt="logo" />
+        <h1>Beats Beyond the Atomosphere</h1>
+        <p>Let the weather, sun and moon inspire your next playlist!</p>
+        {!isLoggedIn &&
+          <div>
+            <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 
+          </div>
+          }
       </div>
 
-      )}
+      <div className="features">
+        <div className="feature">
+          <FaSpotify size={40} />
+          <h2>Spotify Connect</h2>
+          <p>Connect with Spotify to for personalization and genre customization.</p>
+        </div>
+        <div className="feature">
+          <FaMoon size={40} />
+          <h2>Celestial Influenced</h2>
+          <p>Our unique algorithm considers the positions of celestial bodies to curate your playlist.</p>
+        </div>
+        <div className="feature">
+          <FaCloudRain size={40} />
+          <h2>Weather Integration</h2>
+          <p>Whether it's sunny, rainy, or snowy, your current weather plays a part in the playlists.</p>
+        </div>
+      </div>
 
+      <div className="about">
+        <p className='small'>StellarMix is a free to use open source project by <a href="https://mikefortuna.com" target='_blank' rel="noreferrer">Mike Fortuna</a>.</p>
+        <p className='small'>Powered by: <a href='https://spotify.com' target='_blank' rel="noreferrer">Spotify</a> | <a href='https://openweathermap.org/' target='_blank' rel="noreferrer">OpenWeather</a> | <a href='http://suncalc.net/' target='_blank' rel="noreferrer">SunCalc</a></p>
+        <a className="github" href='https://github.com/bkny-labs/stellar-mix-fe' target='_blank' rel="noreferrer"><FaGithub size={25} /></a>
+      </div>
     </div>
   );
-};
+}
 
 export default Home;
