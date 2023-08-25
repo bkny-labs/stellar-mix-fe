@@ -1,28 +1,28 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume } from '../services/api-service';
+import { checkIfPlaylistIsFollowed, fetchUserProfile, followPlaylist, getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume, toggleShufflePlayback, unfollowPlaylist } from '../services/api-service';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaRandom, FaHeart, FaRegHeart } from 'react-icons/fa';
 import { IoAlbums } from 'react-icons/io5';
 import './SpotifyPlayer.css';
 import { useDispatch } from 'react-redux';
 
 type Artist = {
-    name: string;
-  };
-  
-  type Album = {
-    images: { url: string }[];
-  };
-  
-  type Track = {
-    name: string;
-    album: Album;
-    artists: Artist[];
-  };
+  name: string;
+};
 
-  type SpotifyPlayerProps = {
-    accessToken: string;
-    playlistPlayed: boolean;
-  };
+type Album = {
+  images: { url: string }[];
+};
+
+type Track = {
+  name: string;
+  album: Album;
+  artists: Artist[];
+};
+
+type SpotifyPlayerProps = {
+  accessToken: string;
+  playlistPlayed: boolean;
+};
 
 export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProps) {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
@@ -30,16 +30,53 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
   const [isShuffle, setIsShuffle] = useState<boolean>(true);
   const [volume, setVolume] = useState<number>(10);
+  const [playlistId, setPlaylistId] = useState<any | null>(null);
+  const [userId, setUserId] = useState<any | null>(null);
   const dispatch = useDispatch();
 
   const updatePlaybackStatus = useCallback(() => {
+    // Fetch the current playback track and set playlistId
     getCurrentlyPlaying(accessToken, dispatch).then(data => {
       setCurrentTrack(data.item);
       setIsPlaying(data.isPlaying);
+  
+      // If the song is being played from a playlist, extract the playlist ID
+      if (data.item?.context?.type === 'playlist') {
+        const currentPlaylistId = data.item.context.uri.split(':').pop();
+        setPlaylistId(currentPlaylistId);
+      } else {
+        setPlaylistId(null);
+      }
     }).catch(error => {
       console.error("Error fetching current playback:", error);
     });
-  }, [accessToken, dispatch]);
+  
+    // Fetch the user profile and set userId
+    fetchUserProfile(accessToken, dispatch).then(data => {
+      if (data) {
+        setUserId(data.id);
+      }
+    }).catch(error => {
+      console.error("Error fetching user profile:", error);
+    });
+  
+    if (playlistId) {
+      checkIfPlaylistIsFollowed(accessToken, playlistId, userId)
+        .then(followStatus => setIsFavorited(followStatus));
+    }
+
+  }, [accessToken, dispatch, playlistId, userId]);
+
+  const toggleFavorite = async () => {
+    if (isFavorited) {
+      unfollowPlaylist(accessToken, playlistId);
+      setIsFavorited(false);
+    } else {
+      followPlaylist(accessToken, playlistId);
+      setIsFavorited(true);
+    }
+  };
+
 
   const togglePlayPause = () => {
     const action = isPlaying ? pauseTrack : playTrack;
@@ -50,12 +87,11 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
       });
   };
 
-  const toggleFavorite = () => {
-    setIsFavorited(!isFavorited);
-  };
 
-  const toggleShuffle = () => {
-    setIsShuffle(!isShuffle);
+  const toggleShuffle = async () => {
+    const newShuffleState = !isShuffle; // Flip the current state
+    toggleShufflePlayback(accessToken, newShuffleState);
+    setIsShuffle(newShuffleState); // Update the local state
   };
 
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,7 +144,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
       )}
       <div className="player-play">
           { isShuffle 
-          ? <FaRandom onClick={toggleShuffle} color={'#1DB954'} size={25} />
+          ? <FaRandom onClick={toggleShuffle} color={'#fda53a'} size={25} />
           : <IoAlbums onClick={toggleShuffle} color={'#6f6f6f'} size={25} />
           }
           <FaStepBackward color={'#6f6f6f'} size={25} onClick={handlePreviousTrack} />
@@ -118,7 +154,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
           }
           <FaStepForward color={'#6f6f6f'} size={25} onClick={handleNextTrack} />
           { isFavorited 
-            ? <FaHeart onClick={toggleFavorite} color={'#1DB954'} size={20} />
+            ? <FaHeart onClick={toggleFavorite} color={'#fda53a'} size={20} />
             : <FaRegHeart onClick={toggleFavorite} color={'#6f6f6f'} size={20} />
           }
       </div>

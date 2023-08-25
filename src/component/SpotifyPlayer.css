@@ -19,6 +19,10 @@
   padding: 15px;
 }
 
+.spotify-player .player-controls input[type="range"] {
+  accent-color: #fda53a;
+}
+
 .spotify-player .track-info {
   flex: 1;
   display: flex;

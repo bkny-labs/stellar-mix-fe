@@ -6,7 +6,6 @@ import { GiSunrise, GiSunset } from 'react-icons/gi';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
 import { BsThermometerSun } from 'react-icons/bs';
 import { WiHumidity } from 'react-icons/wi';
-import { useEffect } from 'react';
 import { DateTime } from 'luxon';
 
 interface NavigationProps {

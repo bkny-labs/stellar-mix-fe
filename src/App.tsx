@@ -4,7 +4,6 @@ import {
   Routes
 } from 'react-router-dom';
 import Home from './view/Home';
-import MainController from './controller/main-controller';
 import './App.css';
 import Browse from './view/Browse';
 import { Navigation } from './component/Navigation';
@@ -17,20 +16,19 @@ import { useEffect, useState } from 'react';
 import { fetchUserProfile } from './services/api-service';
 import { UserProfile } from './types';
 
-function App() {
+const App: React.FC = () => {
   const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [showToast, setShowToast] = useState(isLoggedIn);
   const token = localStorage.getItem('spotifyToken');
   const dispatch = useDispatch();
-  console.log('logged in when app.component mounts?', isLoggedIn);
 
   useEffect(() => {
     if (token) {
       fetchUserProfile(token, dispatch)
       .then(data => setUserProfile(data))
       .catch(error => console.error("Error fetching user profile:", error));
-      console.log(userProfile);
+      // console.log(userProfile);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, dispatch]);
@@ -53,7 +51,6 @@ function App() {
         />
       )}
       <div className="App">
-        <MainController>
           <div className="container">
             <nav className='nav'>
               <div className="logo">
@@ -63,9 +60,7 @@ function App() {
               </div>
               <Navigation loggedIn={isLoggedIn} />
             </nav>
-            {(isLoggedIn && 
-              <Header />
-            )}
+            {isLoggedIn && userProfile && <Header userProfile={userProfile} />}
             <div className="content">
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -74,7 +69,6 @@ function App() {
               </Routes>
             </div>
           </div>
-        </MainController>
       </div>
     </Router>
   );

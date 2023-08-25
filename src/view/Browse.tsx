@@ -5,6 +5,7 @@ import { AppState } from '../model/state';
 import { setSpotifyPlaylistsAction } from '../model/actions';
 import { FaPlay } from 'react-icons/fa';
 import { SpotifyPlayer } from '../component/SpotifyPlayer';
+import SpaceBackground from '../component/Space';
 
 const Browse: React.FC = () => {
   const dispatch = useDispatch();
@@ -45,6 +46,8 @@ const Browse: React.FC = () => {
     }
   }, [playlists]);
 
+  // TODO: This should redirect back to the homepage if the user is not logged in 
+  // but it's causing an issue with the current auth redirect.
   // useEffect(() => { 
   //   if(!isLoggedIn) {
   //     window.location.href = '/';
@@ -53,6 +56,11 @@ const Browse: React.FC = () => {
 
 
   return (
+    <>
+    <div className="space-background">
+      <SpaceBackground />
+    </div>
+
     <div className='browse-grid'>
       <div className="row four">
       {Array.isArray(playlists) && playlists.map((playlist: any) => (
@@ -77,6 +85,7 @@ const Browse: React.FC = () => {
       </div>
       {accessToken && <SpotifyPlayer accessToken={accessToken} playlistPlayed={playlistPlayed} />}
     </div>
+    </>
   );
 };
 

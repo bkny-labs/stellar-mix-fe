@@ -110,6 +110,7 @@ function Settings() {
     }
 
     const handleSave = () => {
+        console.log(selectedGenres);
         dispatch(setUserGenresAction(selectedGenres));
         localStorage.setItem('userGenres', JSON.stringify(selectedGenres));
     };

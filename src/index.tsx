@@ -1,11 +1,8 @@
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
+import MainController from './controller/main-controller';
 import { store } from './model/store';
-import App from './App';
+import reportWebVitals from './reportWebVitals';
 
-const root = createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-<Provider store={store}>
-  <App />
-</Provider>);
+const mainController = new MainController(store);
+mainController.init();
 
+reportWebVitals();

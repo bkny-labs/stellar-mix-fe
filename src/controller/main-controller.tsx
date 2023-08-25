@@ -1,52 +1,60 @@
-import React, { useEffect, ReactNode } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import {
+  fetchUserProfile,
   getPlaylistsByQuery, getSpotifyAccessToken,
-  getSunCalcData, getWeatherByLocation
-} from '../services/api-service';
+  getSunCalcData, getWeatherByLocation} from '../services/api-service';
 import {
   setLoggedInAction, setSpotifyPlaylistsAction,
   setSunCalcAction, setWeatherAction
 } from '../model/actions';
-import { AppState } from '../model/state';
 import { buildPlaylistQuery, getMusicalMood } from '../utils/generate-spotify-query';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { setSpotifyAccessToken } from '../model/slice';
+import { createRoot } from 'react-dom/client';
+import App from '../App';
+import { store } from '../model/store';
 
-interface MainControllerProps {
-  children: ReactNode;
-}
+export default class MainController {
+  private spotifyToken = localStorage.getItem('spotifyToken') || null;
+  private moodData: any;
+  private store: any;
+  private params = new URLSearchParams(window.location.search);
+  private code = this.params.get('code');
 
-const MainController: React.FC<MainControllerProps> = ({ children }) => {
-  const spotifyToken = useSelector((state: AppState) => state.spotifyToken);
-  const moodData = getMusicalMood(useSelector((store: AppState) => store));
-  // TODO Wire up genres to playlist recommendations
-  //const userGenres = useSelector((state: AppState) => state.userSettings.genres);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const playlistQuery = buildPlaylistQuery({
-    ...moodData,
-    genres: moodData.genres || []
-  });
   
+  constructor(store: any) {
+    this.store = store;
+    this.updateFromStore();
+    
+    store.subscribe(() => {
+      this.updateFromStore();
+    });
+  }
 
-  const dispatch = useDispatch();
+  private updateFromStore() {
+    const state = this.store.getState();
+    this.spotifyToken = state.spotifyToken;
+    this.moodData = getMusicalMood(state);
+  }
 
-  const fetchSpotifyPlaylists = async () => {
-    if (!spotifyToken || !playlistQuery) return;
+  fetchSpotifyPlaylists = () => {
+    if (!this.spotifyToken) return;
 
-    try {
-        // const data = await getPlaylistsByQuery(playlistQuery, spotifyToken, dispatch, userGenres);
-        const data = await getPlaylistsByQuery(playlistQuery, spotifyToken, dispatch);
-        dispatch(setSpotifyPlaylistsAction(data));
-        localStorage.setItem('spotifyPlaylists', JSON.stringify(data));
-        console.log('Fetched Spotify playlists:', data);
-    } catch (err) {
-        handleSpotifyError(err);
-    }
+    const playlistQuery = buildPlaylistQuery({
+      ...this.moodData,
+      genres: this.moodData.genres || []
+    });
+
+    getPlaylistsByQuery(playlistQuery, this.spotifyToken, this.store.dispatch)
+      .then(data => {
+          this.store.dispatch(setSpotifyPlaylistsAction(data));
+          localStorage.setItem('spotifyPlaylists', JSON.stringify(data));
+          console.log('Fetched Spotify playlists for query:', playlistQuery);
+      })
+      .catch(err => {
+          this.handleSpotifyError(err);
+      });
   };
 
-  const handleSpotifyError = (err: any) => {
+  handleSpotifyError = (err: any) => {
     if (err.response) {
       err.response.json().then((errorData: any) => {
         console.error("Detailed Spotify Error:", errorData);
@@ -56,91 +64,68 @@ const MainController: React.FC<MainControllerProps> = ({ children }) => {
     }
   };
 
-  const handleAccessToken = async () => {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
+  hasValidToken = () => {
+    const expiryTime = localStorage.getItem('tokenExpiryTime'); // get the stored expiry time
+    if (!expiryTime) return false;
+    console.log('EXPIRED?:', new Date().getTime() < parseInt(expiryTime, 10));
+    return new Date().getTime() < parseInt(expiryTime, 10);
+  };
 
-    if (!code) return;
+  userIsLoggedIn = () => {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  }
 
+  handleAccessToken = async (code: any) => {
     try {
-      await getSpotifyAccessToken(code, dispatch);
-      if (spotifyToken) {
-        console.log('handleAccessToken:', spotifyToken);
-        dispatch(setLoggedInAction(true, spotifyToken));
-        dispatch(setSpotifyAccessToken(spotifyToken));
+      await getSpotifyAccessToken(code, this.store.dispatch);
+
+      if (this.spotifyToken) {
+        const tokenExpiryTime = new Date().getTime() + (3600 * 1000);
+        localStorage.setItem('tokenExpiryTime', tokenExpiryTime.toString());
+        this.store.dispatch(setLoggedInAction(true));
+        localStorage.setItem('isLoggedIn', 'true');
+        // fetchUserProfile(this.spotifyToken, this.store.dispatch);
+        return this.spotifyToken;
       }
     } catch (error) {
-      handleSpotifyError(error);
+      this.handleSpotifyError(error);
     }
-};
+    return null;
+  };
 
-const fetchWeatherAndSunCalcData = async () => {
-  const lat = 40.732542;
-  const lon = -73.978773;
-
-  try {
-    const weatherData = await getWeatherByLocation(lat, lon);
-    dispatch(setWeatherAction(weatherData));
-  } catch (error) {
-    console.error('Failed to fetch weather data:', error);
+  init() {
+    console.log('MainController init');
+    this.fetchWeatherAndSunCalcData();
+    if (!this.userIsLoggedIn() && this.hasValidToken()) {
+      this.handleAccessToken(this.code);
+    }
+    this.render();
   }
 
-  try {
-    const data = await getSunCalcData(lon, lat);
-    dispatch(setSunCalcAction(data));
-  } catch (error) {
-    console.error('Failed to fetch SunCalc data:', error);
+  fetchWeatherAndSunCalcData = async () => {
+    const lat = 40.732542;
+    const lon = -73.978773;
+
+    try {
+      const weatherData = await getWeatherByLocation(lat, lon);
+      this.store.dispatch(setWeatherAction(weatherData)); // Use this.store.dispatch
+    } catch (error) {
+      console.error('Failed to fetch weather data:', error);
+    }
+
+    try {
+      const data = await getSunCalcData(lon, lat);
+      this.store.dispatch(setSunCalcAction(data)); // Use this.store.dispatch
+    } catch (error) {
+      console.error('Failed to fetch SunCalc data:', error);
+    }
+  };
+
+  render() {
+    const root = createRoot(document.getElementById('root') as HTMLElement);
+    root.render(
+    <Provider store={store}>
+      <App />
+    </Provider>);
   }
 };
-
-  // Handling Access Token and URL
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
-
-    console.log('MainController:', code);
-
-    if (code) {
-        // First handle the access token
-        handleAccessToken().then(() => {
-            // After the access token is handled, navigate to the clean URL.
-            navigate(location.pathname, { replace: true });
-        });
-    } else {
-        if (spotifyToken) {
-            dispatch(setLoggedInAction(true, spotifyToken));
-        }
-    }
-    // Only run this when component mounts and unmounts
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  
-  // Fetching data when Spotify Token exists or changes
-  useEffect(() => {
-    if (spotifyToken) {
-        fetchWeatherAndSunCalcData();
-        fetchSpotifyPlaylists();
-    }
-    // Only listen for spotifyToken changes
-  }, [spotifyToken]);
-
-  useEffect(() => {
-    // Attempt to get genres from localStorage
-    const storedGenres = localStorage.getItem('genres');
-
-    if (storedGenres) {
-      // If genres exist in localStorage, parse and dispatch to Redux
-      const parsedGenres = JSON.parse(storedGenres);
-      dispatch(setGenresAction(parsedGenres));
-    }
-  }, [dispatch]);
-
-
-  return (<>{children}</>);
-};
-
-export default MainController;
-function setGenresAction(parsedGenres: any): any {
-  throw new Error('Function not implemented.');
-}
-

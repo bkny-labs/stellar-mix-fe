@@ -1,3 +1,5 @@
+const persistedIsLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
 // state.ts
 export interface AppState {
   weather: any; // replace 'any' with actual type if available
@@ -14,7 +16,7 @@ export const initialState: AppState = {
   weather: null,
   sunCalcData: null,
   spotifyPlaylists: [],
-  isLoggedIn: false,
+  isLoggedIn: persistedIsLoggedIn,
   spotifyToken: null,
   userSettings: {
     genres: []
