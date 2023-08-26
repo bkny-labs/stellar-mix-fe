@@ -81,7 +81,7 @@ body, html {
   }
   
   .about a, .about a:visited {
-    color: #1DB954;
+    color: var(--primary);
     text-decoration: none;
   }
   .about .github, .about .github:visited {

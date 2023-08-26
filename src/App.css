@@ -1,3 +1,11 @@
+:root {
+  --primary: #fda53a;
+  --spotify: #1DB954;
+  --background: #1f1e1e;
+  --text-color: #fff;
+  --link-color: #5d5d5d;
+}
+
 * {
   box-sizing: border-box;
 }
