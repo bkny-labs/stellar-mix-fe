@@ -3,10 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { playSpotifyPlaylist } from '../services/spotify-service';
 import { AppState } from '../model/state';
 import { setSpotifyPlaylistsAction } from '../model/actions';
-import { FaPause, FaPlay } from 'react-icons/fa';
+import { FaInfoCircle, FaPause, FaPlay } from 'react-icons/fa';
 import { SpotifyPlayer } from '../component/SpotifyPlayer';
 import SpaceBackground from '../component/Space';
 import './Browse.css';
+import { Drawer } from '../component/Drawer';
 
 const Browse: React.FC = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,8 @@ const Browse: React.FC = () => {
     }
   };
 
+
+
   useEffect(() => {
     // On component load, check localStorage
     const storedPlaylists = localStorage.getItem('spotifyPlaylists');
@@ -65,14 +68,13 @@ const Browse: React.FC = () => {
       {Array.isArray(playlists) && playlists.map((playlist: any) => (
         <div className="column" key={playlist.id}>
           <div 
-            onClick={() => playPlaylist(playlist.uri)}
             className={`album-art ${currentlyPlayingURI === playlist.uri ? 'currently-playing' : ''}`}
             style={{
               backgroundImage: `url(${playlist?.images?.[0]?.url})`,
             }}
           >
             <div className="playback-controls">
-                <button className='play-circle'>
+                <button className='play-circle' onClick={() => playPlaylist(playlist.uri)}>
                   {currentlyPlayingURI === playlist.uri
                     ? <FaPause size={25} color='#202020' />
                     : <FaPlay size={25} color='#202020' />

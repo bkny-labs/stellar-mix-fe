@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { fetchUserProfile } from '../services/auth-service';
 import { checkIfPlaylistIsFollowed, followPlaylist, getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume, toggleShufflePlayback, unfollowPlaylist } from '../services/spotify-service';
-import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaRandom, FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaRandom, FaHeart, FaRegHeart, FaInfoCircle } from 'react-icons/fa';
 import { IoAlbums } from 'react-icons/io5';
 import './SpotifyPlayer.css';
 import { useDispatch } from 'react-redux';
+import { Drawer } from './Drawer';
 
 type Artist = {
   name: string;
@@ -33,6 +34,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
   const [volume, setVolume] = useState<number>(10);
   const [playlistId, setPlaylistId] = useState<any | null>(null);
   const [userId, setUserId] = useState<any | null>(null);
+  const [showDrawer, setShowDrawer] = useState(false);
   const dispatch = useDispatch();
 
   const updatePlaybackStatus = useCallback(() => {
@@ -77,7 +79,6 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
       setIsFavorited(true);
     }
   };
-
 
   const togglePlayPause = () => {
     const action = isPlaying ? pauseTrack : playTrack;
@@ -130,6 +131,10 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
       });
   };
 
+  const toggleDrawer = () => {
+    setShowDrawer(prev => !prev);
+  };
+
   useEffect(() => {
     updatePlaybackStatus();
   }, [playlistPlayed]);
@@ -143,6 +148,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
 
 
   return (
+    <>
     <div className="spotify-player">
       {currentTrack && (
       <div className="track-info">
@@ -169,6 +175,11 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
       </div>
 
       <div className="player-controls">
+        { isPlaying && (
+          <button className='info-button' onClick={toggleDrawer}>
+            <FaInfoCircle size={15} color={showDrawer ? '#fda53a' : '#fff' } />
+          </button>
+        )}
         <input 
           type="range" 
           min="0" 
@@ -178,5 +189,8 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
         />
       </div>
     </div>
+    {showDrawer && <Drawer toggleDrawer={toggleDrawer} isVisible={showDrawer} accessToken={accessToken} playlistPlayed={playlistPlayed} />}
+    </>
+    
   );
 }

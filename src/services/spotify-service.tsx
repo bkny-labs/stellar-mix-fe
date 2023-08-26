@@ -14,6 +14,7 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any)
         if (!response.ok) {
           if (response.status === 401) {
             dispatch(setLoggedInAction(false));
+            localStorage.removeItem('isLoggedIn');
           }
           const errorData = await response.json();
           console.error("Spotify API Error Response:", errorData);
@@ -42,26 +43,28 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any)
       const response = await fetch(API_ENDPOINT, { method: 'GET', headers: headers });
   
       if (response.status === 204) {
-          return { status: 'no-track-playing' };
+        return { status: 'no-track-playing' };
       }
   
       if (!response.ok) {
         dispatch(setLoggedInAction(false));
+        localStorage.removeItem('isLoggedIn');
         throw new Error(`Failed to fetch current playback: ${response.statusText}`);
       }
   
       let data;
       try {
-          data = await response.json();
+        data = await response.json();
       } catch (parseError) {
-          console.warn('Failed to parse response. The response might be empty.');
-          return { status: 'no-data' };
+        console.warn('Failed to parse response. The response might be empty.');
+        return { status: 'no-data' };
       }
   
       return {
         status: 'success',
         item: data.item,
-        isPlaying: data.is_playing
+        isPlaying: data.is_playing,
+        context: data.context // Adding the context object
       };
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -73,6 +76,7 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any)
       }
     }
   };
+  
   // Playlist Follow
   export const checkIfPlaylistIsFollowed = async (accessToken: string, playlistId: string, userId: string) => {
     const API_ENDPOINT = `https://api.spotify.com/v1/playlists/${playlistId}/followers/contains?ids=${userId}`;
@@ -302,5 +306,26 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any)
       console.error("Error fetching available genres:", error);
       return null;
     }
+  }
+
+  export const fetchPlaylistDetails = (playlistId: string, accessToken: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      const endpoint = `https://api.spotify.com/v1/playlists/${playlistId}`;
+  
+      fetch(endpoint, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => resolve(data))
+      .catch(error => reject(error));
+    });
   }
   
