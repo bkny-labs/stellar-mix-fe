@@ -1,22 +1,45 @@
+:root {
+  --primary: #fda53a;
+  --spotify: #1DB954;
+  --background: #1f1e1e;
+  --text-color: #fff;
+  --link-color: #5d5d5d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background: #121212;
   font-family: Arial, Helvetica, sans-serif;
   color: #5d5d5d;
 }
+.space-background {
+  position: fixed;   /* or absolute depending on your preference */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;       /* ensures it's behind other content */
+}
 
 .header {
   position: fixed;
-  z-index: 1;
+  z-index: 555;
   width: 100%;
   background: #1f1e1e;
   top: 0;
-  text-align: right;
+  right: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding-right: 10px;
+  justify-content: space-between;
+  padding: 0 12px;
   height: 60px;
+}
+.header .logo img {
+  width: 155px;
 }
 
 .browse-grid {
@@ -25,23 +48,13 @@ body {
 }
 
 .user-image {
-  margin-right: 15px;
   width: 40px;
   height: 40px;
   background-size: cover;
   background-position: center;
   border-radius: 50%;
-  border: 2px solid rgb(119, 119, 119);
+  border: 2px solid #fda53a;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-}
-
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -93,7 +106,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 86%;
+  height: 80%;
   padding-top: 30px;
 }
 
@@ -114,6 +127,7 @@ body {
   height: 100%;
   padding-top: 30px;
   background: #1f1e1e;
+  transition: 0.2s all ease-in-out;
 }
 
 .nav li {
@@ -132,14 +146,12 @@ body {
 }
 
 .nav li a.active, .nav li a:hover {
-  color: white;
+  color: #fda53a;
 }
 
 .content {
-  background: #121212;
-  padding-top: 12px;
-  padding-right: 12px;
-  padding-left: 180px; /* same as nav width */
+  /* background: #121212; */
+  padding-top: 18px;
   padding-bottom: 0;
   flex: auto;
 }
@@ -177,8 +189,6 @@ body {
 @media (max-width: 767px) {
   .nav {
     background: transparent;
-  }
-  .nav-container {
     display: none;
   }
   .content {

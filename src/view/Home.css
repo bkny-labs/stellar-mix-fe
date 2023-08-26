@@ -1,5 +1,10 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  /* overflow: hidden; */
+}
+
 .landing {
-    background-color: #121212;
     width: 100%;
     color: #fff;
     font-family: 'Circular Std', sans-serif;
@@ -13,6 +18,7 @@
   
   .hero {
     width: 100%;
+    text-align: center;
     margin-top: 2rem;
   }
   .hero img {
@@ -24,6 +30,8 @@
     margin: 0 0 20px;
   }
   .hero p {
+    font-size: 20px;
+    line-height: 26px;
     margin: 0 0 25px;
   }
   
@@ -37,10 +45,13 @@
   }
   
   .features {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     justify-content: space-between;
     width: 100%;
     margin-top: 3rem;
+    
   }
   
   .feature {
@@ -70,7 +81,7 @@
   }
   
   .about a, .about a:visited {
-    color: #1DB954;
+    color: var(--primary);
     text-decoration: none;
   }
   .about .github, .about .github:visited {

@@ -1,9 +1,10 @@
-import * as SunCalc from 'suncalc';
 import { setLoggedInAction } from '../model/actions';
 
+// Spotify Authentication
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT;
 const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_SECRET;
+
 const REDIRECT_URI = "http://localhost:3000/browse"; 
 
 export const getAuthURL = () => {
@@ -13,7 +14,7 @@ export const getAuthURL = () => {
     redirect_uri: REDIRECT_URI,
     scope: "user-read-private user-read-email user-read-currently-playing user-read-playback-state app-remote-control user-modify-playback-state",
     // show_dialog: "true"
-  });  
+  });
   return `${SPOTIFY_AUTH_ENDPOINT}?${params.toString()}`;
 };
 
@@ -39,51 +40,53 @@ export const getSpotifyAccessToken = async (code: string, dispatch: any): Promis
     const errorData = await response.json();
     console.error("Spotify API Error Response:", errorData);
     dispatch(setLoggedInAction(false));
+    localStorage.setItem('isLoggedIn', 'false');
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
 
   const data = await response.json();
   // Set the token in localStorage immediately after obtaining it
   localStorage.setItem('spotifyToken', data.access_token);
+  localStorage.setItem('isLoggedIn', 'true');
+  dispatch(setLoggedInAction(true, data.access_token));
 
   return data.access_token;
 };
 
+export const logout = (dispatch: any) => {
+  localStorage.removeItem('spotifyToken');
+  localStorage.removeItem('tokenExpiryTime');
+  localStorage.removeItem('isLoggedIn');
+  dispatch(setLoggedInAction(false));
+  window.location.href = '/';
+}
+
 export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
-  const response = await fetch('https://api.spotify.com/v1/me', {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${accessToken}`
-    }
-  });
-
-  if (!response.ok) {
-    dispatch(setLoggedInAction(false));
-    throw new Error('Failed to fetch user profile');
-  }
-
-  const data = await response.json();
-  return data;
-};
-
-export const getWeatherByLocation = (lat: number, long: number): Promise<any> => {
-  return new Promise(async (resolve, reject) => {
-    const API_KEY = '868555d60c85896c6af99f0e8e6b8f12';
-    const endpoint = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${API_KEY}`;
-    try {
-      const response = await fetch(endpoint);
-      const data = await response.json();
-      if (data.cod !== 200) { // Check for error
-        reject(data.message);
-      } else {
-        resolve(data);
+  try {
+    const response = await fetch('https://api.spotify.com/v1/me', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
       }
-    } catch (error) {
-      reject(error);
+    });
+
+    if (!response.ok) {
+      dispatch(setLoggedInAction(false));
+      console.log("User is not logged in.");
+      localStorage.removeItem('isLoggedIn');
+      throw new Error('Failed to fetch user profile');
     }
-  });
+    const data = await response.json();
+    console.log("LOGGED IN", data);
+    return data;
+
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    return null;
+  }
 };
 
+// Get Playlist
 export const getPlaylistsByQuery = (query: string, token: string, dispatch: any): Promise<any> => {
   return new Promise(async (resolve, reject) => {
     const API_ENDPOINT = `https://api.spotify.com/v1/search?q=${query}&type=playlist&limit=20`;
@@ -113,6 +116,7 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any)
   });
 };
 
+// Currently Playing
 export const getCurrentlyPlaying = async (accessToken: string, dispatch: any) => {
   const API_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing?market=US`;
   const headers = {
@@ -154,6 +158,61 @@ export const getCurrentlyPlaying = async (accessToken: string, dispatch: any) =>
       return { status: 'error', message: 'An unexpected error occurred.' };
     }
   }
+};
+// Playlist Follow
+export const checkIfPlaylistIsFollowed = async (accessToken: string, playlistId: string, userId: string) => {
+  const API_ENDPOINT = `https://api.spotify.com/v1/playlists/${playlistId}/followers/contains?ids=${userId}`;
+  const headers = {
+    'Authorization': `Bearer ${accessToken}`,
+  };
+
+  const response = await fetch(API_ENDPOINT, {
+    method: 'GET',
+    headers: headers,
+  });
+
+  const data = await response.json();
+
+  return data[0];
+};
+
+export const followPlaylist = async (accessToken: any, playlistId: string) => {
+  const API_ENDPOINT = `https://api.spotify.com/v1/playlists/${playlistId}/followers`;
+  const headers = {
+    'Authorization': `Bearer ${accessToken}`,
+    'Content-Type': 'application/json'
+  };
+
+  return fetch(API_ENDPOINT, {
+    method: 'PUT',
+    headers: headers,
+  });
+};
+
+export const unfollowPlaylist = async (accessToken: string, playlistId: string) => {
+  const API_ENDPOINT = `https://api.spotify.com/v1/playlists/${playlistId}/followers`;
+  const headers = {
+    'Authorization': `Bearer ${accessToken}`,
+  };
+
+  return fetch(API_ENDPOINT, {
+    method: 'DELETE',
+    headers: headers,
+  });
+};
+
+// Playback Controls
+export const toggleShufflePlayback = async (accessToken: any, state: boolean) => {
+  const API_ENDPOINT = `https://api.spotify.com/v1/me/player/shuffle?state=${state}`;
+  const headers = {
+    'Authorization': `Bearer ${accessToken}`,
+    'Content-Type': 'application/json'
+  };
+
+  return fetch(API_ENDPOINT, {
+    method: 'PUT',
+    headers: headers,
+  });
 };
 
 export const playTrack = async (accessToken: string) => {
@@ -228,7 +287,7 @@ export const playPreviousTrack = async (accessToken: string) => {
   }
 };
 
-
+// Volume Controls
 export const setSpotifyVolume = async (accessToken: string, volume: number) => {
   const endpoint = `https://api.spotify.com/v1/me/player/volume?volume_percent=${volume}`;
 
@@ -252,25 +311,7 @@ export const setSpotifyVolume = async (accessToken: string, volume: number) => {
   }
 };
 
-export const getSunCalcData = (lat: number, long: number): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    try {
-      const sunTimes = SunCalc.getTimes(new Date(), lat, long);
-      const moonIllumination = SunCalc.getMoonIllumination(new Date());
-      const data = {
-        sunrise: sunTimes.sunrise.toISOString(),
-        sunset: sunTimes.sunset.toISOString(),
-        moonPhase: moonIllumination.phase
-        // ... any other data you want
-      };
-
-      resolve(data);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-
+// Play Spotify Playlist
 export const playSpotifyPlaylist = async (playlistURI: string, accessToken: string) => {
   const getActiveDevices = async () => {
       const DEVICES_ENDPOINT = `https://api.spotify.com/v1/me/player/devices`;
@@ -280,7 +321,6 @@ export const playSpotifyPlaylist = async (playlistURI: string, accessToken: stri
 
       const response = await fetch(DEVICES_ENDPOINT, { method: 'GET', headers: headers });
       const data = await response.json();
-      console.log("Active devices:", data.devices);
       return data.devices;
   };
 
@@ -325,7 +365,8 @@ export const playSpotifyPlaylist = async (playlistURI: string, accessToken: stri
   }
 };
 
-export const  fetchAvailableGenres = async (token: string): Promise<string[] | null> => {
+// Genres
+export const fetchAvailableGenres = async (token: string): Promise<string[] | null> => {
   const endpoint = "https://api.spotify.com/v1/recommendations/available-genre-seeds";
   const headers = {
     "Authorization": `Bearer ${token}`,
@@ -348,3 +389,6 @@ export const  fetchAvailableGenres = async (token: string): Promise<string[] | n
     return null;
   }
 }
+
+
+

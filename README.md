@@ -1,6 +1,6 @@
 # StellarMix
 
-Stellar Mix is a unique Spotify playlist recommendation app that offers a truly personalized listening experience. By analyzing the positions of the sun, moon, and even the current weather patterns, Stellar Mix tailors its recommendations to not just the kind of music you might want to hear, but also to the world around you. Let the universe inspire your next playlist!
+StellarMix crafts the ultimate playlist for your moment, blending your music tastes with cues from the world around you – day or night, rain or shine, cosmos in motion. Dive into a universe of sound, all through your Spotify.
 
 ## 🌠 Features
 
