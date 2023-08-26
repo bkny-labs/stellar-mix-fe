@@ -13,7 +13,7 @@ import Header from './component/Header';
 import Settings from './view/Settings';
 import Toast from './component/Toast';
 import { useEffect, useState } from 'react';
-import { fetchUserProfile } from './services/api-service';
+import { fetchUserProfile } from './services/auth-service';
 import { UserProfile } from './types';
 
 const App: React.FC = () => {

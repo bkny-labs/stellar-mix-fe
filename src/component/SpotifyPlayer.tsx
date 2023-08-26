@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { checkIfPlaylistIsFollowed, fetchUserProfile, followPlaylist, getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume, toggleShufflePlayback, unfollowPlaylist } from '../services/api-service';
+import { fetchUserProfile } from '../services/auth-service';
+import { checkIfPlaylistIsFollowed, followPlaylist, getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume, toggleShufflePlayback, unfollowPlaylist } from '../services/spotify-service';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaRandom, FaHeart, FaRegHeart } from 'react-icons/fa';
 import { IoAlbums } from 'react-icons/io5';
 import './SpotifyPlayer.css';

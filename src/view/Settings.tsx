@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from "../model/state";
 import { setUserGenresAction } from "../model/actions";
 import { UserProfile } from "../types";
-import { fetchAvailableGenres, fetchUserProfile } from "../services/api-service";
+import { fetchAvailableGenres, fetchUserProfile } from "../services/auth-service";
 import { CiLocationOn } from 'react-icons/ci';
 import { FiUsers } from 'react-icons/fi';
 import { FaSpotify } from "react-icons/fa";

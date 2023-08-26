@@ -1,11 +1,10 @@
-import * as SunCalc from 'suncalc';
 import { setLoggedInAction } from '../model/actions';
 
 // Spotify Authentication
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT;
 const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_SECRET;
-const OPEN_WEATHER_API_KEY = process.env.REACT_APP_OPEN_WEATHER_API_KEY;
+
 const REDIRECT_URI = "http://localhost:3000/browse"; 
 
 export const getAuthURL = () => {
@@ -391,40 +390,5 @@ export const fetchAvailableGenres = async (token: string): Promise<string[] | nu
   }
 }
 
-// Weather
-export const getWeatherByLocation = (lat: number, long: number): Promise<any> => {
-  return new Promise(async (resolve, reject) => {
-    const API_KEY = OPEN_WEATHER_API_KEY;
-    const endpoint = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${API_KEY}`;
-    try {
-      const response = await fetch(endpoint);
-      const data = await response.json();
-      if (data.cod !== 200) { // Check for error
-        reject(data.message);
-      } else {
-        resolve(data);
-      }
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
 
-// SunCalc
-export const getSunCalcData = (lat: number, long: number): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    try {
-      const sunTimes = SunCalc.getTimes(new Date(), lat, long);
-      const moonIllumination = SunCalc.getMoonIllumination(new Date());
-      const data = {
-        sunrise: sunTimes.sunrise.toISOString(),
-        sunset: sunTimes.sunset.toISOString(),
-        moonPhase: moonIllumination.phase
-      };
 
-      resolve(data);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};

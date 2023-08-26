@@ -1,10 +1,10 @@
 import { Provider } from 'react-redux';
 import {
-  fetchUserProfile,
-  getPlaylistsByQuery, getSpotifyAccessToken,
-  getSunCalcData, getWeatherByLocation} from '../services/api-service';
-import {
-  setLoggedInAction, setSpotifyPlaylistsAction,
+  fetchUserProfile, getSpotifyAccessToken } from '../services/auth-service';
+import { getPlaylistsByQuery } from '../services/spotify-service';
+import { getSunCalcData } from '../services/suncalc-service';
+import { getWeatherByLocation } from '../services/weather-service';
+import { setSpotifyPlaylistsAction,
   setSunCalcAction, setWeatherAction
 } from '../model/actions';
 import { buildPlaylistQuery, getMusicalMood } from '../utils/generate-spotify-query';

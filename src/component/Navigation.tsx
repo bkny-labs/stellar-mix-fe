@@ -7,7 +7,7 @@ import { WiHumidity } from 'react-icons/wi';
 import { CgLogOut } from 'react-icons/cg';
 import { DateTime } from 'luxon';
 import { useDispatch } from 'react-redux';
-import { logout } from '../services/api-service';
+import { logout } from '../services/auth-service';
 
 interface NavigationProps {
   loggedIn?: boolean;

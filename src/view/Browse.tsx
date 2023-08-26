@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { playSpotifyPlaylist } from '../services/api-service';
+import { playSpotifyPlaylist } from '../services/spotify-service';
 import { AppState } from '../model/state';
 import { setSpotifyPlaylistsAction } from '../model/actions';
 import { FaPlay } from 'react-icons/fa';
 import { SpotifyPlayer } from '../component/SpotifyPlayer';
 import SpaceBackground from '../component/Space';
-import MainController from '../controller/main-controller';
 
 const Browse: React.FC = () => {
   const dispatch = useDispatch();
   const playlists = useSelector((state: AppState) => state.spotifyPlaylists);
   const accessToken = localStorage.getItem('spotifyToken');
   const [playlistPlayed, setPlaylistPlayed] = useState(false);
-  const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
 
   const playPlaylist = (playlistURI: string) => {
     if (accessToken) {
