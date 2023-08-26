@@ -42,11 +42,6 @@ body {
   width: 155px;
 }
 
-.browse-grid {
-  padding-top: 50px; /* offset header height */
-  padding-bottom: 100px; /* offsets the player */
-}
-
 .user-image {
   width: 40px;
   height: 40px;
@@ -72,7 +67,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
+  /* padding: 10px; */
 }
 .column img {
   width: 100%;
@@ -106,7 +101,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 80%;
+  height: 100%;
+  padding-bottom: 90px;
   padding-top: 30px;
 }
 
@@ -115,6 +111,7 @@ body {
 }
 
 .sun-calc-data {
+  font-size: 14px;
   text-align: left;
   padding: 0 15px;
   color: #5d5d5d;
@@ -150,9 +147,7 @@ body {
 }
 
 .content {
-  /* background: #121212; */
-  padding-top: 18px;
-  padding-bottom: 0;
+  padding: 25px;
   flex: auto;
 }
 
@@ -162,7 +157,7 @@ body {
 
 .row {
   display: grid;
-  gap: 10px;
+  gap: 20px;
   width: 100%;
 }
 
@@ -174,7 +169,21 @@ body {
   grid-template-columns: repeat(4, 1fr);
 }
 
-/* Tablet Viewports */
+/* Large Desktop */
+@media (min-width: 1400px) {
+  .row.four {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Extra Large Desktop */
+@media (min-width: 1600px) {
+  .row.four {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* Tablet */
 @media (max-width: 1024px) and (min-width: 768px) {
   .row.five {
     grid-template-columns: repeat(3, 1fr);
@@ -185,14 +194,14 @@ body {
   }
 }
 
-/* Mobile Viewports */
+/* Mobile */
 @media (max-width: 767px) {
   .nav {
     background: transparent;
     display: none;
   }
   .content {
-    padding-left: 12px;
+    padding: 20px 12px;
   }
   .row.five,
   .row.four {

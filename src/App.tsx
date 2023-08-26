@@ -24,6 +24,7 @@ const App: React.FC = () => {
   const [showToast, setShowToast] = useState(isLoggedIn);
   const token = localStorage.getItem('spotifyToken');
   const dispatch = useDispatch();
+  const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
     if (token) {
@@ -67,8 +68,8 @@ const App: React.FC = () => {
             }
             <div className="content"
             style={
-              isLoggedIn && userProfile 
-                ? { paddingRight: '12px', paddingLeft: '190px' } 
+              isLoggedIn && userProfile && !isMobile
+                ? { paddingRight: '18px', paddingLeft: '195px' } 
                 : {}
               }
               >

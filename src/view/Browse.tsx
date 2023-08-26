@@ -6,6 +6,7 @@ import { setSpotifyPlaylistsAction } from '../model/actions';
 import { FaPlay } from 'react-icons/fa';
 import { SpotifyPlayer } from '../component/SpotifyPlayer';
 import SpaceBackground from '../component/Space';
+import './Browse.css';
 
 const Browse: React.FC = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,6 @@ const Browse: React.FC = () => {
       console.error("Access token is not available.");
     }
   };
-  
 
   useEffect(() => {
     // On component load, check localStorage
@@ -56,19 +56,18 @@ const Browse: React.FC = () => {
       {Array.isArray(playlists) && playlists.map((playlist: any) => (
         <div className="column" key={playlist.id}>
           <div 
+            onClick={() => playPlaylist(playlist.uri)}
+            className='album-art'
             style={{
-              width: '100%',
-              paddingBottom: '100%',
               backgroundImage: `url(${playlist?.images?.[0]?.url})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
             }}
-          ></div>
-          <div className="controls">
-            <button onClick={() => playPlaylist(playlist.uri)}>
-              <FaPlay size={13} color='#202020' />
-            </button>
-            <h4>{playlist?.name}</h4>
+          >
+            <div className="playback-controls">
+                <button className='play-circle'>
+                  <FaPlay size={25} color='#202020' />
+                </button>
+                <h2 className='playlist-title'>{playlist?.name}</h2>
+            </div>
           </div>
         </div>
       ))}
