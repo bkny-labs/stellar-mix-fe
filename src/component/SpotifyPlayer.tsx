@@ -132,7 +132,15 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
 
   useEffect(() => {
     updatePlaybackStatus();
-  }, [accessToken, playlistPlayed, updatePlaybackStatus, setCurrentTrack]);
+  }, [playlistPlayed]);
+
+  useEffect(() => {
+    if (userId && playlistId) {
+      checkIfPlaylistIsFollowed(accessToken, playlistId, userId)
+        .then(followStatus => setIsFavorited(followStatus));
+    }
+}, [userId, playlistId, accessToken]);
+
 
   return (
     <div className="spotify-player">

@@ -41,13 +41,15 @@
     opacity: 0;
 }
 
-.album-art:hover .playback-controls .play-circle {
+.album-art:hover .playback-controls .play-circle,
+.album-art.currently-playing .playback-controls .play-circle {
     opacity: 1;
     background: var(--primary);
     cursor: pointer;
 }
 
-.album-art:hover .playback-controls {
+.album-art:hover .playback-controls,
+.album-art.currently-playing .playback-controls {
     background: rgb(0 0 0 / 50%);
 }
 
@@ -55,8 +57,10 @@
     opacity: 0;
     color: white;
     font-size: 20px;
+    text-align: center;
 }
 
-.album-art:hover .playlist-title {
+.album-art:hover .playlist-title,
+.album-art.currently-playing .playlist-title {
     opacity: 1;
 }

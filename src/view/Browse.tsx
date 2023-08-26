@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { playSpotifyPlaylist } from '../services/spotify-service';
 import { AppState } from '../model/state';
 import { setSpotifyPlaylistsAction } from '../model/actions';
-import { FaPlay } from 'react-icons/fa';
+import { FaPause, FaPlay } from 'react-icons/fa';
 import { SpotifyPlayer } from '../component/SpotifyPlayer';
 import SpaceBackground from '../component/Space';
 import './Browse.css';
@@ -13,19 +13,28 @@ const Browse: React.FC = () => {
   const playlists = useSelector((state: AppState) => state.spotifyPlaylists);
   const accessToken = localStorage.getItem('spotifyToken');
   const [playlistPlayed, setPlaylistPlayed] = useState(false);
+  const [currentlyPlayingURI, setCurrentlyPlayingURI] = useState<string | null>(null);
 
   const playPlaylist = (playlistURI: string) => {
     if (accessToken) {
-      playSpotifyPlaylist(playlistURI, accessToken)
-        .then(() => {
-          console.log("Playing playlist:", playlistURI);
-          setPlaylistPlayed(prev => !prev); // Toggle the state
-        })
-        .catch(error => {
-          console.error("Error playing playlist:", error);
-        });
+        playSpotifyPlaylist(playlistURI, accessToken)
+            .then(() => {
+                console.log("Playing playlist:", playlistURI);
+                if (currentlyPlayingURI === playlistURI) {
+                    // If the currently playing URI is the same as the one we tried to play, 
+                    // it means we're trying to pause or stop it.
+                    setCurrentlyPlayingURI(null);
+                } else {
+                    // Otherwise, set the new playing URI.
+                    setCurrentlyPlayingURI(playlistURI);
+                }
+                setPlaylistPlayed(prevPlayed => !prevPlayed);
+            })
+            .catch(error => {
+                console.error("Error playing playlist:", error);
+            });
     } else {
-      console.error("Access token is not available.");
+        console.error("Access token is not available.");
     }
   };
 
@@ -57,14 +66,17 @@ const Browse: React.FC = () => {
         <div className="column" key={playlist.id}>
           <div 
             onClick={() => playPlaylist(playlist.uri)}
-            className='album-art'
+            className={`album-art ${currentlyPlayingURI === playlist.uri ? 'currently-playing' : ''}`}
             style={{
               backgroundImage: `url(${playlist?.images?.[0]?.url})`,
             }}
           >
             <div className="playback-controls">
                 <button className='play-circle'>
-                  <FaPlay size={25} color='#202020' />
+                  {currentlyPlayingURI === playlist.uri
+                    ? <FaPause size={25} color='#202020' />
+                    : <FaPlay size={25} color='#202020' />
+                  }
                 </button>
                 <h2 className='playlist-title'>{playlist?.name}</h2>
             </div>
