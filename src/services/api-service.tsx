@@ -41,16 +41,26 @@ export const getSpotifyAccessToken = async (code: string, dispatch: any): Promis
     const errorData = await response.json();
     console.error("Spotify API Error Response:", errorData);
     dispatch(setLoggedInAction(false));
+    localStorage.setItem('isLoggedIn', 'false');
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
 
   const data = await response.json();
   // Set the token in localStorage immediately after obtaining it
   localStorage.setItem('spotifyToken', data.access_token);
+  localStorage.setItem('isLoggedIn', 'true');
   dispatch(setLoggedInAction(true, data.access_token));
 
   return data.access_token;
 };
+
+export const logout = (dispatch: any) => {
+  localStorage.removeItem('spotifyToken');
+  localStorage.removeItem('tokenExpiryTime');
+  localStorage.removeItem('isLoggedIn');
+  dispatch(setLoggedInAction(false));
+  window.location.href = '/';
+}
 
 export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
   try {
@@ -62,11 +72,13 @@ export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
     });
 
     if (!response.ok) {
-      // dispatch(setLoggedInAction(false));
+      dispatch(setLoggedInAction(false));
+      console.log("User is not logged in.");
+      localStorage.removeItem('isLoggedIn');
       throw new Error('Failed to fetch user profile');
     }
-
     const data = await response.json();
+    console.log("LOGGED IN", data);
     return data;
 
   } catch (error) {

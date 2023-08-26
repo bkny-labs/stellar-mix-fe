@@ -1,24 +1,26 @@
-import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import { AppState } from '../model/state';
 import { FaCog, FaHome, FaMusic, FaRegMoon } from 'react-icons/fa';
 import { GiSunrise, GiSunset } from 'react-icons/gi';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
 import { BsThermometerSun } from 'react-icons/bs';
 import { WiHumidity } from 'react-icons/wi';
+import { CgLogOut } from 'react-icons/cg';
 import { DateTime } from 'luxon';
+import { useDispatch } from 'react-redux';
+import { logout } from '../services/api-service';
 
 interface NavigationProps {
   loggedIn?: boolean;
+  sunCalcData?: any;
+  weatherData?: any;
 }
 
-export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false }) => {
-    const location = useLocation();
-    const sunCalcData = useSelector((state: AppState) => state.sunCalcData);
-    const weatherData = useSelector((state: AppState) => state.weather);
-    const sunriseTime = DateTime.fromISO(sunCalcData?.sunrise, { setZone: true }).toLocaleString(DateTime.TIME_SIMPLE);
-    const localSunset = DateTime.fromISO(sunCalcData?.sunset).setZone('local');
-    const sunsetTime = localSunset.toLocaleString(DateTime.TIME_24_SIMPLE);
+export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false, sunCalcData, weatherData }) => {
+  const location = useLocation();
+  const sunriseTime = DateTime.fromISO(sunCalcData?.sunrise, { setZone: true }).toLocaleString(DateTime.TIME_SIMPLE);
+  const localSunset = DateTime.fromISO(sunCalcData?.sunset).setZone('local');
+  const sunsetTime = localSunset.toLocaleString(DateTime.TIME_24_SIMPLE);
+  const dispatch = useDispatch();
 
   function getMoonPhaseLabel(phase: number): string {
     if (phase === 0) return 'New Moon';
@@ -36,6 +38,14 @@ export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false }) => {
     return str.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
+  }
+
+  const userLogout = async () => {
+    try {
+      await logout(dispatch);
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   }
 
   return (
@@ -64,6 +74,13 @@ export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false }) => {
             className={location.pathname === "/settings" ? "active" : ""}
           >
             <FaCog /> Settings
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="#" 
+            onClick={userLogout}>
+              <CgLogOut /> Logout
           </Link>
         </li>
       </ul>

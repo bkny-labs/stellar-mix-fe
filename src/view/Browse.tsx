@@ -6,6 +6,7 @@ import { setSpotifyPlaylistsAction } from '../model/actions';
 import { FaPlay } from 'react-icons/fa';
 import { SpotifyPlayer } from '../component/SpotifyPlayer';
 import SpaceBackground from '../component/Space';
+import MainController from '../controller/main-controller';
 
 const Browse: React.FC = () => {
   const dispatch = useDispatch();
@@ -45,15 +46,6 @@ const Browse: React.FC = () => {
       localStorage.setItem('spotifyPlaylists', JSON.stringify(playlists));
     }
   }, [playlists]);
-
-  // TODO: This should redirect back to the homepage if the user is not logged in 
-  // but it's causing an issue with the current auth redirect.
-  // useEffect(() => { 
-  //   if(!isLoggedIn) {
-  //     window.location.href = '/';
-  //   }
-  // }, [isLoggedIn]); 
-
 
   return (
     <>

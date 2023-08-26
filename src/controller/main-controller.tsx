@@ -19,11 +19,10 @@ export default class MainController {
   private params = new URLSearchParams(window.location.search);
   private code = this.params.get('code');
 
-  
   constructor(store: any) {
     this.store = store;
     this.updateFromStore();
-    
+
     store.subscribe(() => {
       this.updateFromStore();
     });
@@ -35,7 +34,7 @@ export default class MainController {
     this.moodData = getMusicalMood(state);
   }
 
-  fetchSpotifyPlaylists = () => {
+  public fetchSpotifyPlaylists = () => {
     if (!this.spotifyToken) return;
 
     const playlistQuery = buildPlaylistQuery({
@@ -75,16 +74,15 @@ export default class MainController {
     return localStorage.getItem('isLoggedIn') === 'true';
   }
 
-  handleAccessToken = async (code: any) => {
+  handleUserLogin = async (code: any) => {
     try {
       await getSpotifyAccessToken(code, this.store.dispatch);
 
       if (this.spotifyToken) {
         const tokenExpiryTime = new Date().getTime() + (3600 * 1000);
         localStorage.setItem('tokenExpiryTime', tokenExpiryTime.toString());
-        this.store.dispatch(setLoggedInAction(true));
-        localStorage.setItem('isLoggedIn', 'true');
-        // fetchUserProfile(this.spotifyToken, this.store.dispatch);
+        fetchUserProfile(this.spotifyToken, this.store.dispatch);
+        this.fetchSpotifyPlaylists();
         return this.spotifyToken;
       }
     } catch (error) {
@@ -94,10 +92,9 @@ export default class MainController {
   };
 
   init() {
-    console.log('MainController init');
     this.fetchWeatherAndSunCalcData();
-    if (!this.userIsLoggedIn() && this.hasValidToken()) {
-      this.handleAccessToken(this.code);
+    if (!this.userIsLoggedIn() && !this.hasValidToken()) {
+      this.handleUserLogin(this.code);
     }
     this.render();
   }
@@ -108,14 +105,14 @@ export default class MainController {
 
     try {
       const weatherData = await getWeatherByLocation(lat, lon);
-      this.store.dispatch(setWeatherAction(weatherData)); // Use this.store.dispatch
+      this.store.dispatch(setWeatherAction(weatherData));
     } catch (error) {
       console.error('Failed to fetch weather data:', error);
     }
 
     try {
       const data = await getSunCalcData(lon, lat);
-      this.store.dispatch(setSunCalcAction(data)); // Use this.store.dispatch
+      this.store.dispatch(setSunCalcAction(data));
     } catch (error) {
       console.error('Failed to fetch SunCalc data:', error);
     }
