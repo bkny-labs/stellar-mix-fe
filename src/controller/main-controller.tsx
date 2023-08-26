@@ -81,6 +81,7 @@ export default class MainController {
       if (this.spotifyToken) {
         const tokenExpiryTime = new Date().getTime() + (3600 * 1000);
         localStorage.setItem('tokenExpiryTime', tokenExpiryTime.toString());
+        localStorage.setItem('isLoggedIn', 'true');
         fetchUserProfile(this.spotifyToken, this.store.dispatch);
         this.fetchSpotifyPlaylists();
         return this.spotifyToken;

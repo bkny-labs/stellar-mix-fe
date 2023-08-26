@@ -145,6 +145,30 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any)
       headers: headers,
     });
   };
+
+  export const playTrackInContext = async (accessToken: string, trackId: string, playlistId: string) => {
+    const API_ENDPOINT = `https://api.spotify.com/v1/me/player/play`;
+  
+    const headers = {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    };
+  
+    const body = {
+      context_uri: `spotify:playlist:${playlistId}`, // This specifies the context (in this case, a playlist)
+      offset: {
+        uri: `spotify:track:${trackId}` // This specifies which track to start with
+      }
+    };
+  
+    return fetch(API_ENDPOINT, {
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify(body)
+    });
+  };
+  
+  
   
   export const pauseTrack = async (accessToken: string) => {
     const API_ENDPOINT = `https://api.spotify.com/v1/me/player/pause`;

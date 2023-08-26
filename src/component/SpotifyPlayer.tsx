@@ -137,7 +137,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
 
   useEffect(() => {
     updatePlaybackStatus();
-  }, [playlistPlayed]);
+  }, [playlistPlayed, setCurrentTrack, isPlaying, updatePlaybackStatus]);
 
   useEffect(() => {
     if (userId && playlistId) {

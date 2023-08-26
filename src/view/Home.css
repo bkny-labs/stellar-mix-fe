@@ -8,11 +8,10 @@ body, html {
     width: 100%;
     color: #fff;
     font-family: 'Circular Std', sans-serif;
-    padding: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 810px;
+    max-width: 800px;
     margin: 0 auto;
   }
   
@@ -65,12 +64,10 @@ body, html {
   
   .about {
     width: 70%;
-    margin-top: 3rem;
+    margin-top: 1rem;
     text-align: center;
-    /* background-image: url('path_to_celestial_image'); */
     background-size: cover;
-    padding: 3rem;
-    border-radius: 5px;
+    padding: 2rem;
   }
   
   footer {

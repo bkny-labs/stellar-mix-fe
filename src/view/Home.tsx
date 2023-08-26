@@ -5,12 +5,21 @@ import { getAuthURL } from '../services/auth-service';
 import { FaCompass, FaGithub, FaSpotify, FaUserAstronaut } from 'react-icons/fa';
 import logo from '../assets/sm_logo.png';
 import SpaceBackground from '../component/Space';
+import { useEffect } from 'react';
 
 function Home() {
   const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
   const handleLogin = () => {
     window.location.href = getAuthURL();
-  }
+  };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      localStorage.removeItem('spotifyToken');
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('tokenExpiryTime');
+    }
+  }, []);
 
   return (
     <>
@@ -21,7 +30,7 @@ function Home() {
 
       <div className="hero">
         <img src={logo} alt="logo" />
-        <h1>Cosmic Mix</h1>
+        <h1>Stellar Mix</h1>
         <p>StellarMix crafts the ultimate playlist for your moment, blending your music tastes with cues from the world around you – day or night, rain or shine, cosmos in motion. Dive into a universe of sound, all through your Spotify.</p>
         {!isLoggedIn &&
           <div>

@@ -6,7 +6,6 @@
     top: 60px;
     background: var(--background);
     padding: 10px 20px;
-    overflow-y: auto;
     box-shadow: -1px 3px 8px #000;
     transform: translateX(100%);
     opacity: 0;
@@ -44,6 +43,8 @@
 }
 
 .track-list {
+    overflow-y: auto;
+    height: 330px;
     margin-top: 12px;
 }
 .track-list table {
@@ -99,7 +100,11 @@
 
   .playlist-info h3 {
     margin: 12px 0px;
-  }
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    }
   .playlist-info h3 a {
     color: white;
     text-decoration: none;
@@ -107,3 +112,19 @@
   .playlist-info h3 a:hover {
     text-decoration: underline;
   }
+
+  .skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
