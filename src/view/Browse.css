@@ -1,6 +1,7 @@
 .browse-grid {
     padding-top: 50px; /* offset header height */
     padding-bottom: 80px; /* offsets the player */
+    padding-left: 18px;
 }
 
 .drawer-open {

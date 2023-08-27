@@ -12,9 +12,10 @@ type SpotifyPlayerProps = {
   accessToken: string;
   playlistPlayed: boolean;
   onDrawerToggle: any;
+  isDrawerOpen: boolean;
 };
 
-export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle }: SpotifyPlayerProps) {
+export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isDrawerOpen }: SpotifyPlayerProps) {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
@@ -22,7 +23,6 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle }: S
   const [volume, setVolume] = useState<number>(10);
   const [playlistId, setPlaylistId] = useState<any | null>(null);
   const [userId, setUserId] = useState<any | null>(null);
-  const [showDrawer, setShowDrawer] = useState(false);
   const dispatch = useDispatch();
 
   const handleTrackChangeFromDrawer = () => {
@@ -81,7 +81,6 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle }: S
       });
   };
 
-
   const toggleShuffle = async () => {
     const newShuffleState = !isShuffle; // Flip the current state
     toggleShufflePlayback(accessToken, newShuffleState);
@@ -91,7 +90,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle }: S
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = Number(event.target.value);
     setVolume(newVolume);
-  
+
     setSpotifyVolume(accessToken, newVolume).catch(error => {
       console.error("Failed to change volume:", error);
     });
@@ -109,7 +108,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle }: S
         console.error("Error playing the next track:", error);
       });
   };
-  
+
   const handlePreviousTrack = () => {
     playPreviousTrack(accessToken)
       .then(() => {
@@ -123,10 +122,15 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle }: S
       });
   };
 
+  // const toggleDrawer = () => {
+  //   setShowDrawer(prev => !prev);
+  //   onDrawerToggle(!showDrawer);
+  // };
+
   const toggleDrawer = () => {
-    setShowDrawer(prev => !prev);
-    onDrawerToggle(!showDrawer);
+    onDrawerToggle(!isDrawerOpen);
   };
+
 
   useEffect(() => {
     console.log('Playlist status changed:', playlistPlayed);
@@ -141,8 +145,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle }: S
       checkIfPlaylistIsFollowed(accessToken, playlistId, userId)
         .then(followStatus => setIsFavorited(followStatus));
     }
-}, [userId, playlistId, accessToken]);
-
+  }, [userId, playlistId, accessToken]);
 
   return (
     <>
@@ -174,7 +177,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle }: S
       <div className="player-controls">
         { isPlaying && (
           <button className='info-button' onClick={toggleDrawer}>
-            <FaInfoCircle size={20} color={showDrawer ? '#fda53a' : '#fff' } />
+            <FaInfoCircle size={20} color={isDrawerOpen ? '#fda53a' : '#fff' } />
           </button>
         )}
         <input 
@@ -186,10 +189,10 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle }: S
         />
       </div>
     </div>
-    {showDrawer && 
+    {isDrawerOpen && 
       <Drawer 
         toggleDrawer={toggleDrawer} 
-        isVisible={showDrawer} 
+        isVisible={isDrawerOpen} 
         accessToken={accessToken} 
         playlistPlayed={playlistPlayed} 
         onTrackChange={handleTrackChangeFromDrawer} 

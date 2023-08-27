@@ -16,30 +16,30 @@ function Settings() {
     const token = localStorage.getItem('spotifyToken');
     const dispatch = useDispatch();
     const [allGenres, setAllGenres] = useState<string[]>([]);
-    const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
-    const allActivities = [
-      "party",
-      "sleep",
-      "workout",
-      "study",
-      "chill",
-      "travel",
-      "focus",
-      "romance",
-      "dinner",
-      "reading",
-      "hiking",
-      "cooking",
-      "gaming",
-      "shopping",
-      "meditation",
-      "yoga",
-      "driving",
-      "dancing",
-      "writing",
-      "crafting",
-      "gardening"
-    ];
+    // const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
+    // const allActivities = [
+    //   "party",
+    //   "sleep",
+    //   "workout",
+    //   "study",
+    //   "chill",
+    //   "travel",
+    //   "focus",
+    //   "romance",
+    //   "dinner",
+    //   "reading",
+    //   "hiking",
+    //   "cooking",
+    //   "gaming",
+    //   "shopping",
+    //   "meditation",
+    //   "yoga",
+    //   "driving",
+    //   "dancing",
+    //   "writing",
+    //   "crafting",
+    //   "gardening"
+    // ];
 
     // const toggleActivity = (activity: string) => {
     //   setSelectedActivities(prev => 

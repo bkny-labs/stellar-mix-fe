@@ -159,6 +159,7 @@ body {
   display: grid;
   gap: 20px;
   width: 100%;
+  transition: 0.1s all ease-in-out;
 }
 
 .row.five {
@@ -182,12 +183,18 @@ body {
   .row.four {
     grid-template-columns: repeat(5, 1fr);
   }
+  .row.three {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 /* Extra Large Desktop */
 @media (min-width: 1600px) {
   .row.four {
     grid-template-columns: repeat(6, 1fr);
+  }
+  .row.three {
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
@@ -197,7 +204,8 @@ body {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .row.four {
+  .row.four,
+  .row.three {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -212,7 +220,8 @@ body {
     padding: 20px 12px;
   }
   .row.five,
-  .row.four {
+  .row.four,
+  .row.three {
     grid-template-columns: repeat(1, 1fr);
   }
 }

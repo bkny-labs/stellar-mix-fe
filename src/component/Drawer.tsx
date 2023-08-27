@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useCallback } from 'react';
 import { fetchUserProfile } from '../services/auth-service';
 import { checkIfPlaylistIsFollowed, fetchPlaylistDetails, getCurrentlyPlaying, playTrackInContext } from '../services/spotify-service';
@@ -6,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import './Drawer.css'
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import SkeletonLoader from './SkeletonLoader';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FaHeart } from 'react-icons/fa';
 import { Track } from '../types/spotify.types';
 
 type DrawerProps = {
@@ -34,11 +35,11 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
         setPlaylistId(currentPlaylistId);
         setCurrentTrack(playbackData.item);
         setIsLoading(false);
-        
+
         const profile = await fetchUserProfile(accessToken, dispatch);
         setUserId(profile?.id);
 
-        if (profile?.id) {
+        if (userId) {
           const followStatus = await checkIfPlaylistIsFollowed(accessToken, currentPlaylistId, profile.id);
           setIsFavorited(followStatus);
         }
@@ -55,7 +56,6 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
     try {
       const playlistInfo = await fetchPlaylistDetails(playlistId, accessToken);
       console.log(playlistInfo);
-      setIsLoading(false);
       setPlaylistData(playlistInfo);
     } catch (error) {
       console.error('Failed to fetch playlist details:', error);
@@ -88,8 +88,15 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
         const drawerElem = document.querySelector('.drawer');
         drawerElem?.classList.remove('show');
     }
-}, [isVisible, playlistDetails]);
+  }, [isVisible , playlistDetails]);
 
+useEffect(() => {
+  if (playlistData) {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 200);  // 200ms delay, adjust as needed
+  }
+}, [playlistData]);
 
   useEffect(() => {
     updatePlaybackStatus();

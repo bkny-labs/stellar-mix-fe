@@ -22,6 +22,7 @@ const Browse: React.FC = () => {
     if (accessToken) {
         playSpotifyPlaylist(playlistURI, accessToken)
             .then(() => {
+                setPlaylistPlayed(prevPlayed => !prevPlayed);
                 console.log("Playing playlist:", playlistURI);
                 if (currentlyPlayingURI === playlistURI) {
                     // If the currently playing URI is the same as the one we tried to play, 
@@ -31,7 +32,6 @@ const Browse: React.FC = () => {
                     // Otherwise, set the new playing URI.
                     setCurrentlyPlayingURI(playlistURI);
                 }
-                setPlaylistPlayed(prevPlayed => !prevPlayed);
             })
             .catch(error => {
                 console.error("Error playing playlist:", error);
@@ -49,7 +49,6 @@ const Browse: React.FC = () => {
     // On component load, check localStorage
     const storedPlaylists = localStorage.getItem('spotifyPlaylists');
     if (storedPlaylists) {
-      // If playlists exist in localStorage, dispatch them to Redux
       dispatch(setSpotifyPlaylistsAction(JSON.parse(storedPlaylists)));
     }
   }, [dispatch]);
@@ -102,6 +101,7 @@ const Browse: React.FC = () => {
         <SpotifyPlayer 
           key={currentlyPlayingURI} 
           accessToken={accessToken} 
+          isDrawerOpen={isDrawerOpen}
           playlistPlayed={playlistPlayed} 
           onDrawerToggle={handleDrawerToggle}
       />}

@@ -69,7 +69,7 @@ const App: React.FC = () => {
             <div className="content"
             style={
               isLoggedIn && userProfile && !isMobile
-                ? { paddingRight: '18px', paddingLeft: '195px' } 
+                ? { paddingRight: '18px', paddingLeft: '180px' } 
                 : {}
               }
               >
