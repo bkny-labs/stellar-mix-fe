@@ -93,7 +93,7 @@ const Browse: React.FC = () => {
         </div>
       ))}
       </div>
-      {accessToken && <SpotifyPlayer accessToken={accessToken} playlistPlayed={playlistPlayed} />}
+      {accessToken && <SpotifyPlayer key={currentlyPlayingURI} accessToken={accessToken} playlistPlayed={playlistPlayed} />}
     </div>
     </>
   );
