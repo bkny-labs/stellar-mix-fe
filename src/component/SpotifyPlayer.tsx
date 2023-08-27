@@ -11,9 +11,10 @@ import { Track } from '../types/spotify.types';
 type SpotifyPlayerProps = {
   accessToken: string;
   playlistPlayed: boolean;
+  onDrawerToggle: any;
 };
 
-export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProps) {
+export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle }: SpotifyPlayerProps) {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
@@ -124,6 +125,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
 
   const toggleDrawer = () => {
     setShowDrawer(prev => !prev);
+    onDrawerToggle(!showDrawer);
   };
 
   useEffect(() => {

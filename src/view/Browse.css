@@ -3,6 +3,10 @@
     padding-bottom: 80px; /* offsets the player */
 }
 
+.drawer-open {
+    padding-right: 350px;
+}
+
 .album-art {
     position: relative;
     width: 100%;

@@ -41,20 +41,20 @@ function Settings() {
       "gardening"
     ];
 
-    const toggleActivity = (activity: string) => {
-      setSelectedActivities(prev => 
-          prev.includes(activity) 
-          ? prev.filter(a => a !== activity)
-          : [...prev, activity]
-      );
-    };
-      const selectAllActivities = () => {
-          setSelectedActivities(allActivities);
-      }
+    // const toggleActivity = (activity: string) => {
+    //   setSelectedActivities(prev => 
+    //       prev.includes(activity) 
+    //       ? prev.filter(a => a !== activity)
+    //       : [...prev, activity]
+    //   );
+    // };
+    //   const selectAllActivities = () => {
+    //       setSelectedActivities(allActivities);
+    //   }
 
-      const deselectAllActivities = () => {
-          setSelectedActivities([]);
-      }
+    //   const deselectAllActivities = () => {
+    //       setSelectedActivities([]);
+    //   }
 
 
     useEffect(() => {

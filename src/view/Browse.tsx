@@ -16,6 +16,7 @@ const Browse: React.FC = () => {
   const [playlistPlayed, setPlaylistPlayed] = useState(false);
   const [currentlyPlayingURI, setCurrentlyPlayingURI] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const playPlaylist = (playlistURI: string) => {
     if (accessToken) {
@@ -38,6 +39,10 @@ const Browse: React.FC = () => {
     } else {
         console.error("Access token is not available.");
     }
+  };
+  
+  const handleDrawerToggle = (open: boolean) => {
+    setIsDrawerOpen(open);
   };
 
   useEffect(() => {
@@ -65,7 +70,7 @@ const Browse: React.FC = () => {
     </div>
 
     <div className='browse-grid'>
-      <div className="row four">
+      <div className={isDrawerOpen ? 'row three drawer-open' : 'row four'}>
       {Array.isArray(playlists) && playlists.map((playlist: any) => (
         <div className="column" key={playlist.id}>
           {isLoading ? (
@@ -93,7 +98,13 @@ const Browse: React.FC = () => {
         </div>
       ))}
       </div>
-      {accessToken && <SpotifyPlayer key={currentlyPlayingURI} accessToken={accessToken} playlistPlayed={playlistPlayed} />}
+      {accessToken && 
+        <SpotifyPlayer 
+          key={currentlyPlayingURI} 
+          accessToken={accessToken} 
+          playlistPlayed={playlistPlayed} 
+          onDrawerToggle={handleDrawerToggle}
+      />}
     </div>
     </>
   );
