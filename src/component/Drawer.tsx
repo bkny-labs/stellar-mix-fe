@@ -7,20 +7,7 @@ import './Drawer.css'
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import SkeletonLoader from './SkeletonLoader';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-
-type Artist = {
-  name: string;
-};
-
-type Album = {
-  images: { url: string }[];
-};
-
-type Track = {
-  name: string;
-  album: Album;
-  artists: Artist[];
-};
+import { Track } from '../types/spotify.types';
 
 type DrawerProps = {
   accessToken: any;

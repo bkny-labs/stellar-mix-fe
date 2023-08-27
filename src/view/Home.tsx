@@ -28,7 +28,7 @@ function Home() {
     </div>
     <div className="landing">
 
-      <div className="hero">
+      <div className={`hero ${isLoggedIn ? 'logged-in' : ''}`}>
         <img src={logo} alt="logo" />
         <h1>Stellar Mix</h1>
         <p>StellarMix crafts the ultimate playlist for your moment, blending your music tastes with cues from the world around you – day or night, rain or shine, cosmos in motion. Dive into a universe of sound, all through your Spotify.</p>

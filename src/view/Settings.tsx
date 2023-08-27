@@ -155,7 +155,7 @@ function Settings() {
             ))}
             </div>
 
-            <h2>Favorite Activities</h2>
+            {/* <h2>Favorite Activities</h2>
             <p>Below is a list of activities to help us curate playlists better on StellarMix.</p>
             <div className="checkbox-select-buttons">
                 <button onClick={selectAllActivities}>Select All</button> |
@@ -176,7 +176,7 @@ function Settings() {
                   </label>
                 </div>
             ))}
-            </div>
+            </div> */}
             <div className="action-bar">
               <button className="save-button" onClick={handleSave}>Save Settings</button>
             </div>

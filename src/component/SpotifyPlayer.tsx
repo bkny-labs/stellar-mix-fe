@@ -6,20 +6,7 @@ import { IoAlbums } from 'react-icons/io5';
 import './SpotifyPlayer.css';
 import { useDispatch } from 'react-redux';
 import { Drawer } from './Drawer';
-
-type Artist = {
-  name: string;
-};
-
-type Album = {
-  images: { url: string }[];
-};
-
-type Track = {
-  name: string;
-  album: Album;
-  artists: Artist[];
-};
+import { Track } from '../types/spotify.types';
 
 type SpotifyPlayerProps = {
   accessToken: string;
@@ -185,7 +172,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
       <div className="player-controls">
         { isPlaying && (
           <button className='info-button' onClick={toggleDrawer}>
-            <FaInfoCircle size={15} color={showDrawer ? '#fda53a' : '#fff' } />
+            <FaInfoCircle size={20} color={showDrawer ? '#fda53a' : '#fff' } />
           </button>
         )}
         <input 

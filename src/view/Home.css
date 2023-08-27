@@ -20,6 +20,9 @@ body, html {
     text-align: center;
     margin-top: 2rem;
   }
+  .hero.logged-in {
+    padding-top: 3rem; 
+}
   .hero img {
     margin-bottom: 1rem;
     width: 220px;
