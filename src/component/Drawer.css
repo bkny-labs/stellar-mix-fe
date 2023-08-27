@@ -91,6 +91,7 @@
   
   .track-list .isPlaying {
     background-color: rgba(30, 215, 96, 0.1);
+    color: white;
   }
   
   .playlist-info-sm {

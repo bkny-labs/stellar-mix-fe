@@ -37,6 +37,10 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
   const [showDrawer, setShowDrawer] = useState(false);
   const dispatch = useDispatch();
 
+  const handleTrackChangeFromDrawer = () => {
+    updatePlaybackStatus();
+  };
+
   const updatePlaybackStatus = useCallback(() => {
     // Fetch the current playback track and set playlistId
     getCurrentlyPlaying(accessToken, dispatch).then(data => {
@@ -189,7 +193,14 @@ export function SpotifyPlayer({ accessToken, playlistPlayed }: SpotifyPlayerProp
         />
       </div>
     </div>
-    {showDrawer && <Drawer toggleDrawer={toggleDrawer} isVisible={showDrawer} accessToken={accessToken} playlistPlayed={playlistPlayed} />}
+    {showDrawer && 
+      <Drawer 
+        toggleDrawer={toggleDrawer} 
+        isVisible={showDrawer} 
+        accessToken={accessToken} 
+        playlistPlayed={playlistPlayed} 
+        onTrackChange={handleTrackChangeFromDrawer} 
+      />}
     </>
     
   );

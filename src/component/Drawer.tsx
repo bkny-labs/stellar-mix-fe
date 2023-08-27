@@ -27,9 +27,10 @@ type DrawerProps = {
   playlistPlayed: boolean;
   isVisible: boolean;
   toggleDrawer: any;
+  onTrackChange: () => void;
 };
 
-export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer }: DrawerProps) {
+export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, onTrackChange }: DrawerProps) {
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [playlistId, setPlaylistId] = useState<any | null>(null);
@@ -79,6 +80,7 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer }:
     playTrackInContext(accessToken, track.track.id, playlistId)
       .then(() => {
         updatePlaybackStatus();
+        onTrackChange();
       }
     );
     updatePlaybackStatus();
