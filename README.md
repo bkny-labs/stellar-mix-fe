@@ -32,15 +32,8 @@ Fill in the required keys from your Spotify Developer Dashboard
 ## 🛰️ Tech Stack
 
 Frontend: React, Redux
-APIs: Spotify API, Weather API (if you have one)
+APIs: Spotify API, OpenWeather API, SunCalc
 
-
-## 🌌 Future Plans
-1. Mood Detection: Recommend playlists based on user's mood based on factors like "what I'm doing today" etc. Read calendar?
-2. Social Integration: Share your celestial playlist with friends and compare what the universe has chosen for you both.
-3. Backend: Express, Node.js
-4. Lighting controls for your smart home devices.
-5. Integration with Sonos
 
 ## 📜 License
 This project is licensed under the MIT License - see the LICENSE.md file for details.
