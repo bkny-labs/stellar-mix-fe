@@ -1,6 +1,6 @@
 import './Home.css';
 import { useSelector } from 'react-redux';
-import { AppState } from '../model/state';
+import { AppState } from '../store/state';
 import { getAuthURL } from '../services/auth-service';
 import { FaCompass, FaGithub, FaSpotify, FaUserAstronaut } from 'react-icons/fa';
 import logo from '../assets/sm_logo.png';

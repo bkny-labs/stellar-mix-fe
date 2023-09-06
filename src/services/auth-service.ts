@@ -1,4 +1,4 @@
-import { setLoggedInAction } from '../model/actions';
+import { setLoggedInAction } from '../store/actions';
 
 // Spotify Authentication
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";

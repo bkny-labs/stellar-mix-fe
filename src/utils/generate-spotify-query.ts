@@ -1,4 +1,4 @@
-import { AppState } from "../model/state";
+import { AppState } from "../store/state";
 
 interface MusicalMood {
   moods: string[];
@@ -22,6 +22,7 @@ function shuffleArray(array: any[]) {
           break;
         case 'clouds':
         case 'broken clouds':
+        case 'overcast clouds':
           moods.push('moody', 'overcast');
           break;
         case 'drizzle':

@@ -8,7 +8,7 @@ import './App.css';
 import Browse from './view/Browse';
 import { Navigation } from './component/Navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from './model/state';
+import { AppState } from './store/state';
 import Header from './component/Header';
 import Settings from './view/Settings';
 import Toast from './component/Toast';

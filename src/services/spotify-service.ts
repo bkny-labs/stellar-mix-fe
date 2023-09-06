@@ -1,4 +1,4 @@
-import { setLoggedInAction } from "../model/actions";
+import { setLoggedInAction } from "../store/actions";
 
 // Get Playlist
 export const getPlaylistsByQuery = (query: string, token: string, dispatch: any): Promise<any> => {

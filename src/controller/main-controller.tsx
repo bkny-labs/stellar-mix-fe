@@ -1,16 +1,16 @@
 import { Provider } from 'react-redux';
 import {
   fetchUserProfile, getSpotifyAccessToken, logout } from '../services/auth-service';
-import { getPlaylistsByQuery } from '../services/spotify-service';
+import { fetchAvailableGenres, getPlaylistsByQuery } from '../services/spotify-service';
 import { getSunCalcData } from '../services/suncalc-service';
 import { getWeatherByLocation } from '../services/weather-service';
 import { setSpotifyPlaylistsAction,
-  setSunCalcAction, setWeatherAction
-} from '../model/actions';
+  setSunCalcAction, setUserGenresAction, setWeatherAction
+} from '../store/actions';
 import { buildPlaylistQuery, getMusicalMood } from '../utils/generate-spotify-query';
 import { createRoot } from 'react-dom/client';
 import App from '../App';
-import { store } from '../model/store';
+import { store } from '../store/store';
 
 export default class MainController {
   private spotifyToken = localStorage.getItem('spotifyToken') || null;
@@ -52,7 +52,10 @@ export default class MainController {
     });
 
     getPlaylistsByQuery(playlistQuery, this.spotifyToken, this.store.dispatch)
-      .then(data => {
+      .then(async (data) => {
+          // const genres = await fetchAvailableGenres(this.spotifyToken!) as any;
+          // this.store.dispatch(setUserGenresAction(genres));
+          // localStorage.setItem('userGenres', JSON.parse(genres));
           this.store.dispatch(setSpotifyPlaylistsAction(data));
           localStorage.setItem('spotifyPlaylists', JSON.stringify(data));
           console.log('Fetched Spotify playlists for query:', playlistQuery);

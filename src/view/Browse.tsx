@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { playSpotifyPlaylist } from '../services/spotify-service';
-import { AppState } from '../model/state';
-import { setSpotifyPlaylistsAction } from '../model/actions';
+import { AppState } from '../store/state';
+import { setSpotifyPlaylistsAction } from '../store/actions';
 import { FaPause, FaPlay } from 'react-icons/fa';
 import { SpotifyPlayer } from '../component/SpotifyPlayer';
 import SpaceBackground from '../component/Space';

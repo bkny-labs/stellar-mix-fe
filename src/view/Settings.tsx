@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from "../model/state";
-import { setUserGenresAction } from "../model/actions";
+import { AppState } from "../store/state";
+import { setUserGenresAction } from "../store/actions";
 import { UserProfile } from "../types";
 import { fetchUserProfile } from "../services/auth-service";
 import { fetchAvailableGenres } from '../services/spotify-service';
@@ -16,45 +16,45 @@ function Settings() {
     const token = localStorage.getItem('spotifyToken');
     const dispatch = useDispatch();
     const [allGenres, setAllGenres] = useState<string[]>([]);
-    // const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
-    // const allActivities = [
-    //   "party",
-    //   "sleep",
-    //   "workout",
-    //   "study",
-    //   "chill",
-    //   "travel",
-    //   "focus",
-    //   "romance",
-    //   "dinner",
-    //   "reading",
-    //   "hiking",
-    //   "cooking",
-    //   "gaming",
-    //   "shopping",
-    //   "meditation",
-    //   "yoga",
-    //   "driving",
-    //   "dancing",
-    //   "writing",
-    //   "crafting",
-    //   "gardening"
-    // ];
+    const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
+    const allActivities = [
+      "chill",
+      "cooking",
+      "crafting",
+      "dancing",
+      "dinner",
+      "road trip",
+      "focus",
+      "gaming",
+      "gardening",
+      "hiking",
+      "meditation",
+      "party",
+      "reading",
+      "romance",
+      "shopping",
+      "sleep",
+      "study",
+      "travel",
+      "workout",
+      "writing",
+      "yoga",
+    ];
 
-    // const toggleActivity = (activity: string) => {
-    //   setSelectedActivities(prev => 
-    //       prev.includes(activity) 
-    //       ? prev.filter(a => a !== activity)
-    //       : [...prev, activity]
-    //   );
-    // };
-    //   const selectAllActivities = () => {
-    //       setSelectedActivities(allActivities);
-    //   }
+    const toggleActivity = (activity: string) => {
+      setSelectedActivities(prev => 
+          prev.includes(activity) 
+          ? prev.filter(a => a !== activity)
+          : [...prev, activity]
+      );
+    };
+      const selectAllActivities = () => {
+          setSelectedActivities(allActivities);
+      }
 
-    //   const deselectAllActivities = () => {
-    //       setSelectedActivities([]);
-    //   }
+      const deselectAllActivities = () => {
+          setSelectedActivities([]);
+      }
 
 
     useEffect(() => {
@@ -87,7 +87,6 @@ function Settings() {
         fetchUserProfile(token, dispatch)
         .then(data => setUserProfile(data))
         .catch(error => console.error("Error fetching user profile:", error));
-        console.log(userProfile);
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, dispatch]);
@@ -155,7 +154,7 @@ function Settings() {
             ))}
             </div>
 
-            {/* <h2>Favorite Activities</h2>
+            <h2>Favorite Activities</h2>
             <p>Below is a list of activities to help us curate playlists better on StellarMix.</p>
             <div className="checkbox-select-buttons">
                 <button onClick={selectAllActivities}>Select All</button> |
@@ -176,7 +175,7 @@ function Settings() {
                   </label>
                 </div>
             ))}
-            </div> */}
+            </div>
             <div className="action-bar">
               <button className="save-button" onClick={handleSave}>Save Settings</button>
             </div>
