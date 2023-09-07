@@ -1,5 +1,4 @@
 import React from 'react';
-import { BiRefresh } from 'react-icons/bi';
 
 interface FilterDrawerProps {
     isOpen: boolean;
