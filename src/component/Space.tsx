@@ -67,6 +67,7 @@ const SpaceBackground: React.FC = () => {
 
     return () => {
       window.removeEventListener('resize', () => { });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       mount.current?.removeChild(renderer.domElement);
     };
 

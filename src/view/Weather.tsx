@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectWeather } from '../model/selectors';
+import { selectWeather } from '../store/selectors';
 
 const Weather: React.FC = () => {
   const weatherData = useSelector(selectWeather);

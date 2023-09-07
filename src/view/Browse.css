@@ -1,0 +1,70 @@
+.browse-grid {
+    padding-top: 50px; /* offset header height */
+    padding-bottom: 80px; /* offsets the player */
+    padding-left: 18px;
+}
+
+.drawer-open {
+    padding-right: 350px;
+}
+
+.album-art {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    background-size: cover;
+    border-radius: 5px;
+}
+
+.album-art > .playback-controls {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+    padding-top: 15%;
+    justify-content: center;
+    align-items: center;  /* centering the content */
+    transition: 0.2s all ease-in-out;
+}
+
+.playback-controls .play-circle {
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s all ease-in-out;
+    opacity: 0;
+}
+
+.album-art:hover .playback-controls .play-circle,
+.album-art.currently-playing .playback-controls .play-circle {
+    opacity: 1;
+    background: var(--primary);
+    cursor: pointer;
+}
+
+.album-art:hover .playback-controls,
+.album-art.currently-playing .playback-controls {
+    background: rgb(0 0 0 / 50%);
+}
+
+.album-art .playlist-title {
+    opacity: 0;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+.album-art:hover .playlist-title,
+.album-art.currently-playing .playlist-title {
+    opacity: 1;
+}
+
