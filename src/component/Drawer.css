@@ -1,0 +1,133 @@
+.drawer {
+    position: fixed;
+    right: 0;
+    width: 350px;
+    height: 100%;
+    top: 60px;
+    background: var(--background);
+    padding: 10px 20px;
+    box-shadow: -1px 3px 8px #000;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.2s ease-out, opacity 0.1s ease-out;
+}
+
+.drawer.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.drawer .track-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 10px;
+}
+
+.drawer-title h2 {
+    font-size: 18px;
+    margin: 0;
+    color: white;
+}
+
+.close-button {
+    cursor: pointer;
+    color: #5d5d5d;
+}
+.close-button:hover {
+    color: white;
+}
+
+.track-list {
+    overflow-y: auto;
+    height: 330px;
+    margin-top: 12px;
+}
+.track-list table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+  }
+  
+  .track-list thead {
+    color: white;
+  }
+  
+  .track-list th {
+    padding: 2px;
+    text-align: left;
+    font-size: 11px;
+  }
+  
+  .track-list tbody tr {
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .track-list tbody tr:hover {
+    background-color: rgba(30, 215, 96, 0.1);
+  }
+  
+  .track-list td {
+    padding: 8px 2px;
+    border-bottom: 1px solid #302f2f;
+  }
+  
+  /* Play button styles */
+  .track-list .play-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 16px;
+    color: #1ED760;
+  }
+  
+  .track-list .isPlaying {
+    background-color: rgba(30, 215, 96, 0.1);
+    color: white;
+  }
+  
+  .playlist-info-sm {
+    font-size: 12px;
+    margin: 5px 0;
+  }
+
+  .playlist-info h3 {
+    font-size: 16px;
+    margin: 12px 0px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    }
+  .playlist-info h3 a {
+    color: white;
+    text-decoration: none;
+  }
+  .playlist-info h3 a:hover {
+    text-decoration: underline;
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}

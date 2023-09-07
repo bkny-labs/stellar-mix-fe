@@ -1,16 +1,16 @@
 import { Provider } from 'react-redux';
 import {
-  fetchUserProfile, getSpotifyAccessToken } from '../services/auth-service';
-import { getPlaylistsByQuery } from '../services/spotify-service';
+  fetchUserProfile, getSpotifyAccessToken, logout } from '../services/auth-service';
+import { fetchAvailableGenres, getPlaylistsByQuery } from '../services/spotify-service';
 import { getSunCalcData } from '../services/suncalc-service';
 import { getWeatherByLocation } from '../services/weather-service';
 import { setSpotifyPlaylistsAction,
-  setSunCalcAction, setWeatherAction
-} from '../model/actions';
+  setSunCalcAction, setUserGenresAction, setWeatherAction
+} from '../store/actions';
 import { buildPlaylistQuery, getMusicalMood } from '../utils/generate-spotify-query';
 import { createRoot } from 'react-dom/client';
 import App from '../App';
-import { store } from '../model/store';
+import { store } from '../store/store';
 
 export default class MainController {
   private spotifyToken = localStorage.getItem('spotifyToken') || null;
@@ -18,8 +18,11 @@ export default class MainController {
   private store: any;
   private params = new URLSearchParams(window.location.search);
   private code = this.params.get('code');
+  private tokenCheckInterval?: NodeJS.Timeout;
 
-  constructor(store: any) {
+  constructor(
+    store: any
+    ) {
     this.store = store;
     this.updateFromStore();
 
@@ -27,6 +30,12 @@ export default class MainController {
       this.updateFromStore();
     });
   }
+
+  private checkTokenExpiration = () => {
+    if (!this.hasValidToken()) {
+      logout(this.store.dispatch);
+    }
+  };
 
   private updateFromStore() {
     const state = this.store.getState();
@@ -43,7 +52,10 @@ export default class MainController {
     });
 
     getPlaylistsByQuery(playlistQuery, this.spotifyToken, this.store.dispatch)
-      .then(data => {
+      .then(async (data) => {
+          // const genres = await fetchAvailableGenres(this.spotifyToken!) as any;
+          // this.store.dispatch(setUserGenresAction(genres));
+          // localStorage.setItem('userGenres', JSON.parse(genres));
           this.store.dispatch(setSpotifyPlaylistsAction(data));
           localStorage.setItem('spotifyPlaylists', JSON.stringify(data));
           console.log('Fetched Spotify playlists for query:', playlistQuery);
@@ -81,6 +93,7 @@ export default class MainController {
       if (this.spotifyToken) {
         const tokenExpiryTime = new Date().getTime() + (3600 * 1000);
         localStorage.setItem('tokenExpiryTime', tokenExpiryTime.toString());
+        localStorage.setItem('isLoggedIn', 'true');
         fetchUserProfile(this.spotifyToken, this.store.dispatch);
         this.fetchSpotifyPlaylists();
         return this.spotifyToken;
@@ -93,6 +106,7 @@ export default class MainController {
 
   init() {
     this.fetchWeatherAndSunCalcData();
+    this.tokenCheckInterval = setInterval(this.checkTokenExpiration, 1000 * 60); // Check every minute
     if (!this.userIsLoggedIn() && !this.hasValidToken()) {
       this.handleUserLogin(this.code);
     }

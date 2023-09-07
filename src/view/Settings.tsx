@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from "../model/state";
-import { setUserGenresAction } from "../model/actions";
+import { AppState } from "../store/state";
+import { setUserGenresAction } from "../store/actions";
 import { UserProfile } from "../types";
-import { fetchAvailableGenres, fetchUserProfile } from "../services/auth-service";
+import { fetchUserProfile } from "../services/auth-service";
+import { fetchAvailableGenres } from '../services/spotify-service';
 import { CiLocationOn } from 'react-icons/ci';
 import { FiUsers } from 'react-icons/fi';
 import { FaSpotify } from "react-icons/fa";
@@ -17,27 +18,27 @@ function Settings() {
     const [allGenres, setAllGenres] = useState<string[]>([]);
     const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
     const allActivities = [
-      "party",
-      "sleep",
-      "workout",
-      "study",
       "chill",
-      "travel",
-      "focus",
-      "romance",
-      "dinner",
-      "reading",
-      "hiking",
       "cooking",
-      "gaming",
-      "shopping",
-      "meditation",
-      "yoga",
-      "driving",
-      "dancing",
-      "writing",
       "crafting",
-      "gardening"
+      "dancing",
+      "dinner",
+      "road trip",
+      "focus",
+      "gaming",
+      "gardening",
+      "hiking",
+      "meditation",
+      "party",
+      "reading",
+      "romance",
+      "shopping",
+      "sleep",
+      "study",
+      "travel",
+      "workout",
+      "writing",
+      "yoga",
     ];
 
     const toggleActivity = (activity: string) => {
@@ -86,7 +87,6 @@ function Settings() {
         fetchUserProfile(token, dispatch)
         .then(data => setUserProfile(data))
         .catch(error => console.error("Error fetching user profile:", error));
-        console.log(userProfile);
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, dispatch]);
