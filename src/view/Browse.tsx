@@ -20,6 +20,9 @@ const Browse: React.FC = () => {
 
   const playPlaylist = (playlistURI: string) => {
     if (accessToken) {
+        if (!isDrawerOpen) {
+          setIsDrawerOpen(true);
+        }
         playSpotifyPlaylist(playlistURI, accessToken)
             .then(() => {
                 setPlaylistPlayed(prevPlayed => !prevPlayed);

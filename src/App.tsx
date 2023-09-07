@@ -15,6 +15,7 @@ import Toast from './component/Toast';
 import { useEffect, useState } from 'react';
 import { fetchUserProfile } from './services/auth-service';
 import { UserProfile } from './types';
+import { FilterDrawer } from './component/Filters';
 
 const App: React.FC = () => {
   const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
@@ -25,6 +26,11 @@ const App: React.FC = () => {
   const token = localStorage.getItem('spotifyToken');
   const dispatch = useDispatch();
   const isMobile = window.innerWidth < 768;
+  const [filterIsOpen, setFilterIsOpen] = useState(false);
+
+  const toggleFilters = () => {
+    setFilterIsOpen(!filterIsOpen);
+  };
 
   useEffect(() => {
     if (token) {
@@ -56,7 +62,8 @@ const App: React.FC = () => {
           <div className="container">
             {isLoggedIn && userProfile && 
               <>
-              <Header userProfile={userProfile} />
+              <Header userProfile={userProfile} toggleFilters={toggleFilters} />
+              <FilterDrawer isOpen={filterIsOpen} />
               <nav className='nav'>
                 <Navigation 
                   loggedIn={isLoggedIn}
