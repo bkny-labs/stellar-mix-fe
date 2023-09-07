@@ -5,7 +5,7 @@ const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT;
 const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_SECRET;
 
-const REDIRECT_URI = "http://localhost:3000/browse"; 
+const REDIRECT_URI = process.env.REACT_APP_URL + "/browse"; 
 
 export const getAuthURL = () => {
   const params = new URLSearchParams({
