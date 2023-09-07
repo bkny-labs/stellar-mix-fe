@@ -9,6 +9,12 @@ export interface AppState {
   spotifyToken: string | null;
   userSettings: {
     genres: any;
+  },
+  filters: {
+    activity: string;
+    language: string;
+    sort: string;
+    limit: number;
   };
 }
 
@@ -20,5 +26,11 @@ export const initialState: AppState = {
   spotifyToken: null,
   userSettings: {
     genres: []
+  },
+  filters: {
+    activity: 'Creative Work',
+    language: 'English',
+    sort: 'Most Popular',
+    limit: 20
   }
 };

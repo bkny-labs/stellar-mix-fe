@@ -1,5 +1,6 @@
 :root {
   --primary: #fda53a;
+  --primary-hover: #ca9553;
   --spotify: #1DB954;
   --background: #1f1e1e;
   --text-color: #fff;
@@ -51,7 +52,7 @@ body {
 .filters {
   display: flex;
   justify-content: flex-end;
-  padding: 10px 80px 10px 0;
+  padding: 10px;
   text-align: right;
 }
 
@@ -376,8 +377,8 @@ h4 {
 }
 
 .settings .save-button {
-    background-color: #1DB954; /* Spotify green */
-    color: #ffffff;
+    background-color: var(--primary);
+    color: #000;
     border: none;
     border-radius: 25px;
     padding: 10px 20px;
@@ -389,7 +390,7 @@ h4 {
 }
 
 .settings .save-button:hover {
-    background-color: #1aa34a; /* Slightly darker green on hover */
+    background-color: var(--primary-hover);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 

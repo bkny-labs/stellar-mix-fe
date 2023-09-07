@@ -8,7 +8,7 @@ interface FilterDrawerProps {
 export const FilterDrawer: React.FC<FilterDrawerProps> = ({ isOpen }) => {
 
   const drawerStyles = {
-    transform: isOpen ? 'translateY(55px)' : 'translateY(-100%)',
+    transform: isOpen ? 'translateY(0)' : 'translateY(-100%)',
     transition: 'transform 0.3s ease-in-out',
   };
 
@@ -17,11 +17,8 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({ isOpen }) => {
       <div style={{
         position: 'fixed',
         top: '0',
-        right: '0',
-        width: '88%',
-        backgroundColor: '#1f1e1e',
-        zIndex: 10,
-        boxShadow: '3px 0px 3px #000',
+        right: '125px',
+        zIndex: 600,
         ...drawerStyles
       }}>
         <div className="filters">
