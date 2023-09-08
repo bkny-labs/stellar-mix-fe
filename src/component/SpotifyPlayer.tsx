@@ -122,19 +122,9 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
       });
   };
 
-  // const toggleDrawer = () => {
-  //   setShowDrawer(prev => !prev);
-  //   onDrawerToggle(!showDrawer);
-  // };
-
   const toggleDrawer = () => {
     onDrawerToggle(!isDrawerOpen);
   };
-
-
-  useEffect(() => {
-    console.log('Playlist status changed:', playlistPlayed);
-  }, [playlistPlayed]);  
 
   useEffect(() => {
     updatePlaybackStatus();

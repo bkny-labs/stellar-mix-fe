@@ -1,7 +1,7 @@
 import './Home.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store/state';
-import { getAuthURL } from '../services/auth-service';
+import { getAuthURL, logout } from '../services/auth-service';
 import { FaCompass, FaGithub, FaSpotify, FaUserAstronaut } from 'react-icons/fa';
 import logo from '../assets/sm_logo.png';
 import SpaceBackground from '../component/Space';
@@ -12,15 +12,6 @@ function Home() {
   const handleLogin = () => {
     window.location.href = getAuthURL();
   };
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      localStorage.removeItem('spotifyToken');
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('tokenExpiryTime');
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <>

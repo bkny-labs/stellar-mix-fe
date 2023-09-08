@@ -44,6 +44,7 @@ export default class MainController {
   }
 
   public fetchSpotifyPlaylists = () => {
+    console.log('Fetching Spotify playlists...');
     if (!this.spotifyToken) return;
 
     const playlistQuery = buildPlaylistQuery({
@@ -71,7 +72,7 @@ export default class MainController {
         console.error("Detailed Spotify Error:", errorData);
       });
     } else {
-      console.error("Error:", err);
+      console.warn("Not logged into Spotify: ", err);
     }
   };
 
@@ -89,7 +90,7 @@ export default class MainController {
   handleUserLogin = async (code: any) => {
     try {
       await getSpotifyAccessToken(code, this.store.dispatch);
-
+      console.log('Spotify token:', this.spotifyToken);
       if (this.spotifyToken) {
         const tokenExpiryTime = new Date().getTime() + (3600 * 1000);
         localStorage.setItem('tokenExpiryTime', tokenExpiryTime.toString());

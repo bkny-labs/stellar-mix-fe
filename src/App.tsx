@@ -13,9 +13,10 @@ import Header from './component/Header';
 import Settings from './view/Settings';
 import Toast from './component/Toast';
 import { useEffect, useState } from 'react';
-import { fetchUserProfile } from './services/auth-service';
+import { fetchUserProfile, getAuthURL, logout } from './services/auth-service';
 import { UserProfile } from './types';
 import { FilterDrawer } from './component/Filters';
+import Modal from './component/Modal';
 
 const App: React.FC = () => {
   const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
@@ -27,6 +28,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const isMobile = window.innerWidth < 768;
   const [filterIsOpen, setFilterIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleFilters = () => {
     setFilterIsOpen(!filterIsOpen);
@@ -46,9 +48,34 @@ const App: React.FC = () => {
       setShowToast(true);
     }
   }, [isLoggedIn]); 
-  
+
+  useEffect(() => {
+    const tokenExpiryTime = localStorage.getItem('tokenExpiryTime');
+    if (tokenExpiryTime) {
+      const currentTime = new Date().getTime();
+      const timeRemaining = parseInt(tokenExpiryTime) - currentTime;
+
+      if (timeRemaining <= 10000) {
+        // Show the modal if the token is about to expire in 1 minute or less
+        setIsModalOpen(true);
+        console.log('isModalOpen', isModalOpen);
+      }
+    }
+  }, []);
+
+  const handleLogin = () => {
+    setIsModalOpen(false);
+    window.location.href = getAuthURL();
+  };
+
+  const handleLogout = () => {
+    setIsModalOpen(false);
+    logout(dispatch);
+    
+  };
   return (
     <Router>
+      <Modal isOpen={isModalOpen} onLogin={handleLogin} onLogout={handleLogout} />
       {showToast && (
         <Toast
           message={'Welcome to StellarMix, ' + userProfile?.display_name + '!' }

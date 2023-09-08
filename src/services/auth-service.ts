@@ -1,4 +1,4 @@
-import { setLoggedInAction } from '../store/actions';
+import { setLoggedInAction, setSpotifyPlaylistsAction, setUserGenresAction } from '../store/actions';
 
 // Spotify Authentication
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
@@ -50,6 +50,10 @@ export const getSpotifyAccessToken = async (code: string, dispatch: any): Promis
   localStorage.setItem('isLoggedIn', 'true');
   dispatch(setLoggedInAction(true, data.access_token));
 
+  // Set Token expiry 
+  const tokenExpiryTime = new Date().getTime() + (3600 * 1000);
+  localStorage.setItem('tokenExpiryTime', tokenExpiryTime.toString());
+
   return data.access_token;
 };
 
@@ -57,6 +61,8 @@ export const logout = (dispatch: any) => {
   localStorage.removeItem('spotifyToken');
   localStorage.removeItem('tokenExpiryTime');
   localStorage.removeItem('isLoggedIn');
+  localStorage.removeItem('userGenres');
+  localStorage.removeItem('spotifyPlaylists');
   dispatch(setLoggedInAction(false));
   window.location.href = '/';
 }
