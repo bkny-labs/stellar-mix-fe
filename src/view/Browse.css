@@ -75,5 +75,15 @@
     .spotlight-container {
         width: 80% !important;
     }
+
+    .features {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .hero {
+        padding: 10px;
+    }
+    .hero p {
+        display: none;
+    }
 }
 
