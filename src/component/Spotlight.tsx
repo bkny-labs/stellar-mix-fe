@@ -144,7 +144,8 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleKeyDown]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
