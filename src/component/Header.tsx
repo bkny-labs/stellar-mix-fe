@@ -31,6 +31,7 @@ const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodD
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
