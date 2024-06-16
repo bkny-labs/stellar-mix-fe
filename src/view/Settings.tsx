@@ -4,7 +4,6 @@ import { AppState } from "../store/state";
 import { setUserGenresAction } from "../store/actions";
 import { UserProfile } from "../types";
 import { fetchUserProfile } from "../services/auth-service";
-import { fetchAvailableGenres } from '../services/spotify-service';
 import { CiLocationOn } from 'react-icons/ci';
 import { FiUsers } from 'react-icons/fi';
 import { FaSpotify } from "react-icons/fa";
