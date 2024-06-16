@@ -32,8 +32,10 @@ export const appSlice = createSlice({
     setLimitFilter: (state, action: PayloadAction<typeof initialState.filters.limit>) => {
       state.filters.limit = action.payload;
     },
-  },
-});
+    setMoodData: (state, action: PayloadAction<typeof initialState.moodData>) => {
+      state.moodData = action.payload;
+    },
+  }});
 
 export const {
   setWeather,
@@ -44,7 +46,8 @@ export const {
   setActivityFilter,
   setLanguageFilter,
   setSortFilter,
-  setLimitFilter
+  setLimitFilter,
+  setMoodData,
 } = appSlice.actions;
 
 export default appSlice.reducer;

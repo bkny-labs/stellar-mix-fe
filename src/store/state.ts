@@ -19,6 +19,7 @@ export interface AppState {
   spotifyToken: string | null;
   userSettings: UserSettings;
   filters: FiltersState;
+  moodData?: any;
 }
 
 export const initialState: AppState = {
@@ -35,5 +36,6 @@ export const initialState: AppState = {
     language: 'English',
     sort: 'Most Popular',
     limit: 20
-  }
+  },
+  moodData: []
 };

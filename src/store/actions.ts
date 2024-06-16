@@ -8,6 +8,12 @@ export const SET_ACTIVITY = 'SET_ACTIVITY';
 export const SET_LANGUAGE = 'SET_LANGUAGE';
 export const SET_SORT = 'SET_SORT';
 export const SET_LIMIT = 'SET_LIMIT';
+export const SET_MOODS = 'SET_MOODS';
+
+interface SetMoodsAction {
+  type: typeof SET_MOODS;
+  payload: any;
+}
 
 interface SetWeatherAction {
   type: typeof SET_WEATHER;
@@ -59,6 +65,11 @@ interface SetLimitAction {
   type: typeof SET_LIMIT;
   payload: number;
 }
+
+export const setMoodsAction = (data: any): SetMoodsAction => ({
+  type: SET_MOODS,
+  payload: data,
+});
 
 export const setWeatherAction = (data: any): SetWeatherAction => ({
   type: SET_WEATHER,
@@ -129,4 +140,5 @@ export type AppAction =
   | SetActivityAction
   | SetLanguageAction
   | SetSortAction
-  | SetLimitAction;
+  | SetLimitAction
+  | SetMoodsAction;

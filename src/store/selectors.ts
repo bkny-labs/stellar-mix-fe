@@ -9,3 +9,4 @@ export const selectActivityFilter = (state: AppState) => state.filters.activity;
 export const selectLanguageFilter = (state: AppState) => state.filters.language;
 export const selectSortFilter = (state: AppState) => state.filters.sort;
 export const selectLimitFilter = (state: AppState) => state.filters.limit;
+export const selectMoodData = (state: AppState) => state.moodData;

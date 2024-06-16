@@ -17,8 +17,7 @@ function Settings() {
     const token = localStorage.getItem('spotifyToken');
     const dispatch = useDispatch();
     const [allGenres, setAllGenres] = useState<string[]>([]);
-    const [toggleDarkMode, setToggleDarkMode] = useState(true);
-    const [toggleExplicit, setToggleExplicit] = useState(false);
+    const [toggleExplicit, setToggleExplicit] = useState(true);
     const [toggleNotifications, setToggleNotifications] = useState(false);
 
     useEffect(() => {
@@ -95,12 +94,6 @@ function Settings() {
               </div>
           </div>
             <h2>General</h2>
-            <Toggle 
-                checked={toggleDarkMode} 
-                onChange={setToggleDarkMode} 
-                id="toggleDarkMode" 
-                label="Enable Dark Mode" 
-            />
 
             <Toggle 
                 checked={toggleExplicit} 
@@ -115,7 +108,7 @@ function Settings() {
                 id="toggleNotifications" 
                 label="Enable Notifications" 
             />
-            <h2>Genres</h2>
+            {/* <h2>Genres</h2>
             <p>Below are recommended genres based on your Spotify plays. You can choose to include/remove any you want to customize your available filters.</p>
             <div className="checkbox-select-buttons">
                 <button onClick={selectAllGenres}>Select All</button> |
@@ -136,7 +129,7 @@ function Settings() {
                   </label>
                 </div>
             ))}
-            </div>
+            </div> */}
             <div className="action-bar">
               <button className="save-button" onClick={handleSave}>Save Settings</button>
             </div>

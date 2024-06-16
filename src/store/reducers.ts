@@ -25,6 +25,15 @@ export const filtersReducer = (state: FiltersState = initialState.filters, actio
   }
 };
 
+export const moodDataReducer = (state: any = initialState.moodData, action: AppAction): any => {
+  switch (action.type) {
+    case 'SET_MOODS':
+      return 'payload' in action ? action.payload : state;
+    default:
+      return state;
+  }
+}
+
 export const spotifyPlaylistsReducer = (state: any = initialState.spotifyPlaylists, action: AppAction): any => {
   switch (action.type) {
     case 'SET_SPOTIFY_PLAYLISTS':
@@ -79,5 +88,6 @@ export const appReducer = (state: AppState = initialState, action: AppAction): A
     spotifyToken: spotifyTokenReducer(state.spotifyToken, action),
     userSettings: userSettingsReducer(state.userSettings, action),
     filters: filtersReducer(state.filters, action),
+    moodData: moodDataReducer(state.moodData, action)
   };
 };

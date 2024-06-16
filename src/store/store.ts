@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { weatherReducer, sunCalcReducer, spotifyPlaylistsReducer, spotifyTokenReducer, isLoggedInReducer, userSettingsReducer, filtersReducer } from './reducers';
+import { weatherReducer, sunCalcReducer, spotifyPlaylistsReducer, spotifyTokenReducer, isLoggedInReducer, userSettingsReducer, filtersReducer, moodDataReducer } from './reducers';
 
 const rootReducer = combineReducers({
   weather: weatherReducer,
@@ -9,6 +9,7 @@ const rootReducer = combineReducers({
   isLoggedIn: isLoggedInReducer,
   userSettings: userSettingsReducer,
   filters: filtersReducer,
+  moodData: moodDataReducer,
 });
 
 export const store = configureStore({

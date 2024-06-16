@@ -1,23 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserProfile } from '../types';
 import logo from '../assets/logo.png';
 import { IoFilterSharp } from 'react-icons/io5';
+import Spotlight from './Spotlight';
+import { FaWandMagicSparkles } from "react-icons/fa6";
 
 interface HeaderProps {
   userProfile: UserProfile;
   toggleFilters: () => void;
+  updateMoodData: (data: any) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters }) => {
+const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodData }) => {
+  const [isSpotlightOpen, setIsSpotlightOpen] = useState(false);
+
+  const toggleSpotlight = () => {
+    setIsSpotlightOpen(prevState => !prevState);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+      event.preventDefault();
+      toggleSpotlight();
+    } else if (event.key === 'Escape') {
+      setIsSpotlightOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   return (
     <div className='header'>
+      <Spotlight isOpen={isSpotlightOpen} toggleSpotlight={toggleSpotlight} updateMoodData={updateMoodData} />
       <div className="logo">
-        <img src={logo} alt="" />
+        <img src={logo} alt="Logo" />
       </div>
       <div className="header-right">
-        <div className="toggle-filter">
-          <button className="filterButton" onClick={toggleFilters}><IoFilterSharp /></button>
-        </div>
+        <button onClick={toggleSpotlight}><FaWandMagicSparkles /></button>
         <div 
           className="user-image"
           style={{ backgroundImage: `url(${userProfile.images[0]?.url})` }}>
