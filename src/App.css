@@ -1,5 +1,6 @@
 :root {
   --primary: #fda53a;
+  --primary-hover: #ca9553;
   --spotify: #1DB954;
   --background: #1f1e1e;
   --text-color: #fff;
@@ -40,6 +41,62 @@ body {
 }
 .header .logo img {
   width: 155px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.header-right button {
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.filters {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  text-align: right;
+}
+
+.filterButton {
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 150px;
+  padding-right: 15px;
+  border-right: 1px solid #ffffff28;
+}
+.filter-item:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.filter-item.limit {
+  width: 70px;
+}
+
+.filters label {
+  font-size: 12px;
+  color: #535353;
+}
+
+.filters select {
+  background: #1f1e1e;
+  border: none;
+  color: #979696;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .user-image {
@@ -325,8 +382,8 @@ h4 {
 }
 
 .settings .save-button {
-    background-color: #1DB954; /* Spotify green */
-    color: #ffffff;
+    background-color: var(--primary);
+    color: #000;
     border: none;
     border-radius: 25px;
     padding: 10px 20px;
@@ -338,7 +395,7 @@ h4 {
 }
 
 .settings .save-button:hover {
-    background-color: #1aa34a; /* Slightly darker green on hover */
+    background-color: var(--primary-hover);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -360,11 +417,9 @@ h4 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  max-height: 320px;
   overflow-y: scroll;
-  background: #131313;
-  box-shadow: 0px 4px 10px #00000082;
   padding: 20px;
+  height: 420px;
 }
 
 .checkbox-list label {
@@ -373,17 +428,17 @@ h4 {
   color: white;
 }
 
-.checkbox-list .checkbox {
+.checkbox {
   display: none; /* hide the default checkbox */
 }
 
-.checkbox-list .checkbox + label {
+.checkbox + label {
   position: relative;
   padding-left: 30px; /* space for custom checkbox */
   cursor: pointer;
 }
 
-.checkbox-list .checkbox + label::before {
+.checkbox + label::before {
   content: "";
   position: absolute;
   left: 0;
@@ -394,7 +449,7 @@ h4 {
   background: #fff;
 }
 
-.checkbox-list .checkbox:checked + label::after {
+.checkbox:checked + label::after {
   content: "";
   position: absolute;
   left: 6px;

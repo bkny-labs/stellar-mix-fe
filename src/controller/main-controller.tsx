@@ -11,9 +11,10 @@ import { buildPlaylistQuery, getMusicalMood } from '../utils/generate-spotify-qu
 import { createRoot } from 'react-dom/client';
 import App from '../App';
 import { store } from '../store/store';
+import { setMoodData } from '../store/slice';
 
 export default class MainController {
-  private spotifyToken = localStorage.getItem('spotifyToken') || null;
+  private spotifyToken = localStorage.getItem('spotifyToken');
   private moodData: any;
   private store: any;
   private params = new URLSearchParams(window.location.search);
@@ -33,37 +34,80 @@ export default class MainController {
 
   private checkTokenExpiration = () => {
     if (!this.hasValidToken()) {
-      logout(this.store.dispatch);
+      logout(this.store.dispatch); 
     }
   };
 
   private updateFromStore() {
     const state = this.store.getState();
-    this.spotifyToken = state.spotifyToken;
-    this.moodData = getMusicalMood(state);
+    // Update token from the store state if available
+    if (state.spotifyToken) {
+      this.setSpotifyToken(state.spotifyToken);
+    }
   }
 
+  private setSpotifyToken(token: string) {
+    this.spotifyToken = token;
+    localStorage.setItem('spotifyToken', token);
+  }
+
+  private getSpotifyToken() {
+    return this.spotifyToken || localStorage.getItem('spotifyToken');
+  }
+
+
+  public updateMoodData = (data: any) => {
+    if (data) {
+      const state = this.store.getState();
+      this.moodData = data;
+      this.store.dispatch(setMoodData(data));
+      getMusicalMood({ ...state, moodData: data }, true); // Pass the updated state with new moodData
+      localStorage.setItem('moodData', JSON.stringify(data));
+      console.log('Updated mood data:', data);
+      this.fetchSpotifyPlaylists();
+    }
+  };
+  
+
   public fetchSpotifyPlaylists = () => {
-    if (!this.spotifyToken) return;
-
+    if (!this.spotifyToken) {
+      console.error('Spotify token is not available.');
+      return;
+    }
+  
     const playlistQuery = buildPlaylistQuery({
-      ...this.moodData,
-      genres: this.moodData.genres || []
+      moods: this.moodData,
+      genres: []
     });
-
+  
+    if (!playlistQuery) {
+      console.error('Playlist query is invalid.');
+      return;
+    }
+  
+    console.log('Fetching playlists with query:', playlistQuery);
+  
     getPlaylistsByQuery(playlistQuery, this.spotifyToken, this.store.dispatch)
-      .then(async (data) => {
-          // const genres = await fetchAvailableGenres(this.spotifyToken!) as any;
-          // this.store.dispatch(setUserGenresAction(genres));
-          // localStorage.setItem('userGenres', JSON.parse(genres));
-          this.store.dispatch(setSpotifyPlaylistsAction(data));
-          localStorage.setItem('spotifyPlaylists', JSON.stringify(data));
-          console.log('Fetched Spotify playlists for query:', playlistQuery);
+      .then(data => {
+        if (!data || data.length === 0) {
+          console.error('No playlists fetched.');
+          return;
+        }
+        
+        console.log('Fetched playlists data:', data);
+  
+        this.store.dispatch(setSpotifyPlaylistsAction(data));
+        localStorage.setItem('spotifyPlaylists', JSON.stringify(data));
+  
+        console.log('Fetched Spotify playlists for query:', playlistQuery);
       })
       .catch(err => {
-          this.handleSpotifyError(err);
+        console.error('Error fetching playlists:', err);
+        this.handleSpotifyError(err);
       });
   };
+  
+  
 
   handleSpotifyError = (err: any) => {
     if (err.response) {
@@ -90,11 +134,13 @@ export default class MainController {
     try {
       await getSpotifyAccessToken(code, this.store.dispatch);
 
-      if (this.spotifyToken) {
+      const spotifyToken = this.getSpotifyToken();
+
+      if (spotifyToken) {
         const tokenExpiryTime = new Date().getTime() + (3600 * 1000);
         localStorage.setItem('tokenExpiryTime', tokenExpiryTime.toString());
         localStorage.setItem('isLoggedIn', 'true');
-        fetchUserProfile(this.spotifyToken, this.store.dispatch);
+        fetchUserProfile(spotifyToken, this.store.dispatch);
         this.fetchSpotifyPlaylists();
         return this.spotifyToken;
       }
@@ -106,9 +152,9 @@ export default class MainController {
 
   init() {
     this.fetchWeatherAndSunCalcData();
-    this.tokenCheckInterval = setInterval(this.checkTokenExpiration, 1000 * 60); // Check every minute
     if (!this.userIsLoggedIn() && !this.hasValidToken()) {
       this.handleUserLogin(this.code);
+      this.fetchSpotifyPlaylists();
     }
     this.render();
   }
@@ -116,16 +162,16 @@ export default class MainController {
   fetchWeatherAndSunCalcData = async () => {
     const lat = 40.732542;
     const lon = -73.978773;
-
+  
     try {
       const weatherData = await getWeatherByLocation(lat, lon);
       this.store.dispatch(setWeatherAction(weatherData));
     } catch (error) {
       console.error('Failed to fetch weather data:', error);
     }
-
+  
     try {
-      const data = await getSunCalcData(lon, lat);
+      const data = await getSunCalcData(lat, lon); // Correct order of lat and lon
       this.store.dispatch(setSunCalcAction(data));
     } catch (error) {
       console.error('Failed to fetch SunCalc data:', error);
@@ -136,7 +182,7 @@ export default class MainController {
     const root = createRoot(document.getElementById('root') as HTMLElement);
     root.render(
     <Provider store={store}>
-      <App />
+      <App updateMoodData={this.updateMoodData} />
     </Provider>);
   }
 };

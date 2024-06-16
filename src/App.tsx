@@ -16,7 +16,11 @@ import { useEffect, useState } from 'react';
 import { fetchUserProfile } from './services/auth-service';
 import { UserProfile } from './types';
 
-const App: React.FC = () => {
+interface AppProps {
+  updateMoodData: (data: any) => void;
+}
+
+const App: React.FC<AppProps> = ({ updateMoodData }) => {
   const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const sunCalcData = useSelector((state: AppState) => state.sunCalcData);
@@ -25,6 +29,24 @@ const App: React.FC = () => {
   const token = localStorage.getItem('spotifyToken');
   const dispatch = useDispatch();
   const isMobile = window.innerWidth < 768;
+  const [filterIsOpen, setFilterIsOpen] = useState(false);
+  // const [filters, setFilters] = useState({
+  //   activity: '',
+  //   language: '',
+  //   sorting: '',
+  //   limit: ''
+  // });
+
+  // const handleFilterChange = (name: any, value: any) => {
+  //   setFilters(prevFilters => ({
+  //     ...prevFilters,
+  //     [name]: value
+  //   }));
+  // };
+
+  const toggleFilters = () => {
+    setFilterIsOpen(!filterIsOpen);
+  };
 
   useEffect(() => {
     if (token) {
@@ -56,7 +78,8 @@ const App: React.FC = () => {
           <div className="container">
             {isLoggedIn && userProfile && 
               <>
-              <Header userProfile={userProfile} />
+              <Header userProfile={userProfile} toggleFilters={toggleFilters} updateMoodData={updateMoodData} />
+              {/* <FilterDrawer isOpen={filterIsOpen} onFilterChange={handleFilterChange} /> */}
               <nav className='nav'>
                 <Navigation 
                   loggedIn={isLoggedIn}

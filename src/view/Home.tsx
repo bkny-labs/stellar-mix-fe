@@ -31,7 +31,7 @@ function Home() {
 
       <div className={`hero ${isLoggedIn ? 'logged-in' : ''}`}>
         <img src={logo} alt="logo" />
-        <h1>The Cosmic Mixtape</h1>
+        <h1>Cosmic Mixtapes</h1>
         <p>StellarMix crafts the ultimate playlist for your moment, blending your music tastes with cues from the world around you – day or night, rain or shine, cosmos in motion. Dive into a universe of sound, all through your Spotify.</p>
         {!isLoggedIn &&
           <div>

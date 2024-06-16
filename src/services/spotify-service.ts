@@ -1,36 +1,35 @@
 import { setLoggedInAction } from "../store/actions";
 
 // Get Playlist
-export const getPlaylistsByQuery = (query: string, token: string, dispatch: any): Promise<any> => {
-    return new Promise(async (resolve, reject) => {
-      const API_ENDPOINT = `https://api.spotify.com/v1/search?q=${query}&type=playlist&limit=20`;
-      const headers = {
-        'Authorization': `Bearer ${token}`
-      };
-  
-      try {
-        const response = await fetch(API_ENDPOINT, { headers });
-  
-        if (!response.ok) {
-          if (response.status === 401) {
-            dispatch(setLoggedInAction(false));
-            localStorage.removeItem('isLoggedIn');
-          }
-          const errorData = await response.json();
-          console.error("Spotify API Error Response:", errorData);
-          reject(`Error ${response.status}: ${errorData.error.message}`);
-          return;
+export const getPlaylistsByQuery = (query: string, token: string, dispatch: any, limit: string = '50'): Promise<any> => {
+  return new Promise(async (resolve, reject) => {
+    const API_ENDPOINT = `https://api.spotify.com/v1/search?q=${query}&type=playlist&limit=${limit}`;
+    const headers = {
+      'Authorization': `Bearer ${token}`
+    };
+
+    try {
+      const response = await fetch(API_ENDPOINT, { headers });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          dispatch(setLoggedInAction(false));
+          localStorage.removeItem('isLoggedIn');
         }
-  
-        const data = await response.json();
-        resolve(data.playlists.items);
-      } catch (error) {
-        console.error("Error fetching playlists:", error);
-        reject(error);
+        const errorData = await response.json();
+        console.error("Spotify API Error Response:", errorData);
+        reject(`Error ${response.status}: ${errorData.error.message}`);
+        return;
       }
-    });
-  };
-  
+
+      const data = await response.json();
+      resolve(data.playlists.items);
+    } catch (error) {
+      console.error("Error fetching playlists:", error);
+      reject(error);
+    }
+  });
+};
   // Currently Playing
   export const getCurrentlyPlaying = async (accessToken: string, dispatch: any) => {
     const API_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing?market=US`;

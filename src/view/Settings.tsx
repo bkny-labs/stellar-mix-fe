@@ -8,6 +8,7 @@ import { fetchAvailableGenres } from '../services/spotify-service';
 import { CiLocationOn } from 'react-icons/ci';
 import { FiUsers } from 'react-icons/fi';
 import { FaSpotify } from "react-icons/fa";
+import Toggle from "../component/Toggle";
 
 function Settings() {
     const userGenresFromStore = useSelector((state: AppState) => state.userSettings.genres);
@@ -16,46 +17,8 @@ function Settings() {
     const token = localStorage.getItem('spotifyToken');
     const dispatch = useDispatch();
     const [allGenres, setAllGenres] = useState<string[]>([]);
-    const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
-    const allActivities = [
-      "chill",
-      "cooking",
-      "crafting",
-      "dancing",
-      "dinner",
-      "road trip",
-      "focus",
-      "gaming",
-      "gardening",
-      "hiking",
-      "meditation",
-      "party",
-      "reading",
-      "romance",
-      "shopping",
-      "sleep",
-      "study",
-      "travel",
-      "workout",
-      "writing",
-      "yoga",
-    ];
-
-    const toggleActivity = (activity: string) => {
-      setSelectedActivities(prev => 
-          prev.includes(activity) 
-          ? prev.filter(a => a !== activity)
-          : [...prev, activity]
-      );
-    };
-      const selectAllActivities = () => {
-          setSelectedActivities(allActivities);
-      }
-
-      const deselectAllActivities = () => {
-          setSelectedActivities([]);
-      }
-
+    const [toggleExplicit, setToggleExplicit] = useState(true);
+    const [toggleNotifications, setToggleNotifications] = useState(false);
 
     useEffect(() => {
       async function fetchGenres() {
@@ -130,9 +93,23 @@ function Settings() {
                   </div>
               </div>
           </div>
+            <h2>General</h2>
 
-            <h2>Favorite Genres</h2>
-            <p>Below is a list of recommended genres based on your Spotify plays. You can choose to include/remove any you want to fine tune StellarMix.</p>
+            <Toggle 
+                checked={toggleExplicit} 
+                onChange={setToggleExplicit} 
+                id="toggleExplicit" 
+                label="Enable Explicit Content" 
+            />
+
+            <Toggle 
+                checked={toggleNotifications} 
+                onChange={setToggleNotifications} 
+                id="toggleNotifications" 
+                label="Enable Notifications" 
+            />
+            {/* <h2>Genres</h2>
+            <p>Below are recommended genres based on your Spotify plays. You can choose to include/remove any you want to customize your available filters.</p>
             <div className="checkbox-select-buttons">
                 <button onClick={selectAllGenres}>Select All</button> |
                 <button onClick={deselectAllGenres}>Select None</button>
@@ -152,30 +129,7 @@ function Settings() {
                   </label>
                 </div>
             ))}
-            </div>
-
-            <h2>Favorite Activities</h2>
-            <p>Below is a list of activities to help us curate playlists better on StellarMix.</p>
-            <div className="checkbox-select-buttons">
-                <button onClick={selectAllActivities}>Select All</button> |
-                <button onClick={deselectAllActivities}>Select None</button>
-            </div>
-            <div className="checkbox-list">
-            {allActivities.map(activity => (
-                <div key={activity}>
-                  <input 
-                    type="checkbox"
-                    id={activity + 'A'}
-                    className="checkbox"
-                    checked={selectedActivities.includes(activity)}
-                    onChange={() => toggleActivity(activity)}
-                  />
-                  <label htmlFor={activity + 'A'} className="activity-label">
-                    {activity}
-                  </label>
-                </div>
-            ))}
-            </div>
+            </div> */}
             <div className="action-bar">
               <button className="save-button" onClick={handleSave}>Save Settings</button>
             </div>

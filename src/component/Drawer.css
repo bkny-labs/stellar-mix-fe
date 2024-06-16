@@ -2,7 +2,7 @@
     position: fixed;
     right: 0;
     width: 350px;
-    height: 100%;
+    height: calc(100% - 140px);
     top: 60px;
     background: var(--background);
     padding: 10px 20px;
@@ -45,7 +45,8 @@
 
 .track-list {
     overflow-y: auto;
-    height: 330px;
+    overflow-x: hidden;
+    height: calc(100% - 440px);
     margin-top: 12px;
 }
 .track-list table {
