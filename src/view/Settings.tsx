@@ -16,29 +16,29 @@ function Settings() {
     const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
     const token = localStorage.getItem('spotifyToken');
     const dispatch = useDispatch();
-    const [allGenres, setAllGenres] = useState<string[]>([]);
+    // const [allGenres, setAllGenres] = useState<string[]>([]);
     const [toggleExplicit, setToggleExplicit] = useState(true);
     const [toggleNotifications, setToggleNotifications] = useState(false);
 
-    useEffect(() => {
-      async function fetchGenres() {
-          if (!token) {
-              console.error('Spotify token is missing.');
-              return;
-          }
+  //   useEffect(() => {
+  //     async function fetchGenres() {
+  //         if (!token) {
+  //             console.error('Spotify token is missing.');
+  //             return;
+  //         }
   
-          const genres = await fetchAvailableGenres(token);
-          if (genres) {
-              setAllGenres(genres);
-          } else {
-              console.log("Failed to get genres.");
-              // Set default genres in case the fetch fails
-              setAllGenres(["rock", "pop", "jazz", "classical", "hip-hop", "country"]);
-          }
-      }
+  //         const genres = await fetchAvailableGenres(token);
+  //         if (genres) {
+  //             setAllGenres(genres);
+  //         } else {
+  //             console.log("Failed to get genres.");
+  //             // Set default genres in case the fetch fails
+  //             setAllGenres(["rock", "pop", "jazz", "classical", "hip-hop", "country"]);
+  //         }
+  //     }
   
-      fetchGenres();
-  }, [token]);
+  //     fetchGenres();
+  // }, [token]);
   
 
     useEffect(() => {
@@ -56,21 +56,21 @@ function Settings() {
   
     if (!userProfile) return null;
 
-    const toggleGenre = (genre: any) => {
-        setSelectedGenres(prev => 
-            prev.includes(genre) 
-            ? prev.filter(g => g !== genre)
-            : [...prev, genre]
-        );
-    };
+    // const toggleGenre = (genre: any) => {
+    //     setSelectedGenres(prev => 
+    //         prev.includes(genre) 
+    //         ? prev.filter(g => g !== genre)
+    //         : [...prev, genre]
+    //     );
+    // };
 
-    const selectAllGenres = () => {
-      setSelectedGenres(allGenres);
-    }
+    // const selectAllGenres = () => {
+    //   setSelectedGenres(allGenres);
+    // }
 
-    const deselectAllGenres = () => {
-      setSelectedGenres([]);
-    }
+    // const deselectAllGenres = () => {
+    //   setSelectedGenres([]);
+    // }
 
     const handleSave = () => {
         console.log(selectedGenres);
