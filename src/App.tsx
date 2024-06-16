@@ -28,7 +28,7 @@ const App: React.FC<AppProps> = ({ updateMoodData }) => {
   const [showToast, setShowToast] = useState(isLoggedIn);
   const token = localStorage.getItem('spotifyToken');
   const dispatch = useDispatch();
-  const isMobile = window.innerWidth < 768;
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [filterIsOpen, setFilterIsOpen] = useState(false);
   // const [filters, setFilters] = useState({
   //   activity: '',
@@ -47,6 +47,17 @@ const App: React.FC<AppProps> = ({ updateMoodData }) => {
   const toggleFilters = () => {
     setFilterIsOpen(!filterIsOpen);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (token) {
