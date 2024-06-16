@@ -140,7 +140,7 @@ useEffect(() => {
                       <th>Track</th>
                       <th></th>
                       <th>Artist</th>
-                      <th>Album</th>
+                      {/* <th>Album</th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -149,7 +149,7 @@ useEffect(() => {
                         <td><img src={track.track.album.images[0].url} width="25px" alt="" /></td>
                         <td>{track.track.name}</td>
                         <td>{track.track.artists.map((artist: any) => artist.name).join(', ')}</td>
-                        <td>{track.track.album.name}</td>
+                        {/* <td>{track.track.album.name}</td> */}
                       </tr>
                     ))}
                   </tbody>

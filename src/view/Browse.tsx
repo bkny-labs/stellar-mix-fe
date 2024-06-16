@@ -20,6 +20,9 @@ const Browse: React.FC = () => {
 
   const playPlaylist = (playlistURI: string) => {
     if (accessToken) {
+        if (!isDrawerOpen) {
+          setIsDrawerOpen(true);
+        }
         playSpotifyPlaylist(playlistURI, accessToken)
             .then(() => {
                 setPlaylistPlayed(prevPlayed => !prevPlayed);
@@ -46,7 +49,6 @@ const Browse: React.FC = () => {
   };
 
   useEffect(() => {
-    // On component load, check localStorage
     const storedPlaylists = localStorage.getItem('spotifyPlaylists');
     if (storedPlaylists) {
       dispatch(setSpotifyPlaylistsAction(JSON.parse(storedPlaylists)));
@@ -54,8 +56,6 @@ const Browse: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-      setIsLoading(true);
-    // When playlists change, update localStorage
     if (Array.isArray(playlists)) {
       localStorage.setItem('spotifyPlaylists', JSON.stringify(playlists));
       setIsLoading(false);
