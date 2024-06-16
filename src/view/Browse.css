@@ -68,3 +68,12 @@
     opacity: 1;
 }
 
+@media (max-width: 768px) {
+    .browse-grid {
+        padding-left: 0;
+    }
+    .spotlight-container {
+        width: 80% !important;
+    }
+}
+
