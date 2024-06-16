@@ -58,6 +58,7 @@ export default class MainController {
 
   public updateMoodData = (data: any) => {
     if (data) {
+      this.getSpotifyToken();
       const state = this.store.getState();
       this.moodData = data;
       this.store.dispatch(setMoodData(data));

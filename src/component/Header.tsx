@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { UserProfile } from '../types';
 import logo from '../assets/logo.png';
-import { IoFilterSharp } from 'react-icons/io5';
 import Spotlight from './Spotlight';
 import { FaWandMagicSparkles } from "react-icons/fa6";
 
