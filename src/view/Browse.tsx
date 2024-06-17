@@ -20,27 +20,24 @@ const Browse: React.FC = () => {
 
   const playPlaylist = (playlistURI: string) => {
     if (accessToken) {
-        if (!isDrawerOpen) {
-          setIsDrawerOpen(true);
-        }
-        playSpotifyPlaylist(playlistURI, accessToken)
-            .then(() => {
-                setPlaylistPlayed(prevPlayed => !prevPlayed);
-                console.log("Playing playlist:", playlistURI);
-                if (currentlyPlayingURI === playlistURI) {
-                    // If the currently playing URI is the same as the one we tried to play, 
-                    // it means we're trying to pause or stop it.
-                    setCurrentlyPlayingURI(null);
-                } else {
-                    // Otherwise, set the new playing URI.
-                    setCurrentlyPlayingURI(playlistURI);
-                }
-            })
-            .catch(error => {
-                console.error("Error playing playlist:", error);
-            });
+      if (!isDrawerOpen) {
+        setIsDrawerOpen(true);
+      }
+      playSpotifyPlaylist(playlistURI, accessToken)
+        .then(() => {
+          setPlaylistPlayed(prevPlayed => !prevPlayed);
+          console.log("Playing playlist:", playlistURI);
+          if (currentlyPlayingURI === playlistURI) {
+            setCurrentlyPlayingURI(null);
+          } else {
+            setCurrentlyPlayingURI(playlistURI);
+          }
+        })
+        .catch(error => {
+          console.error("Error playing playlist:", error);
+        });
     } else {
-        console.error("Access token is not available.");
+      console.error("Access token is not available.");
     }
   };
   
@@ -54,10 +51,6 @@ const Browse: React.FC = () => {
       dispatch(setSpotifyPlaylistsAction(JSON.parse(storedPlaylists)));
     }
   }, [dispatch]);
-
-  // useEffect to update currentlyPlayingURI
-  
-  
 
   useEffect(() => {
     if (Array.isArray(playlists)) {
@@ -108,6 +101,8 @@ const Browse: React.FC = () => {
           isDrawerOpen={isDrawerOpen}
           playlistPlayed={playlistPlayed} 
           onDrawerToggle={handleDrawerToggle}
+          currentlyPlayingURI={currentlyPlayingURI}
+          setCurrentlyPlayingURI={setCurrentlyPlayingURI}
       />}
     </div>
     </>
@@ -115,4 +110,3 @@ const Browse: React.FC = () => {
 };
 
 export default Browse;
-

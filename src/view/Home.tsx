@@ -40,7 +40,7 @@ function Home() {
           </div>
           }
       </div>
-
+      {!isLoggedIn &&
       <div className="instructions">
         <div className="item">
           <p className='step'>Step 1</p>
@@ -59,6 +59,7 @@ function Home() {
           <h4>Playback and Share</h4>
         </div>
       </div>
+      }
 
       <div className="features">
         <div className="feature">
