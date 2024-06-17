@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { fetchUserProfile } from '../services/auth-service';
-import { checkIfPlaylistIsFollowed, followPlaylist, getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume, toggleShufflePlayback, unfollowPlaylist } from '../services/spotify-service';
+import { checkIfPlaylistIsFollowed, fetchPlaylistDetails, followPlaylist, getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume, toggleShufflePlayback, unfollowPlaylist } from '../services/spotify-service';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaRandom, FaHeart, FaRegHeart, FaInfoCircle } from 'react-icons/fa';
 import { IoAlbums } from 'react-icons/io5';
 import './SpotifyPlayer.css';
@@ -25,8 +25,9 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
   const [volume, setVolume] = useState<number>(10);
   const [playlistId, setPlaylistId] = useState<any | null>(null);
   const [userId, setUserId] = useState<any | null>(null);
+  const [playlistData, setPlaylistData] = useState<any | null>(null);
   const dispatch = useDispatch();
-  const POLLING_INTERVAL = 8000;
+  const POLLING_INTERVAL = 5000;
 
   const updatePlaybackStatus = useCallback(() => {
     getCurrentlyPlaying(accessToken, dispatch).then(data => {
@@ -61,14 +62,28 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
     });
   }, [accessToken, dispatch, currentlyPlayingURI, setCurrentlyPlayingURI]);
 
+  const playlistDetails = useCallback(async () => {
+    if (!playlistId) return;
+    try {
+      const playlistInfo = await fetchPlaylistDetails(playlistId, accessToken);
+      console.log(playlistInfo);
+      setPlaylistData(playlistInfo);
+    } catch (error) {
+      console.error('Failed to fetch playlist details:', error);
+    }
+  }, [playlistId, accessToken]);
+
   useEffect(() => {
     const interval = setInterval(updatePlaybackStatus, POLLING_INTERVAL);
     return () => clearInterval(interval);
   }, [updatePlaybackStatus]);
 
   useEffect(() => {
-    updatePlaybackStatus();
-  }, [playlistPlayed, updatePlaybackStatus]);
+    setTimeout(() => {
+      playlistDetails()
+      updatePlaybackStatus();
+    }, 1000);
+  }, [playlistDetails, playlistPlayed, updatePlaybackStatus]);
 
   useEffect(() => {
     if (userId && playlistId) {
@@ -129,7 +144,14 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
   const toggleDrawer = () => {
     onDrawerToggle(!isDrawerOpen);
     if (!isDrawerOpen) {
-      updatePlaybackStatus(); // Ensure the latest data is fetched when the drawer is opened
+      updatePlaybackStatus();
+    }
+  };
+
+  const openDrawer = () => {
+    if (!isDrawerOpen) {
+      onDrawerToggle(true);
+      updatePlaybackStatus();
     }
   };
 
@@ -137,11 +159,17 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
     <>
     <div className="spotify-player">
       {currentTrack && (
-      <div className="track-info">
-        <img src={currentTrack?.album.images[0].url} alt="album-cover" />
-        <span>{currentTrack?.name}</span>
-        <span>{currentTrack?.artists[0].name}</span>
-      </div>
+        <div className="playback-info-container">
+          <div className="track-info">
+            <img src={currentTrack?.album.images[0].url} alt="album-cover" />
+            <span>{currentTrack?.name}</span>
+            <span className='artist'>{currentTrack?.artists[0].name}</span>
+          </div>
+          {playlistData &&
+              // eslint-disable-next-line jsx-a11y/anchor-is-valid
+              <a href='#' className='playlist' onClick={openDrawer}>from {playlistData?.name}</a>
+              }
+        </div>
       )}
       <div className="player-play">
           { isShuffle 

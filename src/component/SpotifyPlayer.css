@@ -31,8 +31,13 @@
   padding: 15px;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 33%;
   text-overflow: ellipsis;
+}
+
+.playback-info-container {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .spotify-player img {
@@ -45,6 +50,18 @@
   font-size: 15px;
   color: white;
   margin-right: 10px;
+}
+
+.playlist {
+  color: white;
+  text-decoration: none;
+  font-size: 12px;
+  padding: 0 15px;
+  color: #b3b3b3;
+}
+
+.playlist:hover {
+  color: white;
 }
 
 .player-play {
@@ -64,6 +81,11 @@
 
 .info-button {
   cursor: pointer;
+}
+
+.track-info .artist {
+  font-size: 15px;
+  color: #b3b3b3;
 }
 
 /* mobile */
