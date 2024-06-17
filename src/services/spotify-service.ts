@@ -93,17 +93,26 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any,
     return data[0];
   };
   
-  export const followPlaylist = async (accessToken: any, playlistId: string) => {
+  export const followPlaylist = async (accessToken: string, playlistId: string) => {
     const API_ENDPOINT = `https://api.spotify.com/v1/playlists/${playlistId}/followers`;
     const headers = {
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json'
     };
   
-    return fetch(API_ENDPOINT, {
-      method: 'PUT',
-      headers: headers,
-    });
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: 'PUT',
+        headers: headers,
+      });
+      if (!response.ok) {
+        throw new Error(`Error following playlist: ${response.statusText}`);
+      }
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   };
   
   export const unfollowPlaylist = async (accessToken: string, playlistId: string) => {
@@ -112,11 +121,21 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any,
       'Authorization': `Bearer ${accessToken}`,
     };
   
-    return fetch(API_ENDPOINT, {
-      method: 'DELETE',
-      headers: headers,
-    });
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: 'DELETE',
+        headers: headers,
+      });
+      if (!response.ok) {
+        throw new Error(`Error unfollowing playlist: ${response.statusText}`);
+      }
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   };
+  
   
   // Playback Controls
   export const toggleShufflePlayback = async (accessToken: any, state: boolean) => {

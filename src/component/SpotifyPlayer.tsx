@@ -24,21 +24,30 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
   const [playlistId, setPlaylistId] = useState<any | null>(null);
   const [userId, setUserId] = useState<any | null>(null);
   const dispatch = useDispatch();
+  const POLLING_INTERVAL = 5000;
 
   const updatePlaybackStatus = useCallback(() => {
     getCurrentlyPlaying(accessToken, dispatch).then(data => {
-      setCurrentTrack(data.item);
-      setIsPlaying(data.isPlaying);
-      if (data.item?.context?.type === 'playlist') {
-        const currentPlaylistId = data.item.context.uri.split(':').pop();
-        setPlaylistId(currentPlaylistId);
+      if (data && data.item) {
+        setCurrentTrack(data.item);
+        setIsPlaying(data.isPlaying);
+        console.log("Current playback data:", data);
+        if (data.context && data.context.type === 'playlist') {
+          const currentPlaylistId = data.context.uri.split(':').pop();
+          setPlaylistId(currentPlaylistId);
+          console.log("Playlist ID set to:", currentPlaylistId);
+        } else {
+          setPlaylistId(null);
+        }
       } else {
+        setCurrentTrack(null);
+        setIsPlaying(false);
         setPlaylistId(null);
       }
     }).catch(error => {
       console.error("Error fetching current playback:", error);
     });
-
+  
     fetchUserProfile(accessToken, dispatch).then(data => {
       if (data) {
         setUserId(data.id);
@@ -47,6 +56,20 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
       console.error("Error fetching user profile:", error);
     });
   }, [accessToken, dispatch]);
+  
+  
+  useEffect(() => {
+    if (userId && playlistId) {
+      checkIfPlaylistIsFollowed(accessToken, playlistId, userId)
+        .then(followStatus => setIsFavorited(followStatus));
+    }
+  }, [userId, playlistId, accessToken]);
+  
+  useEffect(() => {
+    const interval = setInterval(updatePlaybackStatus, POLLING_INTERVAL);
+    return () => clearInterval(interval);
+  }, [updatePlaybackStatus]);
+  
 
   useEffect(() => {
     updatePlaybackStatus();

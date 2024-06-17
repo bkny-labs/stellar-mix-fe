@@ -12,7 +12,7 @@ export const getAuthURL = () => {
     client_id: CLIENT_ID as string,
     response_type: "code",
     redirect_uri: REDIRECT_URI,
-    scope: "user-read-private user-read-email user-read-currently-playing user-read-playback-state app-remote-control user-modify-playback-state",
+    scope: "user-read-private user-read-email user-read-currently-playing user-read-playback-state app-remote-control user-modify-playback-state playlist-modify-public playlist-modify-private",
     // show_dialog: "true"
   });
   return `${SPOTIFY_AUTH_ENDPOINT}?${params.toString()}`;
