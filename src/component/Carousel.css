@@ -1,0 +1,65 @@
+.carousel-container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.carousel-item {
+  position: relative;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+  transform: scale(0.8);
+}
+
+.carousel-item:hover {
+  transform: scale(1.00);
+}
+
+.carousel-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-item-content {
+  position: relative;
+}
+
+.carousel-item-overlay {
+  position: absolute;
+  bottom: 0px;
+  left: 20%;
+  right: 20%;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 100px;
+  padding: 8px;
+  opacity: 0;
+  font-size: 12px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.carousel-item-overlay h3, .carousel-item-overlay p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.carousel-item:hover .carousel-item-overlay {
+  opacity: 1;
+}
+
+.copied-tooltip {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #61dafb;
+  color: #282c34;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9em;
+}

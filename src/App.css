@@ -39,8 +39,13 @@ body {
   padding: 0 12px;
   height: 60px;
 }
+
+.header .logo {
+  padding: 8px 5px;
+}
+
 .header .logo img {
-  width: 155px;
+  width: 130px;
 }
 
 .header-right {
@@ -189,6 +194,7 @@ body {
   padding: 10px;
   cursor: pointer;
   text-align: left;
+  user-select: none;
 }
 
 .nav li a {
@@ -302,14 +308,14 @@ button {
   margin: 20px auto;
   background: #1DB954;
   border: none;
-  border-radius: 24px;
+  border-radius: 999px;
   color: white;
   display: inline-flex;
   align-items: center;
-  padding: 12px 24px;
+  padding: 12px 16px;
   gap: 8px;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
   transition: all 0.3s ease;
 }

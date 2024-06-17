@@ -1,18 +1,13 @@
 import './Home.css';
 import { useSelector } from 'react-redux';
 import { AppState } from '../store/state';
-import { getAuthURL } from '../services/auth-service';
-import { FaGithub, FaSpotify, FaStar, FaUserAstronaut } from 'react-icons/fa';
-import logo from '../assets/sm_logo.png';
+import { FaGithub, FaStar, FaUserAstronaut } from 'react-icons/fa';
 import SpaceBackground from '../component/Space';
 import { useEffect } from 'react';
 import { SiOpenai } from 'react-icons/si';
 
 function Home() {
   const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
-  const handleLogin = () => {
-    window.location.href = getAuthURL();
-  };
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -29,17 +24,6 @@ function Home() {
       <SpaceBackground />
     </div>
     <div className="landing">
-
-      <div className={`hero ${isLoggedIn ? 'logged-in' : ''}`}>
-        <img src={logo} alt="logo" />
-        <h1>StellarMix</h1>
-        <p>Your AI companion for discovering the perfect mixtape.</p>
-        {!isLoggedIn &&
-          <div>
-            <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 
-          </div>
-          }
-      </div>
       {!isLoggedIn &&
       <div className="instructions">
         <div className="item">

@@ -1,0 +1,70 @@
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  padding: 15px 8px;
+  height: 50vh;
+  margin: 25px;
+  border-radius: 30px;
+}
+
+.intro img {
+  width: 180px;
+  height: auto;
+}
+
+.intro.desktop {
+  height: auto;
+}
+
+.intro h1 {
+  color: white;
+}
+
+.intro p {
+  color: #c2c2c2;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 40px;
+}
+.get-started {
+  background-color: #0d0d0d;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+}
+
+.hero-img {
+  height: 420px;
+  width: 100%;
+  border-radius: 30px;
+}
+
+
+@media (max-width: 768px) {
+  .intro {
+    height: 91vh;
+    margin: 0;
+    border-radius: 0;
+  }
+}

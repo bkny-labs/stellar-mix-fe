@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { UserProfile } from '../types';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo4.png';
 import Spotlight from './Spotlight';
 import { FaWandMagicSparkles } from "react-icons/fa6";
 
