@@ -8,9 +8,10 @@ interface HeaderProps {
   userProfile: UserProfile;
   toggleFilters: () => void;
   updateMoodData: (data: any) => void;
+  onNavClick: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodData }) => {
+const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodData, onNavClick }) => {
   const [isSpotlightOpen, setIsSpotlightOpen] = useState(false);
   const [locked, setLocked] = useState(false);
 
@@ -59,6 +60,7 @@ const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodD
       <div className="header-right">
         <button onClick={toggleSpotlight}><FaWandMagicSparkles /></button>
         <div 
+          onClick={onNavClick}
           className="user-image"
           style={{ backgroundImage: `url(${userProfile.images[0]?.url})` }}>
         </div>

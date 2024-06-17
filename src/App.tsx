@@ -31,23 +31,15 @@ const App: React.FC<AppProps> = ({ updateMoodData }) => {
   const dispatch = useDispatch();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [filterIsOpen, setFilterIsOpen] = useState(false);
-  // const [filters, setFilters] = useState({
-  //   activity: '',
-  //   language: '',
-  //   sorting: '',
-  //   limit: ''
-  // });
-
-  // const handleFilterChange = (name: any, value: any) => {
-  //   setFilters(prevFilters => ({
-  //     ...prevFilters,
-  //     [name]: value
-  //   }));
-  // };
+  const [showNav, setShowNav] = useState(true);
 
   const toggleFilters = () => {
     setFilterIsOpen(!filterIsOpen);
   };
+
+  const handleNav = () => {
+    setShowNav(!showNav);
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -74,6 +66,12 @@ const App: React.FC<AppProps> = ({ updateMoodData }) => {
       setShowToast(true);
     }
   }, [isLoggedIn]); 
+
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setShowNav(false);
+    }
+  }, []);
   
   return (
     <Router>
@@ -90,20 +88,30 @@ const App: React.FC<AppProps> = ({ updateMoodData }) => {
           <div className="container">
             {isLoggedIn && userProfile && 
               <>
-              <Header userProfile={userProfile} toggleFilters={toggleFilters} updateMoodData={updateMoodData} />
-              {/* <FilterDrawer isOpen={filterIsOpen} onFilterChange={handleFilterChange} /> */}
-              <nav className='nav'>
+              {
+                true && 
+                  <Header onNavClick={handleNav} userProfile={userProfile} toggleFilters={toggleFilters} updateMoodData={updateMoodData} />
+              } 
+              {
+                showNav &&
+                <nav className='nav'>
                 <Navigation 
                   loggedIn={isLoggedIn}
                   sunCalcData={sunCalcData}
                   weatherData={weatherData}
                 />
               </nav>
+              }
               </>
             }
-            <div className="content"
+            <div 
+            className={
+              showNav
+                ? 'content'
+                : 'content content-full'
+            }
             style={
-              isLoggedIn && userProfile && !isMobile
+              isLoggedIn && userProfile && !isMobile && showNav
                 ? { paddingRight: '18px', paddingLeft: '180px' } 
                 : {}
               }

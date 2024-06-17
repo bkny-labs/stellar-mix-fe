@@ -208,6 +208,10 @@ body {
   flex: auto;
 }
 
+.content-full .browse-grid {
+  padding-left: 0;
+}
+
 .hide {
   display: none;
 }
@@ -269,10 +273,6 @@ body {
 
 /* Mobile */
 @media (max-width: 767px) {
-  .nav {
-    background: transparent;
-    display: none;
-  }
   .content {
     padding: 16px 8px;
   }

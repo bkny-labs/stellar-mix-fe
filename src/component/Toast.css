@@ -66,3 +66,11 @@
     left: 55%;
     transform: translateX(-50%);
   }
+
+  /* mobile */
+  @media (max-width: 768px) {
+    .toast {
+      margin: 0;
+      left: 45%;
+    }
+  }
