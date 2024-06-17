@@ -159,6 +159,9 @@
     .track-list {
       height: calc(100% - 390px);
     }
+    .playlist-info h3 {
+      font-size: 14px;
+    }
 }
 
 

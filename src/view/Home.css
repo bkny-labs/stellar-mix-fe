@@ -114,12 +114,12 @@ body, html {
   }
 
   .instructions .item {
-    border-top: 2px solid white;
+    border-top: 2px solid #4a4a4a;
   }
 
   .instructions .step {
     font-size: 12px;
-    color: gray;
+    color: #ababab;
   }
 
   .instructions h4 {

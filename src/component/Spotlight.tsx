@@ -178,6 +178,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
           <SiOpenai />
         </SpotlightIcon>
         <SpotlightInput
+          className='input'
           ref={inputRef}
           type="text"
           placeholder="How are you feeling right now?"
