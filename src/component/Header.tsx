@@ -39,6 +39,13 @@ const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodD
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const spotifyPlaylists = JSON.parse(localStorage.getItem('spotifyPlaylists') || '[]');
+    if (spotifyPlaylists.length === 0) {
+      setIsSpotlightOpen(true);
+    }
+  }, []);
+
   return (
     <div className='header'>
       <Spotlight isOpen={isSpotlightOpen} toggleSpotlight={toggleSpotlight} updateMoodData={updateMoodData} />

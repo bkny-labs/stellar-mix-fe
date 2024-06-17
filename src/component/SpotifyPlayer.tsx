@@ -25,17 +25,10 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
   const [userId, setUserId] = useState<any | null>(null);
   const dispatch = useDispatch();
 
-  const handleTrackChangeFromDrawer = () => {
-    updatePlaybackStatus();
-  };
-
   const updatePlaybackStatus = useCallback(() => {
-    // Fetch the current playback track and set playlistId
     getCurrentlyPlaying(accessToken, dispatch).then(data => {
       setCurrentTrack(data.item);
       setIsPlaying(data.isPlaying);
-  
-      // If the song is being played from a playlist, extract the playlist ID
       if (data.item?.context?.type === 'playlist') {
         const currentPlaylistId = data.item.context.uri.split(':').pop();
         setPlaylistId(currentPlaylistId);
@@ -45,8 +38,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
     }).catch(error => {
       console.error("Error fetching current playback:", error);
     });
-  
-    // Fetch the user profile and set userId
+
     fetchUserProfile(accessToken, dispatch).then(data => {
       if (data) {
         setUserId(data.id);
@@ -54,20 +46,25 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
     }).catch(error => {
       console.error("Error fetching user profile:", error);
     });
-  
-    if (playlistId) {
+  }, [accessToken, dispatch]);
+
+  useEffect(() => {
+    updatePlaybackStatus();
+  }, [playlistPlayed, updatePlaybackStatus]);
+
+  useEffect(() => {
+    if (userId && playlistId) {
       checkIfPlaylistIsFollowed(accessToken, playlistId, userId)
         .then(followStatus => setIsFavorited(followStatus));
     }
-
-  }, [accessToken, dispatch, playlistId, userId]);
+  }, [userId, playlistId, accessToken]);
 
   const toggleFavorite = async () => {
     if (isFavorited) {
-      unfollowPlaylist(accessToken, playlistId);
+      await unfollowPlaylist(accessToken, playlistId);
       setIsFavorited(false);
     } else {
-      followPlaylist(accessToken, playlistId);
+      await followPlaylist(accessToken, playlistId);
       setIsFavorited(true);
     }
   };
@@ -82,15 +79,14 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
   };
 
   const toggleShuffle = async () => {
-    const newShuffleState = !isShuffle; // Flip the current state
-    toggleShufflePlayback(accessToken, newShuffleState);
-    setIsShuffle(newShuffleState); // Update the local state
+    const newShuffleState = !isShuffle;
+    await toggleShufflePlayback(accessToken, newShuffleState);
+    setIsShuffle(newShuffleState);
   };
 
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = Number(event.target.value);
     setVolume(newVolume);
-
     setSpotifyVolume(accessToken, newVolume).catch(error => {
       console.error("Failed to change volume:", error);
     });
@@ -98,12 +94,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
 
   const handleNextTrack = () => {
     playNextTrack(accessToken)
-      .then(() => {
-        getCurrentlyPlaying(accessToken, dispatch).then(data => {
-          setCurrentTrack(data.item);
-          setIsPlaying(data.isPlaying);
-        });
-      })
+      .then(updatePlaybackStatus)
       .catch(error => {
         console.error("Error playing the next track:", error);
       });
@@ -111,37 +102,15 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
 
   const handlePreviousTrack = () => {
     playPreviousTrack(accessToken)
-      .then(() => {
-        getCurrentlyPlaying(accessToken, dispatch).then(data => {
-          setCurrentTrack(data.item);
-          setIsPlaying(data.isPlaying);
-        });
-      })
+      .then(updatePlaybackStatus)
       .catch(error => {
         console.error("Error playing the previous track:", error);
       });
   };
 
-  // const toggleDrawer = () => {
-  //   setShowDrawer(prev => !prev);
-  //   onDrawerToggle(!showDrawer);
-  // };
-
   const toggleDrawer = () => {
     onDrawerToggle(!isDrawerOpen);
   };
-
-
-  useEffect(() => {
-    updatePlaybackStatus();
-  }, [playlistPlayed, setCurrentTrack, isPlaying, updatePlaybackStatus]);
-
-  useEffect(() => {
-    if (userId && playlistId) {
-      checkIfPlaylistIsFollowed(accessToken, playlistId, userId)
-        .then(followStatus => setIsFavorited(followStatus));
-    }
-  }, [userId, playlistId, accessToken]);
 
   return (
     <>
@@ -191,9 +160,8 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
         isVisible={isDrawerOpen} 
         accessToken={accessToken} 
         playlistPlayed={playlistPlayed} 
-        onTrackChange={handleTrackChangeFromDrawer} 
+        onTrackChange={updatePlaybackStatus} 
       />}
     </>
-    
   );
 }

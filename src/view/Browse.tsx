@@ -55,6 +55,10 @@ const Browse: React.FC = () => {
     }
   }, [dispatch]);
 
+  // useEffect to update currentlyPlayingURI
+  
+  
+
   useEffect(() => {
     if (Array.isArray(playlists)) {
       localStorage.setItem('spotifyPlaylists', JSON.stringify(playlists));

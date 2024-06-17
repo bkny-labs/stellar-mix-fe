@@ -71,7 +71,7 @@ export default class MainController {
 
   public fetchSpotifyPlaylists = () => {
     if (!this.spotifyToken) {
-      console.error('Spotify token is not available.');
+      console.error('Spotify token is not available.'); 
       return;
     }
   
