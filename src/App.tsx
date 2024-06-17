@@ -15,6 +15,7 @@ import Toast from './component/Toast';
 import { useEffect, useState } from 'react';
 import { fetchUserProfile } from './services/auth-service';
 import { UserProfile } from './types';
+import MyFavorites from './view/MyFavorites';
 
 interface AppProps {
   updateMoodData: (data: any) => void;
@@ -110,6 +111,7 @@ const App: React.FC<AppProps> = ({ updateMoodData }) => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/browse" element={<Browse />} />
+                <Route path="/favorites" element={<MyFavorites />} />
                 <Route path="/settings" element={<Settings />} />
               </Routes>
             </div>

@@ -6,8 +6,9 @@ export type Album = {
     images: { url: string }[];
 };
 
-export type Track = {
+export interface Track {
+    id: string;
     name: string;
-    album: Album;
     artists: Artist[];
-};
+    album: Album;
+  }

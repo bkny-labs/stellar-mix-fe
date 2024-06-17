@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { SiOpenai } from "react-icons/si";
 import axios from 'axios';
 import './Spotlight.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface SpotlightProps {
   isOpen: boolean;
@@ -54,6 +55,8 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
   const prompt = `Reply with 10 creative search parameters that are synonymous with my how I am feeling: "${userInput}". Include related genres or artists if mentioned. The response should be comma-separated, with no extra characters, list bullets, numbers, dashes or punctuation.`;
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -125,6 +128,10 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       const sanitizedCompletion = sanitizeCompletion(completion);
       updateMoodData(sanitizedCompletion.split(',').map(item => item.trim()));
       localStorage.setItem('moodData', JSON.stringify(sanitizedCompletion.split(',')));
+
+      if (location.pathname !== '/browse') {
+        navigate('/browse');
+      }
 
     } catch (error) {
       if (axios.isAxiosError(error)) {

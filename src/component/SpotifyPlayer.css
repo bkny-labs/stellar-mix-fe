@@ -31,8 +31,8 @@
   padding: 15px;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 33%;
   text-overflow: ellipsis;
+  cursor: pointer;
 }
 
 .spotify-player img {
@@ -64,6 +64,11 @@
 
 .info-button {
   cursor: pointer;
+}
+
+.track-info .artist {
+  font-size: 15px;
+  color: #b3b3b3;
 }
 
 /* mobile */
