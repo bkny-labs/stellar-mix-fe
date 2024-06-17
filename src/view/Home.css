@@ -27,6 +27,7 @@ body, html {
     align-items: center;
     gap: 15px;
     font-size: 13px;
+    margin: 0;
   }
 
   .hero.logged-in {
@@ -109,7 +110,7 @@ body, html {
   .instructions {
     display: flex;
     gap: 40px;
-    padding: 70px 0 0;
+    padding: 25px 0 0;
   }
 
   .instructions .item {
@@ -123,4 +124,38 @@ body, html {
 
   .instructions h4 {
     font-size: 22px;
+  }
+
+  /* mobile  */
+  @media screen and (max-width: 768px) {
+    .features {
+      grid-template-columns: 1fr;
+    }
+    .hero img {
+      width: 150px;
+    }
+    .hero h1 {
+      font-size: 50px;
+    }
+    .hero p {
+      font-size: 16px;
+    }
+    .about {
+      width: 90%;
+    }
+    .instructions {
+      flex-direction: column;
+      padding-top: 0;
+    }
+    .instructions h4 {
+      font-size: 18px;
+    }
+  }
+
+  /* tablet */
+  @media screen and (max-width: 1024px) {
+    .landing {
+      padding: 0 20px;
+      max-width: 700px;
+    }
   }

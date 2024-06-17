@@ -11,7 +11,6 @@ import { buildPlaylistQuery, getMusicalMood } from '../utils/generate-spotify-qu
 import { createRoot } from 'react-dom/client';
 import App from '../App';
 import { store } from '../store/store';
-import { setMoodData } from '../store/slice';
 
 export default class MainController {
   private spotifyToken = localStorage.getItem('spotifyToken');
@@ -61,7 +60,7 @@ export default class MainController {
       this.getSpotifyToken();
       const state = this.store.getState();
       this.moodData = data;
-      this.store.dispatch(setMoodData(data));
+      // this.store.dispatch(setMoodData(data));
       getMusicalMood({ ...state, moodData: data }, true); // Pass the updated state with new moodData
       localStorage.setItem('moodData', JSON.stringify(data));
       console.log('Updated mood data:', data);
@@ -143,6 +142,11 @@ export default class MainController {
         localStorage.setItem('isLoggedIn', 'true');
         fetchUserProfile(spotifyToken, this.store.dispatch);
         this.fetchSpotifyPlaylists();
+
+        const newUrl = window.location.origin + '/browse';
+        window.history.replaceState(null, '', newUrl);
+        window.location.reload();
+
         return this.spotifyToken;
       }
     } catch (error) {

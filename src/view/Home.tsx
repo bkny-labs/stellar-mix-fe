@@ -2,7 +2,7 @@ import './Home.css';
 import { useSelector } from 'react-redux';
 import { AppState } from '../store/state';
 import { getAuthURL } from '../services/auth-service';
-import { FaCompass, FaGithub, FaSpotify, FaUserAstronaut } from 'react-icons/fa';
+import { FaCompass, FaGithub, FaSpotify, FaStar, FaUserAstronaut } from 'react-icons/fa';
 import logo from '../assets/sm_logo.png';
 import SpaceBackground from '../component/Space';
 import { useEffect } from 'react';
@@ -33,8 +33,7 @@ function Home() {
       <div className={`hero ${isLoggedIn ? 'logged-in' : ''}`}>
         <img src={logo} alt="logo" />
         <h1>StellarMix</h1>
-        <p className='small'>Made for <FaSpotify /></p>
-        <p>StellarMix crafts the ultimate playlist for your moment, blending your music tastes with cues from the world around you – day or night, rain or shine, cosmos in motion.</p>
+        <p>Your AI companion for discovering the perfect mixtape.</p>
         {!isLoggedIn &&
           <div>
             <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 
@@ -45,15 +44,19 @@ function Home() {
       <div className="instructions">
         <div className="item">
           <p className='step'>Step 1</p>
-          <h4>Connect your spotify</h4>
+          <h4>Connect your Spotify</h4>
         </div>
         <div className="item">
           <p className='step'>Step 2</p>
-          <h4>Tell AI your mood.</h4>
+          <h4>Get curated playlists</h4>
+        </div>
+        <div className="item">
+          <p className='step'>Step 2</p>
+          <h4>Fine tune with AI</h4>
         </div>
         <div className="item">
           <p className='step'>Step 3</p>
-          <h4>Control your Spotify playback</h4>
+          <h4>Playback and Share</h4>
         </div>
       </div>
 
@@ -64,14 +67,14 @@ function Home() {
           <p>Discover curated playlists tailored to your taste.</p>
         </div>
         <div className="feature">
-          <FaCompass size={40} />
-          <h2>Weather Based</h2>
-          <p>Playlists that adapt to the world around you.</p>
+          <FaStar size={40} />
+          <h2>Cosmic Mixtape</h2>
+          <p>Playlists that adapt to the weather, moon phases, and your mood.</p>
         </div>
         <div className="feature">
           <SiOpenai size={40} />
-          <h2>AI Playlists</h2>
-          <p>Integrated with OpenAI to bring you the perfect playlists for your mood.</p>
+          <h2>AI Fine-tune</h2>
+          <p>OpenAI brings you the perfect playlists for your mood.</p>
         </div>
     </div>
 
