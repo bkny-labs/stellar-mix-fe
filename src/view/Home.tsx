@@ -2,7 +2,7 @@ import './Home.css';
 import { useSelector } from 'react-redux';
 import { AppState } from '../store/state';
 import { getAuthURL } from '../services/auth-service';
-import { FaCompass, FaGithub, FaSpotify, FaStar, FaUserAstronaut } from 'react-icons/fa';
+import { FaGithub, FaSpotify, FaStar, FaUserAstronaut } from 'react-icons/fa';
 import logo from '../assets/sm_logo.png';
 import SpaceBackground from '../component/Space';
 import { useEffect } from 'react';
