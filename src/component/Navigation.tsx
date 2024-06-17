@@ -8,6 +8,7 @@ import { CgLogOut } from 'react-icons/cg';
 import { DateTime } from 'luxon';
 import { useDispatch } from 'react-redux';
 import { logout } from '../services/auth-service';
+import { RiPlayListFill } from "react-icons/ri";
 
 interface NavigationProps {
   loggedIn?: boolean;
@@ -66,6 +67,14 @@ export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false, sunCal
             className={location.pathname === "/browse" ? "active" : ""}
           >
             <FaMusic /> Browse
+          </Link>
+        </li>
+        <li>
+          <Link 
+            to="/favorites" 
+            className={location.pathname === "/favorites" ? "active" : ""}
+          >
+            <RiPlayListFill /> Favorites
           </Link>
         </li>
         <li>

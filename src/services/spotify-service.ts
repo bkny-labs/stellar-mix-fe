@@ -92,6 +92,37 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any,
   
     return data[0];
   };
+
+  export const getFavoritePlaylists = (token: string, dispatch: any, limit: string = '50'): Promise<any> => {
+    return new Promise(async (resolve, reject) => {
+      const API_ENDPOINT = `https://api.spotify.com/v1/me/playlists?limit=${limit}`;
+      const headers = {
+        'Authorization': `Bearer ${token}`
+      };
+
+      try {
+        const response = await fetch(API_ENDPOINT, { headers });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            dispatch(setLoggedInAction(false));
+            localStorage.removeItem('isLoggedIn');
+          }
+          const errorData = await response.json();
+          console.error("Spotify API Error Response:", errorData);
+          reject(`Error ${response.status}: ${errorData.error.message}`);
+          return;
+        }
+
+        const data = await response.json();
+        resolve(data.items);
+      } catch (error) {
+        console.error("Error fetching playlists:", error);
+        reject(error);
+      }
+    });
+  };
+
   
   export const followPlaylist = async (accessToken: string, playlistId: string) => {
     const API_ENDPOINT = `https://api.spotify.com/v1/playlists/${playlistId}/followers`;

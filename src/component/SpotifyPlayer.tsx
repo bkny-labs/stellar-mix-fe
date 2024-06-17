@@ -25,7 +25,6 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
   const [volume, setVolume] = useState<number>(10);
   const [playlistId, setPlaylistId] = useState<any | null>(null);
   const [userId, setUserId] = useState<any | null>(null);
-  const [playlistData, setPlaylistData] = useState<any | null>(null);
   const dispatch = useDispatch();
   const POLLING_INTERVAL = 5000;
 
@@ -62,17 +61,6 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
     });
   }, [accessToken, dispatch, currentlyPlayingURI, setCurrentlyPlayingURI]);
 
-  const playlistDetails = useCallback(async () => {
-    if (!playlistId) return;
-    try {
-      const playlistInfo = await fetchPlaylistDetails(playlistId, accessToken);
-      console.log(playlistInfo);
-      setPlaylistData(playlistInfo);
-    } catch (error) {
-      console.error('Failed to fetch playlist details:', error);
-    }
-  }, [playlistId, accessToken]);
-
   useEffect(() => {
     const interval = setInterval(updatePlaybackStatus, POLLING_INTERVAL);
     return () => clearInterval(interval);
@@ -80,10 +68,9 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
 
   useEffect(() => {
     setTimeout(() => {
-      playlistDetails()
       updatePlaybackStatus();
     }, 1000);
-  }, [playlistDetails, playlistPlayed, updatePlaybackStatus]);
+  }, [playlistPlayed, updatePlaybackStatus]);
 
   useEffect(() => {
     if (userId && playlistId) {
@@ -159,16 +146,10 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
     <>
     <div className="spotify-player">
       {currentTrack && (
-        <div className="playback-info-container">
-          <div className="track-info">
-            <img src={currentTrack?.album.images[0].url} alt="album-cover" />
-            <span>{currentTrack?.name}</span>
-            <span className='artist'>{currentTrack?.artists[0].name}</span>
-          </div>
-          {playlistData &&
-              // eslint-disable-next-line jsx-a11y/anchor-is-valid
-              <a href='#' className='playlist' onClick={openDrawer}>from {playlistData?.name}</a>
-              }
+        <div className="track-info" onClick={openDrawer}>
+          <img src={currentTrack?.album.images[0].url} alt="album-cover" />
+          <span>{currentTrack?.name}</span>
+          <span className='artist'>{currentTrack?.artists[0].name}</span>
         </div>
       )}
       <div className="player-play">
@@ -189,11 +170,9 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
       </div>
 
       <div className="player-controls">
-        { isPlaying && (
           <button className='info-button' onClick={toggleDrawer}>
             <FaInfoCircle size={20} color={isDrawerOpen ? '#fda53a' : '#fff' } />
           </button>
-        )}
         <input 
           type="range" 
           min="0" 
