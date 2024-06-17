@@ -37,7 +37,7 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
         setIsFavorited(followStatus);
       }
     } catch (error) {
-      console.error("Error fetching user profile:", error);
+      console.error("Error fetching user profile:", userId, error);
     }
   }, [accessToken, dispatch, playlistId]);
 
