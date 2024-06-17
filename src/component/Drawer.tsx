@@ -134,10 +134,10 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
                   </thead>
                   <tbody>
                     {playlistData?.tracks.items.map((track: any) => (
-                      <tr onClick={() => playTrack(track)} key={track.track.id} className={currentTrack?.id === track.track.id ? 'isPlaying' : ''}>
-                        <td><img src={track.track.album.images[0].url} width="25px" alt="" /></td>
-                        <td>{track.track.name}</td>
-                        <td>{track.track.artists.map((artist: any) => artist.name).join(', ')}</td>
+                      <tr onClick={() => playTrack(track)} key={track?.track?.id} className={currentTrack?.id === track?.track?.id ? 'isPlaying' : ''}>
+                        <td><img src={track?.track?.album.images[0].url} width="25px" alt="" /></td>
+                        <td>{track?.track?.name}</td>
+                        <td>{track?.track?.artists.map((artist: any) => artist.name).join(', ')}</td>
                         {/* <td>{track.track.album.name}</td> */}
                       </tr>
                     ))}
