@@ -20,6 +20,15 @@ body, html {
     text-align: center;
     margin-top: 2rem;
   }
+
+  .hero p.small {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    font-size: 13px;
+  }
+
   .hero.logged-in {
     padding-top: 3rem; 
 }
@@ -93,6 +102,25 @@ body, html {
   }
   
   .about .small {
-    color:#7c7c7c;
+    color:#ababab;
     font-size: 11px;
+  }
+
+  .instructions {
+    display: flex;
+    gap: 40px;
+    padding: 70px 0 0;
+  }
+
+  .instructions .item {
+    border-top: 2px solid white;
+  }
+
+  .instructions .step {
+    font-size: 12px;
+    color: gray;
+  }
+
+  .instructions h4 {
+    font-size: 22px;
   }
