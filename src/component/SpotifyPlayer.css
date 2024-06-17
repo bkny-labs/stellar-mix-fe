@@ -11,6 +11,27 @@
   padding: 20px 0;
 }
 
+.spotify-player .name {
+  display: flex;
+  flex-direction: column;
+}
+
+.spotify-player .name .title {
+  overflow: hidden;
+  width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.spotify-player .name .artist {
+  overflow: hidden;
+  width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  color: #b3b3b3;
+}
+
 .spotify-player .player-controls {
   flex: 1;
   display: flex;
@@ -64,11 +85,6 @@
 
 .info-button {
   cursor: pointer;
-}
-
-.track-info .artist {
-  font-size: 15px;
-  color: #b3b3b3;
 }
 
 /* mobile */

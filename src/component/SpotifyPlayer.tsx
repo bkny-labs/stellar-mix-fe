@@ -148,8 +148,10 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
       {currentTrack && (
         <div className="track-info" onClick={openDrawer}>
           <img src={currentTrack?.album.images[0].url} alt="album-cover" />
-          <span>{currentTrack?.name}</span>
-          <span className='artist'>{currentTrack?.artists[0].name}</span>
+          <div className='name'>
+            <span className='title'>{currentTrack?.name}</span>
+            <span className='artist'>{currentTrack?.artists[0].name}</span>
+          </div>
         </div>
       )}
       <div className="player-play">

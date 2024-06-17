@@ -31,3 +31,11 @@
 .spotlight-overlay.open {
   display: flex;
 }
+
+
+.return {
+  position: absolute;
+  top: 70px;
+  right: 10px;
+  color: #9b9b9b;
+}
