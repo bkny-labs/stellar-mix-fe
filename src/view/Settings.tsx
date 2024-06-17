@@ -133,6 +133,7 @@ function Settings() {
               <button className="save-button" onClick={handleSave}>Save Settings</button>
             </div>
         </div>
+        
     );
 }
 

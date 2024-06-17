@@ -65,3 +65,34 @@
 .info-button {
   cursor: pointer;
 }
+
+/* mobile */
+@media (max-width: 768px) {
+  .spotify-player {
+    padding: 10px;
+  }
+
+  .spotify-player .player-controls {
+    padding: 10px;
+  }
+
+  .spotify-player .track-info {
+    padding: 10px;
+    max-width: 50%;
+  }
+
+  .spotify-player img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .track-info span {
+    display: none;
+  }
+  .favorite {
+    display: none;
+  }
+  .spotify-player .player-controls input[type="range"] {
+    width: 90px;
+  }
+}

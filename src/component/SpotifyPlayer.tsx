@@ -170,7 +170,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
           <FaStepForward color={'#6f6f6f'} size={25} onClick={handleNextTrack} />
           { isFavorited 
             ? <FaHeart onClick={toggleFavorite} color={'#fda53a'} size={20} />
-            : <FaRegHeart onClick={toggleFavorite} color={'#6f6f6f'} size={20} />
+            : <FaRegHeart className='favorite' onClick={toggleFavorite} color={'#6f6f6f'} size={20} />
           }
       </div>
 
