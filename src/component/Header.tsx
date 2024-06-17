@@ -12,6 +12,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodData }) => {
   const [isSpotlightOpen, setIsSpotlightOpen] = useState(false);
+  const [locked, setLocked] = useState(false);
 
   const toggleSpotlight = () => {
     setIsSpotlightOpen(prevState => !prevState);
@@ -43,12 +44,15 @@ const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodD
     const spotifyPlaylists = JSON.parse(localStorage.getItem('spotifyPlaylists') || '[]');
     if (spotifyPlaylists.length === 0) {
       setIsSpotlightOpen(true);
+      setLocked(true);
+    } else {
+      setLocked(false);
     }
   }, []);
 
   return (
     <div className='header'>
-      <Spotlight isOpen={isSpotlightOpen} toggleSpotlight={toggleSpotlight} updateMoodData={updateMoodData} />
+      <Spotlight isOpen={isSpotlightOpen} toggleSpotlight={toggleSpotlight} updateMoodData={updateMoodData} locked={locked} setLocked={setLocked} />
       <div className="logo">
         <img src={logo} alt="Logo" />
       </div>

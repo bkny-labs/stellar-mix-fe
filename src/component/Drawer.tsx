@@ -99,10 +99,10 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
   
       {isLoading ? (
         <div className="playlist-info">
-          <SkeletonLoader width="310px" height="310px" marginBottom="12px" />
-          <SkeletonLoader width="310px" height="22px" marginBottom="17px" />
-          <SkeletonLoader width="310px" height="28px" marginBottom="17px" />
-          <SkeletonLoader width="310px" height="330px" marginBottom="5px" />
+          <SkeletonLoader width="100%" height="310px" marginBottom="12px" />
+          <SkeletonLoader width="100%" height="22px" marginBottom="17px" />
+          <SkeletonLoader width="100%" height="28px" marginBottom="17px" />
+          <SkeletonLoader width="100%" height="330px" marginBottom="5px" />
         </div>
       ) : (
         <>

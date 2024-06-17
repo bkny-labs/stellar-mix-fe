@@ -4,11 +4,14 @@ import { SiOpenai } from "react-icons/si";
 import axios from 'axios';
 import './Spotlight.css';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { PiKeyReturn } from "react-icons/pi";
 
 interface SpotlightProps {
   isOpen: boolean;
   toggleSpotlight: () => void;
   updateMoodData: (data: any) => void;
+  locked: boolean;
+  setLocked: (locked: boolean) => void; 
 }
 
 const SpotlightIcon = styled.div`
@@ -49,7 +52,7 @@ const ErrorToast = styled.p`
   color: red;
 `;
 
-const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMoodData }) => {
+const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMoodData, locked, setLocked }) => {
   const apiKey = process.env.REACT_APP_OPEN_AI_KEY;
   const inputRef = useRef<HTMLInputElement>(null);
   const [userInput, setUserInput] = useState('');
@@ -63,9 +66,11 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
     if (event.key === 'Enter') {
       event.preventDefault();
       handleOpenAI();
+      setTimeout(() => {
+        handleClose();
+      }, 1000);
     }
-    // close on escape key
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && !locked) {
       handleClose();
     }
   };
@@ -128,6 +133,8 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       const sanitizedCompletion = sanitizeCompletion(completion);
       updateMoodData(sanitizedCompletion.split(',').map(item => item.trim()));
       localStorage.setItem('moodData', JSON.stringify(sanitizedCompletion.split(',')));
+    
+      handleClose();
 
       if (location.pathname !== '/browse') {
         navigate('/browse');
@@ -149,6 +156,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       }
     } finally {
       setLoading(false);
+      console.log('why no close?');
       handleClose();
     }
   };
@@ -164,7 +172,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
 
   return (
     <>
-      <div className={`spotlight-overlay ${isOpen ? 'open' : ''}`} onClick={handleClose}></div>
+      <div className={`spotlight-overlay ${isOpen ? 'open' : ''}`} onClick={handleClose }></div>
       <div className={`spotlight-container ${isOpen ? 'open' : ''}`}>
         <SpotlightIcon>
           <SiOpenai />
@@ -176,6 +184,9 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
           onChange={(e) => setUserInput(e.target.value)}
           onKeyDown={handleKeyDown}
         />
+        <div className="return">
+          <PiKeyReturn onClick={handleOpenAI} size={30} />
+        </div>
         <MessageArea>
           {loading && <LoadingToast><SiOpenai /> &nbsp; Contacting OpenAI...</LoadingToast>}
           {error && <ErrorToast><SiOpenai /><span>&nbsp;{error}</span></ErrorToast>}

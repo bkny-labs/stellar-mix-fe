@@ -11,6 +11,27 @@
   padding: 20px 0;
 }
 
+.spotify-player .name {
+  display: flex;
+  flex-direction: column;
+}
+
+.spotify-player .name .title {
+  overflow: hidden;
+  width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.spotify-player .name .artist {
+  overflow: hidden;
+  width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  color: #b3b3b3;
+}
+
 .spotify-player .player-controls {
   flex: 1;
   display: flex;
@@ -66,11 +87,6 @@
   cursor: pointer;
 }
 
-.track-info .artist {
-  font-size: 15px;
-  color: #b3b3b3;
-}
-
 /* mobile */
 @media (max-width: 768px) {
   .spotify-player {
@@ -78,7 +94,8 @@
   }
 
   .spotify-player .player-controls {
-    padding: 10px;
+    padding: 0;
+    gap: 2px;
   }
 
   .spotify-player .track-info {
@@ -98,6 +115,20 @@
     display: none;
   }
   .spotify-player .player-controls input[type="range"] {
-    width: 90px;
+    width: 60px;
+  }
+}
+
+/* large screens */
+@media (min-width: 1024px) {
+  .spotify-player .name .title, .spotify-player .name .artist {
+    width: 300px;
+  }
+}
+
+/* larger screens */
+@media (min-width: 1420px) {
+  .spotify-player .name .title, .spotify-player .name .artist {
+    width: 500px;
   }
 }
