@@ -133,10 +133,6 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
 
 
   useEffect(() => {
-    console.log('Playlist status changed:', playlistPlayed);
-  }, [playlistPlayed]);  
-
-  useEffect(() => {
     updatePlaybackStatus();
   }, [playlistPlayed, setCurrentTrack, isPlaying, updatePlaybackStatus]);
 

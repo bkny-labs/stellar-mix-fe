@@ -6,8 +6,8 @@ export const getSunCalcData = (lat: number, lon: number): Promise<any> => {
       const sunTimes = SunCalc.getTimes(new Date(), lat, lon);
       const moonIllumination = SunCalc.getMoonIllumination(new Date());
 
-      console.log('SunTimes:', sunTimes);
-      console.log('MoonIllumination:', moonIllumination);
+      // console.log('SunTimes:', sunTimes);
+      // console.log('MoonIllumination:', moonIllumination);
 
       if (isNaN(sunTimes.sunrise.getTime()) || isNaN(sunTimes.sunset.getTime())) {
         throw new Error('Invalid time value');

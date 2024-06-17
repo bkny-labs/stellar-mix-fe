@@ -77,7 +77,7 @@ export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
     }
     const data = await response.json();
     console.log("LOGGED IN", data);
-    // localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('isLoggedIn', 'true');
     return data;
 
   } catch (error) {

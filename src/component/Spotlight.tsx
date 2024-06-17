@@ -54,11 +54,16 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const prompt = `Reply with 10 creative and interesting search parameters that are synonymous with my feelings: "${userInput}". Also include related genres or artists if mentioned. The response should be comma-separated, with no extra characters, list bullets, numbers, or punctuation.`;
+  const prompt = `Reply with 10 creative search parameters that are synonymous with my how I am feeling: "${userInput}". Include related genres or artists if mentioned. The response should be comma-separated, with no extra characters, list bullets, numbers, dashes or punctuation.`;
 
-  const handleKeyDown = (event: KeyboardEvent) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
+      event.preventDefault();
       handleOpenAI();
+    }
+    // close on escape key
+    if (event.key === 'Escape') {
+      handleClose();
     }
   };
 
@@ -73,6 +78,8 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       setError('API key is missing');
       return;
     }
+
+    console.log('user input:', userInput);
 
     setLoading(true);
     setError(null);
@@ -117,6 +124,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
 
       const sanitizedCompletion = sanitizeCompletion(completion);
       updateMoodData(sanitizedCompletion.split(',').map(item => item.trim()));
+      localStorage.setItem('moodData', JSON.stringify(sanitizedCompletion.split(',')));
 
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -134,18 +142,9 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       }
     } finally {
       setLoading(false);
-      isOpen = false;
       handleClose();
     }
   };
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -168,6 +167,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
           type="text"
           placeholder="How are you feeling right now?"
           onChange={(e) => setUserInput(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <MessageArea>
           {loading && <LoadingToast><SiOpenai /> &nbsp; Contacting OpenAI...</LoadingToast>}

@@ -18,10 +18,15 @@ const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodD
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
+    const activeElement = document.activeElement;
+    if (activeElement && activeElement.tagName === 'INPUT') {
+      return;
+    }
+
     if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
       event.preventDefault();
       toggleSpotlight();
-    } else if (event.key === 'Escape') {
+    } else if (event.key === 'Escape' && isSpotlightOpen) {
       setIsSpotlightOpen(false);
     }
   };

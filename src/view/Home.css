@@ -146,6 +146,7 @@ body, html {
     .instructions {
       flex-direction: column;
       padding-top: 0;
+      width: 80%;
     }
     .instructions h4 {
       font-size: 18px;

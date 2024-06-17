@@ -15,8 +15,7 @@ function shuffleArray(array: any[]) {
   
     if (ai) {
       if (data.moodData) {
-        moods.push(data.moodData);
-        console.log('AI Mooooods:', data.moodData);
+        moods = data.moodData;
       } else {
         console.error('Invalid moodData structure:', data.moodData);
       }
