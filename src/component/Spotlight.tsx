@@ -9,6 +9,8 @@ interface SpotlightProps {
   isOpen: boolean;
   toggleSpotlight: () => void;
   updateMoodData: (data: any) => void;
+  locked: boolean;
+  setLocked: (locked: boolean) => void; 
 }
 
 const SpotlightIcon = styled.div`
@@ -49,7 +51,7 @@ const ErrorToast = styled.p`
   color: red;
 `;
 
-const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMoodData }) => {
+const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMoodData, locked, setLocked }) => {
   const apiKey = process.env.REACT_APP_OPEN_AI_KEY;
   const inputRef = useRef<HTMLInputElement>(null);
   const [userInput, setUserInput] = useState('');
@@ -65,14 +67,16 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       handleOpenAI();
     }
     // close on escape key
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && !locked) {
       handleClose();
     }
   };
 
   const handleClose = () => {
-    setLoading(false);
-    toggleSpotlight();
+    if (!locked) {
+      setLoading(false);
+      toggleSpotlight();
+    }
   };
 
   const handleOpenAI = async () => {
@@ -128,6 +132,8 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       const sanitizedCompletion = sanitizeCompletion(completion);
       updateMoodData(sanitizedCompletion.split(',').map(item => item.trim()));
       localStorage.setItem('moodData', JSON.stringify(sanitizedCompletion.split(',')));
+      setLocked(false);
+      handleClose();
 
       if (location.pathname !== '/browse') {
         navigate('/browse');
