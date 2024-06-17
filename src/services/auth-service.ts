@@ -7,6 +7,35 @@ const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_SECRET;
 
 const REDIRECT_URI = process.env.REACT_APP_URL + "/browse"; 
 
+export const getClientCredentialsToken = async (): Promise<string> => {
+  const tokenUrl = 'https://accounts.spotify.com/api/token';
+
+  const body = new URLSearchParams();
+  body.append('grant_type', 'client_credentials');
+
+  const headers = new Headers();
+  headers.append(
+    'Authorization',
+    'Basic ' + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)
+  );
+  headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+  const response = await fetch(tokenUrl, {
+    method: 'POST',
+    headers: headers,
+    body: body.toString(),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error('Error getting token:', errorData);
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.access_token;
+};
+
 export const getAuthURL = () => {
   const params = new URLSearchParams({
     client_id: CLIENT_ID as string,

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { FaCog, FaHome, FaMusic, FaRegMoon } from 'react-icons/fa';
+import { FaCog, FaMusic, FaRegMoon } from 'react-icons/fa';
 import { GiSunrise, GiSunset } from 'react-icons/gi';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
 import { BsThermometerSun } from 'react-icons/bs';
@@ -53,14 +53,6 @@ export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false, sunCal
     <div className='nav-container'>
       {loggedIn && (
       <ul>
-        <li>
-          <Link 
-            to="/" 
-            className={location.pathname === "/" ? "active" : ""}
-          >
-            <FaHome /> Home
-          </Link>
-        </li>
           <li>
           <Link 
             to="/browse" 
