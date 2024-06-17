@@ -24,18 +24,17 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
   const [playlistId, setPlaylistId] = useState<any | null>(null);
   const [userId, setUserId] = useState<any | null>(null);
   const dispatch = useDispatch();
-  const POLLING_INTERVAL = 5000;
+  const POLLING_INTERVAL = 8000;
 
   const updatePlaybackStatus = useCallback(() => {
     getCurrentlyPlaying(accessToken, dispatch).then(data => {
       if (data && data.item) {
         setCurrentTrack(data.item);
         setIsPlaying(data.isPlaying);
-        console.log("Current playback data:", data);
         if (data.context && data.context.type === 'playlist') {
           const currentPlaylistId = data.context.uri.split(':').pop();
           setPlaylistId(currentPlaylistId);
-          console.log("Playlist ID set to:", currentPlaylistId);
+          console.log("🎵🎵 Playback Update:", data);
         } else {
           setPlaylistId(null);
         }
