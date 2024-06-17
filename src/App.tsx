@@ -32,19 +32,6 @@ const App: React.FC<AppProps> = ({ updateMoodData }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [filterIsOpen, setFilterIsOpen] = useState(false);
   const [showNav, setShowNav] = useState(true);
-  // const [filters, setFilters] = useState({
-  //   activity: '',
-  //   language: '',
-  //   sorting: '',
-  //   limit: ''
-  // });
-
-  // const handleFilterChange = (name: any, value: any) => {
-  //   setFilters(prevFilters => ({
-  //     ...prevFilters,
-  //     [name]: value
-  //   }));
-  // };
 
   const toggleFilters = () => {
     setFilterIsOpen(!filterIsOpen);
@@ -79,6 +66,12 @@ const App: React.FC<AppProps> = ({ updateMoodData }) => {
       setShowToast(true);
     }
   }, [isLoggedIn]); 
+
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setShowNav(false);
+    }
+  }, []);
   
   return (
     <Router>
@@ -97,16 +90,8 @@ const App: React.FC<AppProps> = ({ updateMoodData }) => {
               <>
               {
                 true && 
-                <div>
-                <a href='#' onClick={() => handleNav()}>
-                  <Header userProfile={userProfile} toggleFilters={toggleFilters} updateMoodData={updateMoodData} />
-                </a>
-                </div>
+                  <Header onNavClick={handleNav} userProfile={userProfile} toggleFilters={toggleFilters} updateMoodData={updateMoodData} />
               } 
-              {/* { !isMobile &&
-                <Header userProfile={userProfile} toggleFilters={toggleFilters} updateMoodData={updateMoodData} />
-              } */}
-              {/* <FilterDrawer isOpen={filterIsOpen} onFilterChange={handleFilterChange} /> */}
               {
                 showNav &&
                 <nav className='nav'>
