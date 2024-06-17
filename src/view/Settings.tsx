@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from "../store/state";
-import { setUserGenresAction } from "../store/actions";
 import { UserProfile } from "../types";
 import { fetchUserProfile } from "../services/auth-service";
 import { CiLocationOn } from 'react-icons/ci';
@@ -10,14 +9,14 @@ import { FaSpotify } from "react-icons/fa";
 import Toggle from "../component/Toggle";
 
 function Settings() {
-    const userGenresFromStore = useSelector((state: AppState) => state.userSettings.genres);
+    // const userGenresFromStore = useSelector((state: AppState) => state.userSettings.genres);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-    const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+    // const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
     const token = localStorage.getItem('spotifyToken');
     const dispatch = useDispatch();
     // const [allGenres, setAllGenres] = useState<string[]>([]);
     const [toggleExplicit, setToggleExplicit] = useState(true);
-    const [toggleNotifications, setToggleNotifications] = useState(false);
+    // const [toggleNotifications, setToggleNotifications] = useState(false);
 
   //   useEffect(() => {
   //     async function fetchGenres() {
@@ -40,9 +39,9 @@ function Settings() {
   // }, [token]);
   
 
-    useEffect(() => {
-        setSelectedGenres(userGenresFromStore);
-    }, [userGenresFromStore]);
+    // useEffect(() => {
+    //     setSelectedGenres(userGenresFromStore);
+    // }, [userGenresFromStore]);
 
     useEffect(() => {
       if (token) {
@@ -71,11 +70,11 @@ function Settings() {
     //   setSelectedGenres([]);
     // }
 
-    const handleSave = () => {
-        console.log(selectedGenres);
-        dispatch(setUserGenresAction(selectedGenres));
-        localStorage.setItem('userGenres', JSON.stringify(selectedGenres));
-    };
+    // const handleSave = () => {
+    //     console.log(selectedGenres);
+    //     dispatch(setUserGenresAction(selectedGenres));
+    //     localStorage.setItem('userGenres', JSON.stringify(selectedGenres));
+    // };
 
     return (
         <div className="settings">
