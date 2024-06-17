@@ -18,7 +18,7 @@ export default class MainController {
   private store: any;
   private params = new URLSearchParams(window.location.search);
   private code = this.params.get('code');
-  private tokenCheckInterval?: NodeJS.Timeout;
+  private tokenCheckInterval?: NodeJS.Timeout; 
 
   constructor(
     store: any
@@ -39,7 +39,7 @@ export default class MainController {
 
   private updateFromStore() {
     const state = this.store.getState();
-    // Update token from the store state if available
+    // Update token from the store state if available 
     if (state.spotifyToken) {
       this.setSpotifyToken(state.spotifyToken);
     }
@@ -71,7 +71,7 @@ export default class MainController {
 
   public fetchSpotifyPlaylists = () => {
     if (!this.spotifyToken) {
-      console.error('Spotify token is not available.');
+      console.error('Spotify token is not available.'); 
       return;
     }
   
@@ -85,21 +85,16 @@ export default class MainController {
       return;
     }
   
-    console.log('Fetching playlists with query:', playlistQuery);
-  
     getPlaylistsByQuery(playlistQuery, this.spotifyToken, this.store.dispatch)
       .then(data => {
         if (!data || data.length === 0) {
           console.error('No playlists fetched.');
           return;
         }
-        
-        console.log('Fetched playlists data:', data);
   
         this.store.dispatch(setSpotifyPlaylistsAction(data));
         localStorage.setItem('spotifyPlaylists', JSON.stringify(data));
   
-        console.log('Fetched Spotify playlists for query:', playlistQuery);
       })
       .catch(err => {
         console.error('Error fetching playlists:', err);

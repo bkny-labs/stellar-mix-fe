@@ -101,12 +101,12 @@ function Settings() {
                 label="Enable Explicit Content" 
             />
 
-            <Toggle 
+            {/* <Toggle 
                 checked={toggleNotifications} 
                 onChange={setToggleNotifications} 
                 id="toggleNotifications" 
                 label="Enable Notifications" 
-            />
+            /> */}
             {/* <h2>Genres</h2>
             <p>Below are recommended genres based on your Spotify plays. You can choose to include/remove any you want to customize your available filters.</p>
             <div className="checkbox-select-buttons">
@@ -129,9 +129,9 @@ function Settings() {
                 </div>
             ))}
             </div> */}
-            <div className="action-bar">
+            {/* <div className="action-bar">
               <button className="save-button" onClick={handleSave}>Save Settings</button>
-            </div>
+            </div> */}
         </div>
         
     );
