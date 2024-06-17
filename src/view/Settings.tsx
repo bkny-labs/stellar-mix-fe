@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from "../store/state";
+import { useDispatch } from 'react-redux';
 import { UserProfile } from "../types";
 import { fetchUserProfile } from "../services/auth-service";
 import { CiLocationOn } from 'react-icons/ci';
