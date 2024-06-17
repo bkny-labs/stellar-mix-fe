@@ -94,7 +94,8 @@
   }
 
   .spotify-player .player-controls {
-    padding: 10px;
+    padding: 0;
+    gap: 2px;
   }
 
   .spotify-player .track-info {
@@ -114,6 +115,20 @@
     display: none;
   }
   .spotify-player .player-controls input[type="range"] {
-    width: 90px;
+    width: 60px;
+  }
+}
+
+/* large screens */
+@media (min-width: 1024px) {
+  .spotify-player .name .title, .spotify-player .name .artist {
+    width: 300px;
+  }
+}
+
+/* larger screens */
+@media (min-width: 1420px) {
+  .spotify-player .name .title, .spotify-player .name .artist {
+    width: 500px;
   }
 }

@@ -4,10 +4,6 @@
     padding-left: 18px;
 }
 
-.drawer-open {
-    padding-right: 350px;
-}
-
 .album-art {
     position: relative;
     width: 100%;
@@ -86,7 +82,7 @@
     .hero {
         padding: 10px;
     }
-    .hero p {
+    .hero pm, .playlist-title {
         display: none;
     }
 }

@@ -1,7 +1,13 @@
+:root {
+  --drawer-width: 350px;
+  --drawer-large-width: 420px;
+  --drawer-small-width: 280px;
+}
+
 .drawer {
     position: fixed;
     right: 0;
-    width: 350px;
+    width: var(--drawer-width);
     height: calc(100% - 140px);
     top: 60px;
     background: var(--background);
@@ -10,6 +16,10 @@
     transform: translateX(100%);
     opacity: 0;
     transition: transform 0.2s ease-out, opacity 0.1s ease-out;
+}
+
+.drawer-open {
+  padding-right: var(--drawer-width);
 }
 
 .drawer.show {
@@ -54,6 +64,7 @@
     border-collapse: collapse;
     font-family: Arial, sans-serif;
     font-size: 13px;
+    color: #fff;
   }
   
   .track-list thead {
@@ -130,5 +141,32 @@
     }
     100% {
         background-position: -200% 0;
+    }
+}
+
+/* mobile  */
+@media (max-width: 768px) {
+    .drawer {
+      padding: 10px 15px;
+      width: var(--drawer-small-width);
+    }
+    .drawer-open {
+      padding-right: var(--drawer-small-width);
+    }
+    .playlist-info-sm:last-child {
+      display: none;
+    }
+    .track-list {
+      height: calc(100% - 390px);
+    }
+}
+
+
+@media (min-width: 1200px) {
+    .drawer {
+      width: var(--drawer-large-width);
+    }
+    .drawer-open {
+      padding-right: var(--drawer-large-width);
     }
 }
