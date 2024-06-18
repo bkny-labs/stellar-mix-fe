@@ -53,6 +53,10 @@
   gap: 10px;
   padding: 12px;
 }
+.top .logo {
+  width: 350px;
+  padding: 12px 0 0;
+}
 
 .hero-img {
   height: 420px;

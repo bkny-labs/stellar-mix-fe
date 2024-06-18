@@ -1,7 +1,7 @@
 .carousel-container {
   width: 80%;
   margin: 0 auto;
-  padding: 40px 0;
+  padding: 0px 0 40px;
 }
 
 .carousel-item {
@@ -62,4 +62,14 @@
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 0.9em;
+}
+
+.carousel-container .slick-dots li button:before {
+  color: white;
+  opacity: 0.45;
+}
+
+.carousel-container .slick-dots li.slick-active button:before {
+  color: white;
+  opacity: 1;
 }
