@@ -98,10 +98,13 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
           <DesktopIntro />
         </>
       }
-      <Carousel 
+      {
+        location.pathname === '/' &&
+        <Carousel 
         slidesToScroll={isMobile ? 1 : 3} 
         slidesToShow={isMobile ? 1 : 3} 
         dots={!isMobile} />
+      }
       <div className="App">
         <div className="container">
           {isLoggedIn && userProfile && 
