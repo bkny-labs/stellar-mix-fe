@@ -102,6 +102,7 @@ export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
     if (!response.ok) {
       dispatch(setLoggedInAction(false));
       localStorage.removeItem('isLoggedIn');
+      window.location.href = '/';
       throw new Error('Failed to fetch user profile');
     }
     const data = await response.json();

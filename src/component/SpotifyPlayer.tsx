@@ -7,6 +7,7 @@ import './SpotifyPlayer.css';
 import { useDispatch } from 'react-redux';
 import { Drawer } from './Drawer';
 import { Track } from '../types/spotify.types';
+import { useNavigate } from 'react-router-dom';
 
 type SpotifyPlayerProps = {
   accessToken: string;
@@ -27,6 +28,7 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
   const [userId, setUserId] = useState<any | null>(null);
   const dispatch = useDispatch();
   const POLLING_INTERVAL = 5000;
+  const navigate = useNavigate();
 
   const updatePlaybackStatus = useCallback(() => {
     getCurrentlyPlaying(accessToken, dispatch).then(data => {
