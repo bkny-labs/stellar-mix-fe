@@ -1,4 +1,3 @@
-import bg from '../assets/bg5.jpg';
 import logo from '../assets/logo2.png';
 import { getAuthURL } from '../services/auth-service';
 import './Intro.css';
@@ -28,8 +27,6 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
       </div>
       <div className='intro desktop'>
         <div>
-          {/* <div className='hero-img' style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-          </div> */}
           <h1 className='stellar'>Your AI Companion for the Perfect Spotify Mixtapes</h1>
           <p>Connect your Spotify account to get started.</p>
           {!isLoggedIn &&
