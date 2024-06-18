@@ -14,7 +14,13 @@ interface Album {
   href: string;
 }
 
-const Carousel: React.FC = () => {
+interface CarouselProps {
+  slidesToShow: number;
+  slidesToScroll: number;
+  dots: boolean;
+}
+
+const Carousel: React.FC<CarouselProps> = ({ slidesToShow, slidesToScroll, dots }) => {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [copied, setCopied] = useState<string | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -48,12 +54,12 @@ const Carousel: React.FC = () => {
   };
 
   const settings = {
-    dots: true,
+    dots: dots,
     infinite: true,
     speed: 1000,
     autoplay: true,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToShow: slidesToShow,
+    slidesToScroll: slidesToScroll,
     initialSlide: 0,
     arrows: false
   };
