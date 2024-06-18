@@ -157,10 +157,23 @@
       display: none;
     }
     .track-list {
-      height: calc(100% - 280px);
+      height: calc(100% - 200px);
     }
     .playlist-info h3 {
       font-size: 14px;
+      width: 50%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .playlist-info img {
+      width: 50%;
+    }
+    .playlist-info-sm { display: none; }
+    .playlist-info {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
     }
 }
 
