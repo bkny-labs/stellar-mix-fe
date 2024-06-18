@@ -279,8 +279,11 @@ body {
 
 /* Mobile */
 @media (max-width: 767px) {
+  body {
+    overflow-x: hidden;
+  }
   .content {
-    padding: 16px 8px;
+    padding: 16px 15px;
   }
   .row.five,
   .row.four,

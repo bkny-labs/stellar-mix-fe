@@ -136,8 +136,8 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
   };
 
   const openDrawer = () => {
+    onDrawerToggle(!isDrawerOpen);
     if (!isDrawerOpen) {
-      onDrawerToggle(true);
       updatePlaybackStatus();
     }
   };

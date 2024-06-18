@@ -72,10 +72,6 @@
     .browse-grid {
         padding-left: 0;
     }
-    .spotlight-container {
-        width: 80% !important;
-    }
-
     .features {
         grid-template-columns: repeat(1, 1fr);
     }

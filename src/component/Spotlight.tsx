@@ -16,7 +16,6 @@ interface SpotlightProps {
 
 const SpotlightIcon = styled.div`
   margin-right: 8px;
-  font-size: 20px;
   color: #fff;
   display: flex;
 `;
@@ -134,7 +133,9 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       updateMoodData(sanitizedCompletion.split(',').map(item => item.trim()));
       localStorage.setItem('moodData', JSON.stringify(sanitizedCompletion.split(',')));
     
-      handleClose();
+      setTimeout(() => {
+        handleClose();
+      }, 1000);
 
       if (location.pathname !== '/browse') {
         navigate('/browse');
@@ -155,8 +156,6 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
         console.error('Unexpected error:', error);
       }
     } finally {
-      setLoading(false);
-      console.log('why no close?');
       handleClose();
     }
   };
@@ -174,7 +173,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
     <>
       <div className={`spotlight-overlay ${isOpen ? 'open' : ''}`} onClick={handleClose }></div>
       <div className={`spotlight-container ${isOpen ? 'open' : ''}`}>
-        <SpotlightIcon>
+        <SpotlightIcon className='icon'>
           <SiOpenai />
         </SpotlightIcon>
         <SpotlightInput

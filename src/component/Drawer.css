@@ -157,7 +157,7 @@
       display: none;
     }
     .track-list {
-      height: calc(100% - 390px);
+      height: calc(100% - 280px);
     }
     .playlist-info h3 {
       font-size: 14px;
