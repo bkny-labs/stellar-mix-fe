@@ -28,8 +28,8 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
       </div>
       <div className='intro desktop'>
         <div>
-          <div className='hero-img' style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-          </div>
+          {/* <div className='hero-img' style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+          </div> */}
           <h1 className='stellar'>Your AI Companion for the Perfect Spotify Mixtapes</h1>
           <p>Connect your Spotify account to get started.</p>
           {!isLoggedIn &&
