@@ -232,7 +232,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
         <SamplePromptsContainer>
           {samplePrompts.map((prompt, index) => (
             <SamplePrompt key={index} onClick={() => handleSamplePromptClick(prompt)}>
-              {prompt}
+              "{prompt}"
             </SamplePrompt>
           ))}
         </SamplePromptsContainer>
