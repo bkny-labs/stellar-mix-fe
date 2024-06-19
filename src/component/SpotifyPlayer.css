@@ -107,9 +107,6 @@
 /* mobile */
 @media (max-width: 768px) {
 
-  .info-button {
-    display: none;
-  }
   .spotify-player {
     padding: 10px;
   }

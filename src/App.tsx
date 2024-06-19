@@ -71,6 +71,8 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
   useEffect(() => {
     if (isLoggedIn) {
       setShowToast(true);
+    } else {
+      setShowToast(false);
     }
   }, [isLoggedIn]);
 
