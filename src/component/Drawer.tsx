@@ -144,7 +144,7 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
                   </a>
                   
                   {copied === playlistData?.external_urls?.spotify && <span className="copied-tooltip"><AiOutlineCheck /> Copied!</span>}
-                  <button className='\' onClick={() => handleCopy(playlistData?.external_urls?.spotify || '')}><FaShareFromSquare /></button>
+                  <button className='copy-button' onClick={() => handleCopy(playlistData?.external_urls?.spotify || '')}><FaShareFromSquare /></button>
                 </h3>
                 <p className='playlist-info-sm'>by: {playlistData?.owner.display_name}</p>
                 <p className='playlist-info-sm'>{playlistData?.description}</p>

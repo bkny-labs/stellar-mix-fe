@@ -237,6 +237,11 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+  .playlist-info h3 a {
+    max-width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .playlist-info img {
     width: 50%;
   }
