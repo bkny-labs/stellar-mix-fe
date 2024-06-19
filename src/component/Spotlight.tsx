@@ -100,9 +100,11 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
 
   const handleSamplePromptClick = (prompt: string) => {
     setUserInput(prompt);
-    handleOpenAI();
+    if (inputRef.current) {
+      inputRef.current.value = prompt;
+      handleOpenAI();
+    }
   };
-
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
