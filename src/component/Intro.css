@@ -32,7 +32,7 @@
   padding: 0 40px;
 }
 .get-started {
-  background: var(--secondary);
+  background: var(--background);
   color: #fff;
   border: none;
   padding: 12px 16px;
@@ -45,6 +45,7 @@
   gap: 8px;
   width: 300px;
   margin: 1rem auto;
+  transition: box-shadow 0.5s;
 }
 
 .get-started:hover {

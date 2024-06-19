@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { fetchUserProfile } from '../services/auth-service';
 import { checkIfPlaylistIsFollowed, followPlaylist, getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume, unfollowPlaylist } from '../services/spotify-service';
-import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaHeart, FaRegHeart, FaInfoCircle } from 'react-icons/fa';
+import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaHeart, FaRegHeart, FaInfoCircle, FaVolumeUp } from 'react-icons/fa';
 import './SpotifyPlayer.css';
 import { useDispatch } from 'react-redux';
 import { Drawer } from './Drawer';
@@ -25,6 +25,8 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
   const [volume, setVolume] = useState<number>(10);
   const [playlistId, setPlaylistId] = useState<any | null>(null);
   const [userId, setUserId] = useState<any | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [mobileVolume , setMobileVolume] = useState(false);
   const dispatch = useDispatch();
   const POLLING_INTERVAL = 5000;
 
@@ -60,6 +62,21 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
       console.error("Error fetching user profile:", error);
     });
   }, [accessToken, dispatch, currentlyPlayingURI, setCurrentlyPlayingURI]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth >= 768) {
+        setMobileVolume(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
 
   useEffect(() => {
     const interval = setInterval(updatePlaybackStatus, POLLING_INTERVAL);
@@ -142,6 +159,10 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
     }
   };
 
+  const handleMobileVolume = () => {
+    setMobileVolume(!mobileVolume)
+  }
+
   return (
     <>
     <div className="spotify-player">
@@ -176,13 +197,31 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
           <button className='info-button' onClick={toggleDrawer}>
             <FaInfoCircle size={20} color={isDrawerOpen ? 'var(--primary)' : '#fff' } />
           </button>
-        <input 
+        {
+          isMobile &&
+          <button onClick={handleMobileVolume}>
+            <FaVolumeUp size={24} color={mobileVolume ? '#fff' : "#6f6f6f"} />
+          </button>
+        }
+        { mobileVolume && isMobile &&
+          <input 
+          type="range" 
+          min="0" 
+          max="100" 
+          value={volume} 
+          onChange={handleVolumeChange} 
+          className='vertical'
+        />
+        }
+        { !mobileVolume && !isMobile &&
+          <input 
           type="range" 
           min="0" 
           max="100" 
           value={volume} 
           onChange={handleVolumeChange} 
         />
+        }
       </div>
     </div>
     {isDrawerOpen && 

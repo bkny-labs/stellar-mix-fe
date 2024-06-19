@@ -1,23 +1,21 @@
 import './Home.css';
-import { useSelector } from 'react-redux';
-import { AppState } from '../store/state';
 import { FaGithub, FaStar, FaUserAstronaut } from 'react-icons/fa';
 import SpaceBackground from '../component/Space';
 import { useEffect } from 'react';
 import { SiOpenai } from 'react-icons/si';
 
 function Home() {
-  const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
-
   useEffect(() => {
-    if (!isLoggedIn) {
+    const accessToken = localStorage.getItem('spotifyToken');
+    
+    if (!accessToken) {
       localStorage.removeItem('spotifyToken');
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('tokenExpiryTime');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
   return (
     <>
     <div className="space-background">
@@ -49,17 +47,17 @@ function Home() {
         <div className="feature">
           <FaUserAstronaut size={40} />
           <h2>Personalized</h2>
-          <p>Discover curated playlists tailored to your taste.</p>
+          <p>Discover curated playlists tailored to your taste and favorites.</p>
         </div>
         <div className="feature">
           <FaStar size={40} />
           <h2>Cosmic Mixtape</h2>
-          <p>Playlists that adapt to the weather, moon phases, and your mood.</p>
+          <p>Playlists that adapt to the weather, moon phases, and sun position.</p>
         </div>
         <div className="feature">
           <SiOpenai size={40} />
-          <h2>AI Fine-tune</h2>
-          <p>OpenAI brings you the perfect playlists for your mood.</p>
+          <h2>AI-Infused</h2>
+          <p>OpenAI delivers fresh playlists for your mood.</p>
         </div>
     </div>
 

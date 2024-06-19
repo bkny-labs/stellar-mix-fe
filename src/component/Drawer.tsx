@@ -45,7 +45,6 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
     if (!playlistId) return;
     try {
       const playlistInfo = await fetchPlaylistDetails(playlistId, accessToken);
-      console.log(playlistInfo);
       setPlaylistData(playlistInfo);
     } catch (error) {
       console.error('Failed to fetch playlist details:', error);

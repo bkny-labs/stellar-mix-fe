@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import logo from '../assets/logo2.png';
 import { getAuthURL } from '../services/auth-service';
 import './Intro.css';
@@ -20,6 +21,17 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
     navigate('/browse');
   }
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem('spotifyToken');
+    
+    if (!accessToken) {
+      localStorage.removeItem('spotifyToken');
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('tokenExpiryTime');
+    }
+  }, []);
+
+
   return (
     <div className={isLoggedIn ? 'logged-in' : ''}>
       <div className='top'>
@@ -27,12 +39,12 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
       </div>
       <div className='intro desktop'>
         <div>
-        {isLoggedIn &&
-          <>
-          <h1 className='stellar'>Spotify Connected.</h1>
-          <p>You're Stellar-ready. Launch the app below to start creating and playing.</p>
-          </>
-        }
+          {isLoggedIn &&
+            <>
+            <h1 className='stellar'>Spotify Connected.</h1>
+            <p>You're Stellar-ready. Launch the app below to start creating and playing.</p>
+            </>
+          }
           {!isLoggedIn &&
           <>
             <h1 className='stellar'>Your AI Companion for the Perfect Spotify Mixtape</h1>

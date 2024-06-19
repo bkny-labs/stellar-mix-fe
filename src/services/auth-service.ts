@@ -106,7 +106,7 @@ export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
       throw new Error('Failed to fetch user profile');
     }
     const data = await response.json();
-    console.log("LOGGED IN", data);
+    // console.log("LOGGED IN", data);
     localStorage.setItem('isLoggedIn', 'true');
     return data;
 

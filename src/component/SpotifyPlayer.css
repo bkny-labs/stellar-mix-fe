@@ -46,6 +46,17 @@
   cursor: pointer;
 }
 
+.spotify-player .player-controls input[type=range].vertical {
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  appearance: slider-vertical;
+  width: 16px;
+  vertical-align: bottom;
+}
+
 .spotify-player .track-info {
   flex: 1;
   display: flex;

@@ -26,11 +26,12 @@ interface AppProps {
 }
 
 const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
-  const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const sunCalcData = useSelector((state: AppState) => state.sunCalcData);
   const weatherData = useSelector((state: AppState) => state.weather);
-  const [showToast, setShowToast] = useState(isLoggedIn);
+  // const [showToast, setShowToast] = useState(isLoggedIn);
+  const [showToast, setShowToast] = useState(false);
   const token = localStorage.getItem('spotifyToken');
   const dispatch = useDispatch();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -62,6 +63,8 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
       fetchUserProfile(token, dispatch)
       .then(data => setUserProfile(data))
       .catch(error => console.error("Error fetching user profile:", error));
+    } else {
+      
     }
   }, [token, dispatch]);
 
@@ -115,7 +118,7 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
               { location.pathname !== '/' && showNav && (
                 <nav className='nav'>
                   <Navigation 
-                    loggedIn={isLoggedIn}
+                    loggedIn={isLoggedIn ? true : false}
                     sunCalcData={sunCalcData}
                     weatherData={weatherData}
                   />
@@ -125,7 +128,7 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
           }
           <div 
             className={showNav ? 'content' : 'content content-full'}
-            style={isLoggedIn && userProfile && !isMobile && showNav ? { paddingRight: '18px', paddingLeft: '180px' } : {}}
+            style={location.pathname !== '/' && showNav ? { paddingRight: '18px', paddingLeft: '180px' } : {}}
           >
             <Routes>
               <Route path="/" element={<Home />} />
