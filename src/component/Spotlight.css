@@ -22,6 +22,18 @@
   display: flex;
 }
 
+.clearHistory {
+  color: var(--white);
+  cursor: pointer;
+  display: inline-block;
+  text-align: left;
+  margin-top: 20px;
+}
+
+.clearHistory:hover {
+  color: var(--primary);
+}
+
 .spotlight-overlay {
   position: fixed;
   top: 0;
