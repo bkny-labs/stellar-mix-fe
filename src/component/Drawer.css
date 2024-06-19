@@ -161,7 +161,7 @@
     }
     .playlist-info h3 {
       font-size: 14px;
-      width: 50%;
+      width: 100%;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -171,8 +171,6 @@
     }
     .playlist-info-sm { display: none; }
     .playlist-info {
-      display: flex;
-      flex-direction: row;
       gap: 10px;
     }
     .playlist-info.skeleton {

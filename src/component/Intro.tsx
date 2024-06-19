@@ -29,13 +29,16 @@ export const Intro: React.FC<IntroProps> = () => {
           <img src={logo} alt='StellarMix Logo' className='logo' />
         </div>
         <div>
-          <h1 className='stellar'>Your AI Companion for the Perfect Spotify Mixtape</h1>
-          <p>Connect your Spotify account and start discovering personalized music mixes tailored just for you.</p>
-          
+        <h1 className='stellar'>Spotify Connected.</h1>
+        <p>You're Stellar-ready. Launch the app below to start creating and playing.</p>
           {!isLoggedIn &&
-          <div className='login-container'>
-            <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 
-          </div>
+          <>
+            <h1 className='stellar'>Your AI Companion for the Perfect Spotify Mixtape</h1>
+            <p>Connect your Spotify account and start discovering personalized music mixes tailored just for you.</p>
+            <div className='login-container'>
+              <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 
+            </div>
+          </>
           }
 
           {isLoggedIn &&

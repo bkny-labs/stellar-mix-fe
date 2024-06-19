@@ -27,12 +27,20 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
       </div>
       <div className='intro desktop'>
         <div>
-          <h1 className='stellar'>Your AI Companion for the Perfect Spotify Mixtapes</h1>
-          <p>Connect your Spotify account to get started.</p>
+        {isLoggedIn &&
+          <>
+          <h1 className='stellar'>Spotify Connected.</h1>
+          <p>You're Stellar-ready. Launch the app below to start creating and playing.</p>
+          </>
+        }
           {!isLoggedIn &&
-          <div className='login-container'>
-            <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 
-          </div>
+          <>
+            <h1 className='stellar'>Your AI Companion for the Perfect Spotify Mixtape</h1>
+            <p>Connect your Spotify account and start discovering personalized music mixes tailored just for you.</p>
+            <div className='login-container'>
+              <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 
+            </div>
+          </>
           }
 
           {isLoggedIn &&
