@@ -12,7 +12,7 @@ interface DesktopIntroProps {
 }
 
 export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn');
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const navigate = useNavigate();
   const handleLogin = () => {
     window.location.href = getAuthURL();
@@ -30,7 +30,6 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
       localStorage.removeItem('tokenExpiryTime');
     }
   }, []);
-
 
   return (
     <div className={isLoggedIn ? 'logged-in' : ''}>
