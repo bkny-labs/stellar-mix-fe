@@ -66,7 +66,8 @@
 
   .toast-bottom-center {
     bottom: 90px;
-    left: 55%;
+    left: 50%;
+    right: 0;
     top: auto;
     transform: translateX(-50%);
   }

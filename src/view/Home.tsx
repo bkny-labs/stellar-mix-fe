@@ -1,23 +1,21 @@
 import './Home.css';
-import { useSelector } from 'react-redux';
-import { AppState } from '../store/state';
 import { FaGithub, FaStar, FaUserAstronaut } from 'react-icons/fa';
 import SpaceBackground from '../component/Space';
 import { useEffect } from 'react';
 import { SiOpenai } from 'react-icons/si';
 
 function Home() {
-  const isLoggedIn = useSelector((state: AppState) => state.isLoggedIn);
-
   useEffect(() => {
-    if (!isLoggedIn) {
+    const accessToken = localStorage.getItem('spotifyToken');
+    
+    if (!accessToken) {
       localStorage.removeItem('spotifyToken');
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('tokenExpiryTime');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
   return (
     <>
     <div className="space-background">
