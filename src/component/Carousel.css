@@ -10,6 +10,7 @@
   text-transform: uppercase;
   margin-bottom: 20px;
   font-size: 20px;
+  color: var(--link-color);
 }
 
 .carousel-item {

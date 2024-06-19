@@ -10,7 +10,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
   }
   
@@ -108,7 +108,7 @@ body, html {
   .instructions {
     display: flex;
     gap: 40px;
-    padding: 25px 0 0;
+    padding: 25px 0;
   }
 
   .instructions .item {
