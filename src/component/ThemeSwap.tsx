@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FaPalette } from 'react-icons/fa';
 
 const themes = {
   default: `
@@ -170,7 +171,8 @@ const ThemeSwapper: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className='select-container'>
+      <FaPalette className='select-icon' />
       <select id="theme-select" className='theme-select' value={theme} onChange={handleChange}>
         <option value="default">Default Theme</option>
         <option value="darkBlue">Dark Blue</option>

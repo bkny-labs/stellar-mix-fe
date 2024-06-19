@@ -414,13 +414,23 @@ h4 {
   font-size: 12px;
 }
 
+.select-container {
+  position: relative;
+  display: inline-block;
+}
+
+.select-icon {
+  pointer-events: none;
+  font-size: 12px;
+}
+
 .theme-select {
   cursor: pointer;
   background: var(--background);
   background-image: none;
   border: none;
   color: var(--link-color);
-  padding: 10px 0;
+  padding: 10px 1px;
 }
 
 .settings h1 {
