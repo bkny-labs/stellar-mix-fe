@@ -30,15 +30,11 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const sunCalcData = useSelector((state: AppState) => state.sunCalcData);
   const weatherData = useSelector((state: AppState) => state.weather);
-  const [showToast, setShowToast] = useState(false);
   const token = localStorage.getItem('spotifyToken');
   const dispatch = useDispatch();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [isTablet, setIsTablet] = useState(window.innerWidth >= 768 && window.innerWidth < 1024);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
-  const [isXl, setIsXl] = useState(window.innerWidth >= 1200);
   const [filterIsOpen, setFilterIsOpen] = useState(false);
   const [showNav, setShowNav] = useState(true);
+  const [showToast, setShowToast] = useState(false);
   const location = useLocation();
 
   const toggleFilters = () => {
@@ -49,26 +45,8 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
     setShowNav(!showNav);
   };
 
-  const setSlideCount = () => {
-    switch (true) {
-      case isMobile:
-        return 1;
-      case isTablet:
-        return 3;
-      case isDesktop:
-        return 4;
-      case isXl:
-        return 6;
-      default:
-        return 1;
-    }
-  };
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
-      setIsDesktop(window.innerWidth >= 1024 && window.innerWidth < 1440);
-      setIsXl(window.innerWidth >= 1440);
       setShowNav(window.innerWidth >= 768);
     };
 
@@ -79,20 +57,20 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
   }, []);
 
   useEffect(() => {
-    if (token) {
-      fetchUserProfile(token, dispatch)
-      .then(data => setUserProfile(data))
-      .catch(error => console.error("Error fetching user profile:", error));
-    }
-  }, [token, dispatch]);
-
-  useEffect(() => {
     if (isLoggedIn) {
       setShowToast(true);
     } else {
       setShowToast(false);
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (token) {
+      fetchUserProfile(token, dispatch)
+      .then(data => setUserProfile(data))
+      .catch(error => console.error("Error fetching user profile:", error));
+    }
+  }, [token, dispatch]);
 
   useEffect(() => {
     if (window.innerWidth < 768) {
@@ -104,33 +82,17 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
 
   return (
     <>
-      {showToast && (
-        <Toast
-          message={'Welcome to StellarMix, ' + userProfile?.display_name + '!' }
-          type="success"
-          duration={7000}
-          position="bottom-center"
-          onClose={() => setShowToast(false)}
-        />
-      )}
-      {
-        isMobile && location.pathname === '/' &&
-        <Intro />
-      }
-      {
-        !isMobile && location.pathname === '/' &&
-        <>
-          <DesktopIntro />
-        </>
-      }
-      {
-        location.pathname === '/' &&
-        <Carousel 
-        slidesToScroll={setSlideCount()} 
-        slidesToShow={setSlideCount()} 
-        dots={!isMobile} />
-      }
-      <div className="App">
+    {showToast && (
+      <Toast
+        message={'Welcome to StellarMix, ' + userProfile?.display_name + '!' }
+        type="success"
+        duration={7000}
+        position="bottom-center"
+        onClose={() => setShowToast(false)}
+      />
+    )}
+      <div 
+      className={location.pathname === '/' ? 'App home' : 'App ' + location.pathname}>
         <div className="container">
           {isLoggedIn && userProfile && 
             <>

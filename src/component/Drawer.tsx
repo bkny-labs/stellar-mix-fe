@@ -129,7 +129,7 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
           {playlistData && (
             <>
               <div className="playlist-info">
-                <img width="100%" src={playlistData?.images[0].url} alt="playlist-cover" />
+                <img width="100%" src={playlistData?.images[0]?.url} alt="playlist-cover" />
                 <div>
                   <span className='title'>{currentTrack?.name}</span>
                   <span className='artist'>{currentTrack?.artists[0].name}</span>
@@ -139,12 +139,12 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
                     ? <FaHeart className='favorite' onClick={toggleFavorite} color={'var(--primary)'} size={20} />
                     : <FaRegHeart className='favorite' onClick={toggleFavorite} color={'#6f6f6f'} size={20} />
                   }
-                  <a href={playlistData?.external_urls.spotify} target='_blank' rel="noreferrer">
+                  <a href={playlistData?.external_urls?.spotify || '#'} target='_blank' rel="noreferrer">
                     {playlistData?.name}
                   </a>
                   
-                  {copied === playlistData?.external_urls.spotify && <span className="copied-tooltip"><AiOutlineCheck /> Copied!</span>}
-                  <button className='copy-button' onClick={() => handleCopy(playlistData?.external_urls.spotify)}><FaShareFromSquare /></button>
+                  {copied === playlistData?.external_urls?.spotify && <span className="copied-tooltip"><AiOutlineCheck /> Copied!</span>}
+                  <button className='copy-button' onClick={() => handleCopy(playlistData?.external_urls?.spotify || '')}><FaShareFromSquare /></button>
                 </h3>
                 <p className='playlist-info-sm'>by: {playlistData?.owner.display_name}</p>
                 <p className='playlist-info-sm'>{playlistData?.description}</p>
@@ -160,7 +160,7 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
                     </tr>
                   </thead>
                   <tbody>
-                    {playlistData?.tracks.items.map((track: any) => (
+                    {playlistData?.tracks?.items?.map((track: any) => (
                       <tr onClick={() => playTrack(track)} key={track?.track?.id} className={currentTrack?.id === track?.track?.id ? 'isPlaying' : ''}>
                         <td><img src={track?.track?.album.images[0].url} width="25px" alt="" /></td>
                         <td>

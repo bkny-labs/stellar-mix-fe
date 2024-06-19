@@ -121,7 +121,7 @@
     margin: 12px 0px;
     display: flex;
     width: 100%;
-    justify-content: flex-start;
+    justify-content: space-between;
     gap: 10px;
     align-items: center;
     }
@@ -160,16 +160,26 @@
     border-radius: 4px;
 }
 
-.copy-button { color: var(--white); }
+.copy-button { 
+  color: var(--white); 
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;
+  top: 2px;
+}
+.copy-button:hover {
+  color: var(--primary);
+}
 
-  .copied-tooltip {
+  .drawer .copied-tooltip {
     position: absolute;
     bottom: 95px;
+    top: auto;
     background: var(--primary);
     color: var(--white);
     padding: 5px 10px;
     border-radius: 5px;
-    font-size: 0.9em;
+    font-size: 12px;
   }
 
   .drawer .title, .drawer .artist {
@@ -225,6 +235,11 @@
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .playlist-info h3 a {
+    max-width: 70%;
+    overflow: hidden;
     text-overflow: ellipsis;
   }
   .playlist-info img {

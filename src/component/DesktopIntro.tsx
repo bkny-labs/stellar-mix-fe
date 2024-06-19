@@ -48,7 +48,7 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
           {!isLoggedIn &&
           <>
             <h1 className='stellar'>Finally, an AI that understands your eclectic music taste better than your friends.</h1>
-            <p>Connect your Spotify account and start discovering personalized music mixes tailored just for you.</p>
+            <p>Open the Spotify app on your devices and connect your account and start discovering personalized music mixes tailored just for you.</p>
             <div className='login-container'>
               <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 
             </div>

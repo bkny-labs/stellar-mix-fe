@@ -10,7 +10,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
   }
   
@@ -108,7 +108,7 @@ body, html {
   .instructions {
     display: flex;
     gap: 40px;
-    padding: 25px 0 0;
+    padding: 25px 0;
   }
 
   .instructions .item {
@@ -128,10 +128,23 @@ body, html {
     margin: 20px auto;
   }
 
+
+  /* tablet */
+  @media screen and (max-width: 1024px) {
+    .landing {
+      padding: 0 20px;
+      max-width: 700px;
+    }
+  }
+
   /* mobile  */
   @media screen and (max-width: 768px) {
+    .home .content {
+      padding: 0;
+    }
     .features {
       grid-template-columns: 1fr;
+      padding: 0 20px;
     }
     .hero img {
       width: 150px;
@@ -145,20 +158,15 @@ body, html {
     .about {
       width: 90%;
     }
+    .landing {
+      padding: 0;
+    }
     .instructions {
       flex-direction: column;
-      padding-top: 0;
       width: 80%;
     }
     .instructions h4 {
       font-size: 18px;
     }
   }
-
-  /* tablet */
-  @media screen and (max-width: 1024px) {
-    .landing {
-      padding: 0 20px;
-      max-width: 700px;
-    }
-  }
+  
