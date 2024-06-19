@@ -75,7 +75,7 @@ const Carousel: React.FC<CarouselProps> = ({ slidesToShow, slidesToScroll, dots 
               <div className="carousel-item-overlay">
                 <h3>{playlist.name}</h3>
                 <p>{playlist.owner.display_name}</p>
-                {copied === playlist.href && <span className="copied-tooltip"><BsCheck2 /> Playlist copied!</span>}
+                {copied === playlist.href && <span className="copied-tooltip"><BsCheck2 /> Copied!</span>}
               </div>
             </div>
           </div>

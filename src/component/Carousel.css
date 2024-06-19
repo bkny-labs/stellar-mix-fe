@@ -65,8 +65,8 @@
   top: -20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #61dafb;
-  color: #282c34;
+  background: var(--primary);
+  color: var(--white);
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 0.9em;
