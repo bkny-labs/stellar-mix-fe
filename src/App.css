@@ -13,6 +13,7 @@
   --black: #000;
   --white: #fff;
   --dark-highlight: #321437;
+  --main-font: "Roboto", sans-serif;
 }
 
 * {
@@ -22,7 +23,7 @@
 body {
   margin: 0;
   background: var(--page-background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--main-font);
   color: var(--body-color);
 }
 .space-background {
