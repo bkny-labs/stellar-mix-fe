@@ -1,10 +1,11 @@
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { SiOpenai } from "react-icons/si";
-import axios from 'axios';
-import './Spotlight.css';
+import { FaHistory } from "react-icons/fa";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PiKeyReturn } from "react-icons/pi";
+import './Spotlight.css';
 
 interface SpotlightProps {
   isOpen: boolean;
@@ -56,7 +57,7 @@ const SamplePromptsContainer = styled.div`
   color: #fff;
   position: fixed;
   top: 120px;
-  right: 0;
+  left: 30px;
   display: flex;
   flex-direction: column;
 `;
@@ -68,7 +69,7 @@ const SamplePrompt = styled.button`
   border: none;
   color: var(--link-color);
   cursor: pointer;
-  text-align: right;
+  text-align: left;
   font-size: 18px;
   line-height: 25px;
 
@@ -87,9 +88,8 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
   const navigate = useNavigate();
   const location = useLocation();
   const prompt = `Reply with 10 creative search parameters that are synonymous with my how I am feeling: "${userInput}". Include related genres or artists if mentioned. The response should be comma-separated, with no extra characters, list bullets, numbers, dashes or punctuation.`;
-
-  const samplePrompts = [
-    "I'm feeling happy",
+  const initialHistory = [
+    "I want to rock out",
     "I'm in a mellow mood",
     "I need some energetic vibes",
     "Feeling a bit nostalgic",
@@ -98,12 +98,23 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
     "Livin on a prayer"
   ];
 
+  const [history, setHistory] = useState<string[]>(() => {
+    const storedHistory = JSON.parse(localStorage.getItem('promptHistory') || '[]');
+    return storedHistory.length > 0 ? storedHistory : initialHistory;
+  });
+
+
   const handleSamplePromptClick = (prompt: string) => {
     setUserInput(prompt);
     if (inputRef.current) {
       inputRef.current.value = prompt;
       handleOpenAI();
     }
+  };
+
+  const handleClearHistory = () => {
+    localStorage.removeItem('promptHistory');
+    setHistory([]);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -174,6 +185,11 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       const sanitizedCompletion = sanitizeCompletion(completion);
       updateMoodData(sanitizedCompletion.split(',').map(item => item.trim()));
       localStorage.setItem('moodData', JSON.stringify(sanitizedCompletion.split(',')));
+      
+      // Update prompt history in localStorage
+      const newHistory = [userInput, ...history.slice(0, 6)];
+      setHistory(newHistory);
+      localStorage.setItem('promptHistory', JSON.stringify(newHistory));
 
       if (location.pathname !== '/browse') {
         navigate('/browse');
@@ -197,6 +213,19 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       handleClose();
     }
   };
+
+  useEffect(() => {
+    const hasUserHistory = history.length > 0;
+    const clearButton = document.getElementById('clear-button');
+
+    if (clearButton) {
+      clearButton.style.display = hasUserHistory ? 'flex' : 'none';
+    }
+
+    // Update prompt history when `history` changes
+    localStorage.setItem('promptHistory', JSON.stringify(history));
+  }, [history]);
+
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -231,13 +260,16 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
           {error && <ErrorToast><SiOpenai /><span>&nbsp;{error}</span></ErrorToast>}
         </MessageArea>
 
-        <SamplePromptsContainer>
-          {samplePrompts.map((prompt, index) => (
-            <SamplePrompt key={index} onClick={() => handleSamplePromptClick(prompt)}>
-              "{prompt}"
-            </SamplePrompt>
-          ))}
-        </SamplePromptsContainer>
+          <SamplePromptsContainer>
+            {history.slice(0, 7).map((prompt: string, index: number) => (
+              <SamplePrompt key={index} onClick={() => handleSamplePromptClick(prompt)}>
+                "{prompt}"
+              </SamplePrompt>
+            ))}
+            {history.length > 0 && (
+              <button id="clear-button" className='clearHistory' onClick={handleClearHistory}><FaHistory size={14} /> Clear History</button>
+            )}
+          </SamplePromptsContainer>
       </div>
     </>
   );

@@ -37,7 +37,7 @@ export const Intro: React.FC<IntroProps> = () => {
         }
           {!isLoggedIn &&
           <>
-            <h1 className='stellar'>Your AI Companion for the Perfect Spotify Mixtape - Because you're way too busy being awesome to curate playlists yourself</h1>
+            <h1 className='stellar'>Finally, an AI that understands your eclectic music taste better than your friends.</h1>
             <p>Connect your Spotify account and start discovering personalized music mixes tailored just for you.</p>
             <div className='login-container'>
               <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 

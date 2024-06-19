@@ -36,13 +36,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 0 10px;
 }
 
 .drawer-title h2 {
     font-size: 18px;
     margin: 0;
     color: white;
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
 .close-button {
@@ -111,13 +113,16 @@
     font-size: 12px;
     margin: 5px 0;
   }
-
+  .playlist-info {
+    position: relative;
+  }
   .playlist-info h3 {
     font-size: 16px;
     margin: 12px 0px;
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 10px;
     align-items: center;
     }
   .playlist-info h3 a {
@@ -155,6 +160,36 @@
     border-radius: 4px;
 }
 
+.copy-button { color: var(--white); }
+
+  .copied-tooltip {
+    position: absolute;
+    bottom: 95px;
+    background: var(--primary);
+    color: var(--white);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+  }
+
+  .drawer .title, .drawer .artist {
+    font-size: 12px;
+    padding: 10px 0 0 0;
+    max-width: 50%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: none;
+    justify-content: flex-start;
+  }
+  .playlist-info img {
+    margin-top: 8px;
+  }
+  .drawer .artist {
+    padding-left: 8px;
+  }
+
+
 @keyframes shimmer {
     0% {
         background-position: 200% 0;
@@ -166,43 +201,49 @@
 
 /* mobile  */
 @media (max-width: 768px) {
-    .track-name {
-      width: 200px;
-    }
-    .drawer {
-      padding: 10px 15px;
-      width: var(--drawer-small-width);
-    }
-    .drawer-open {
-      padding-right: var(--drawer-small-width);
-    }
-    .playlist-info-sm:last-child {
-      display: none;
-    }
-    .track-list {
-      height: calc(100% - 200px);
-    }
-    .playlist-info h3 {
-      font-size: 14px;
-      width: 100%;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    .playlist-info img {
-      width: 50%;
-    }
-    .playlist-info-sm { display: none; }
-    .playlist-info {
-      gap: 10px;
-    }
-    .playlist-info.skeleton {
-      flex-direction: column;
-    }
+  .drawer .artist, .drawer .title {
+    display: inline-block;
+  }
+  .track-name {
+    width: 200px;
+  }
+  .drawer {
+    padding: 10px 15px;
+    width: var(--drawer-small-width);
+  }
+  .drawer-open {
+    padding-right: var(--drawer-small-width);
+  }
+  .playlist-info-sm:last-child {
+    display: none;
+  }
+  .track-list {
+    height: calc(100% - 28vh);
+  }
+  .playlist-info h3 {
+    font-size: 14px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .playlist-info img {
+    width: 50%;
+  }
+  .playlist-info-sm { display: none; }
+  .playlist-info {
+    gap: 10px;
+  }
+  .playlist-info.skeleton {
+    flex-direction: column;
+  }
 }
 
 
 @media (min-width: 1200px) {
+  .drawer .favorite {
+    display: none;
+  }
     .track-name {
       width: 230px;
     }
