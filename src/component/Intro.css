@@ -16,12 +16,18 @@
 
 .intro.desktop {
   height: auto;
+  max-width: 820px;
+  margin: 0 auto;
 }
 
 .intro h1 {
-  color: white;
+  color: var(--text-color);
   font-size: 40px;
   font-weight: 500;
+  font-family: var(--main-font);
+  font-weight: 500;
+  font-style: normal;
+  
 }
 
 .intro p {
