@@ -30,7 +30,6 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const sunCalcData = useSelector((state: AppState) => state.sunCalcData);
   const weatherData = useSelector((state: AppState) => state.weather);
-  // const [showToast, setShowToast] = useState(isLoggedIn);
   const [showToast, setShowToast] = useState(false);
   const token = localStorage.getItem('spotifyToken');
   const dispatch = useDispatch();
@@ -63,8 +62,6 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
       fetchUserProfile(token, dispatch)
       .then(data => setUserProfile(data))
       .catch(error => console.error("Error fetching user profile:", error));
-    } else {
-      
     }
   }, [token, dispatch]);
 

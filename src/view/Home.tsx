@@ -5,17 +5,17 @@ import { useEffect } from 'react';
 import { SiOpenai } from 'react-icons/si';
 
 function Home() {
+  
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   useEffect(() => {
-    const accessToken = localStorage.getItem('spotifyToken');
-    
-    if (!accessToken) {
+    if (!isLoggedIn) {
       localStorage.removeItem('spotifyToken');
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('tokenExpiryTime');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isLoggedIn = localStorage.getItem('isLoggedIn');
   return (
     <>
     <div className="space-background">
@@ -60,6 +60,8 @@ function Home() {
           <p>OpenAI delivers fresh playlists for your mood.</p>
         </div>
     </div>
+
+
 
 
       <div className="about">
