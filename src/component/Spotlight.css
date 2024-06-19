@@ -44,6 +44,11 @@
   color: #9b9b9b;
 }
 
+.return:hover {
+  color: #fff;
+  cursor: pointer;
+}
+
 /* mobile **/
 @media (max-width: 768px) {
   .spotlight-container {

@@ -47,17 +47,17 @@ function Home() {
         <div className="feature">
           <FaUserAstronaut size={40} />
           <h2>Personalized</h2>
-          <p>Discover curated playlists tailored to your taste.</p>
+          <p>Discover curated playlists tailored to your taste and favorites.</p>
         </div>
         <div className="feature">
           <FaStar size={40} />
           <h2>Cosmic Mixtape</h2>
-          <p>Playlists that adapt to the weather, moon phases, and your mood.</p>
+          <p>Playlists that adapt to the weather, moon phases, and sun position.</p>
         </div>
         <div className="feature">
           <SiOpenai size={40} />
-          <h2>AI Fine-tune</h2>
-          <p>OpenAI brings you the perfect playlists for your mood.</p>
+          <h2>AI-Infused</h2>
+          <p>OpenAI delivers fresh playlists for your mood.</p>
         </div>
     </div>
 
