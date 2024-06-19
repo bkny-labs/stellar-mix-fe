@@ -21,7 +21,6 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
-  // const [isShuffle, setIsShuffle] = useState<boolean>(true);
   const [volume, setVolume] = useState<number>(10);
   const [playlistId, setPlaylistId] = useState<any | null>(null);
   const [userId, setUserId] = useState<any | null>(null);
@@ -115,12 +114,6 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
       });
   };
 
-  // const toggleShuffle = async () => {
-  //   const newShuffleState = !isShuffle;
-  //   await toggleShufflePlayback(accessToken, newShuffleState);
-  //   setIsShuffle(newShuffleState);
-  // };
-
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = Number(event.target.value);
     setVolume(newVolume);
@@ -176,21 +169,17 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
         </div>
       )}
       <div className="player-play">
-          {/* { isShuffle 
-          ? <FaRandom onClick={toggleShuffle} color={'var(--primary)'} size={25} />
-          : <IoAlbums onClick={toggleShuffle} color={'#6f6f6f'} size={25} />
-          } */}
-          <DeviceSelect token={accessToken} dispatch={dispatch} />
-          <FaStepBackward color={'#6f6f6f'} size={25} onClick={handlePreviousTrack} />
-          {isPlaying 
-              ? <FaPause color={'#aaa'} size={32} onClick={togglePlayPause} />
-              : <FaPlay color={'#aaa'} size={32} onClick={togglePlayPause} />
-          }
-          <FaStepForward color={'#6f6f6f'} size={25} onClick={handleNextTrack} />
-          { isFavorited 
-            ? <FaHeart onClick={toggleFavorite} color={'var(--primary)'} size={20} />
-            : <FaRegHeart className='favorite' onClick={toggleFavorite} color={'#6f6f6f'} size={20} />
-          }
+        <DeviceSelect token={accessToken} dispatch={dispatch} />
+        <FaStepBackward color={'#6f6f6f'} size={25} onClick={handlePreviousTrack} />
+        {isPlaying 
+            ? <FaPause color={'#aaa'} size={32} onClick={togglePlayPause} />
+            : <FaPlay color={'#aaa'} size={32} onClick={togglePlayPause} />
+        }
+        <FaStepForward color={'#6f6f6f'} size={25} onClick={handleNextTrack} />
+        { isFavorited 
+          ? <FaHeart onClick={toggleFavorite} color={'var(--primary)'} size={20} />
+          : <FaRegHeart className='favorite' onClick={toggleFavorite} color={'#6f6f6f'} size={20} />
+        }
       </div>
 
       <div className="player-controls">
