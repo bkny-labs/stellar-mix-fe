@@ -43,7 +43,6 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
   };
 
   const handleNav = () => {
-    console.log('showNav', showNav);
     setShowNav(!showNav);
   };
 
