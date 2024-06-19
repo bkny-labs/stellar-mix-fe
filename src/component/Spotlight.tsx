@@ -1,10 +1,11 @@
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { SiOpenai } from "react-icons/si";
-import axios from 'axios';
-import './Spotlight.css';
+import { FaHistory } from "react-icons/fa";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PiKeyReturn } from "react-icons/pi";
+import './Spotlight.css';
 
 interface SpotlightProps {
   isOpen: boolean;
@@ -218,7 +219,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
     const clearButton = document.getElementById('clear-button');
 
     if (clearButton) {
-      clearButton.style.display = hasUserHistory ? 'block' : 'none';
+      clearButton.style.display = hasUserHistory ? 'flex' : 'none';
     }
 
     // Update prompt history when `history` changes
@@ -266,7 +267,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
               </SamplePrompt>
             ))}
             {history.length > 0 && (
-              <button id="clear-button" className='clearHistory' onClick={handleClearHistory}>Clear History</button>
+              <button id="clear-button" className='clearHistory' onClick={handleClearHistory}><FaHistory size={14} /> Clear History</button>
             )}
           </SamplePromptsContainer>
       </div>

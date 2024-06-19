@@ -25,9 +25,10 @@
 .clearHistory {
   color: var(--white);
   cursor: pointer;
-  display: inline-block;
   text-align: left;
   margin-top: 20px;
+  gap: 8px;
+  align-items: center;
 }
 
 .clearHistory:hover {

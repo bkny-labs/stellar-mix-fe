@@ -45,6 +45,7 @@
 .spotify-player .player-controls input[type="range"] {
   accent-color: var(--primary);
   cursor: pointer;
+  width: 200px;
 }
 
 .spotify-player .player-controls input[type=range].vertical {
@@ -133,7 +134,7 @@
   .track-info span {
     display: none;
   }
-  .favorite {
+  .spotify-player .favorite {
     display: none;
   }
   .spotify-player .player-controls input[type="range"] {

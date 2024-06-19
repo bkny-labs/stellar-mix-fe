@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useCallback } from 'react';
 import { fetchUserProfile } from '../services/auth-service';
-import { checkIfPlaylistIsFollowed, fetchPlaylistDetails, playTrackInContext } from '../services/spotify-service';
+import { checkIfPlaylistIsFollowed, fetchPlaylistDetails, followPlaylist, playTrackInContext, unfollowPlaylist } from '../services/spotify-service';
 import './SpotifyPlayer.css';
 import { useDispatch } from 'react-redux';
 import './Drawer.css';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
+import { AiOutlineCheck, AiOutlineCloseCircle } from 'react-icons/ai';
 import SkeletonLoader from './SkeletonLoader';
-import { FaHeart } from 'react-icons/fa';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FaShareFromSquare } from 'react-icons/fa6';
 import { Track } from '../types/spotify.types';
+import { IoMdMusicalNotes } from "react-icons/io";
 
 type DrawerProps = {
   accessToken: string;
@@ -26,7 +28,26 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
   const [playlistData, setPlaylistData] = useState<any | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
   const dispatch = useDispatch();
+
+  const toggleFavorite = async () => {
+    if (isFavorited) {
+      await unfollowPlaylist(accessToken, playlistId);
+      setIsFavorited(false);
+    } else {
+      await followPlaylist(accessToken, playlistId);
+      setIsFavorited(true);
+    }
+  };
+
+  const handleCopy = (spotifyLink: string) => {
+    navigator.clipboard.writeText(spotifyLink).then(() => {
+      setCopied(spotifyLink);
+    }, () => {
+      console.error('Failed to copy the link');
+    });
+  };
 
   const updateUserProfile = useCallback(async () => {
     try {
@@ -90,7 +111,7 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
   return isVisible ? (
     <div className="drawer">
       <div className="drawer-title">
-        <h2>Now Playing</h2>
+        <h2><IoMdMusicalNotes /> Now Playing</h2>
         <button className='close-button' onClick={() => toggleDrawer()}>
           <AiOutlineCloseCircle size={20} />
         </button>
@@ -108,14 +129,22 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
           {playlistData && (
             <>
               <div className="playlist-info">
+                <div>
+                  <span className='title'>{currentTrack?.name}</span>
+                  <span className='artist'>{currentTrack?.artists[0].name}</span>
+                </div>
                 <img width="100%" src={playlistData?.images[0].url} alt="playlist-cover" />
                 <h3>
+                { isFavorited 
+                    ? <FaHeart className='favorite' onClick={toggleFavorite} color={'var(--primary)'} size={20} />
+                    : <FaRegHeart className='favorite' onClick={toggleFavorite} color={'#6f6f6f'} size={20} />
+                  }
                   <a href={playlistData?.external_urls.spotify} target='_blank' rel="noreferrer">
                     {playlistData?.name}
                   </a>
-                  {isFavorited && (
-                    <FaHeart color={'var(--primary)'} size={15} />
-                  )}
+                  
+                  {copied === playlistData?.external_urls.spotify && <span className="copied-tooltip"><AiOutlineCheck /> Copied!</span>}
+                  <button className='copy-button' onClick={() => handleCopy(playlistData?.external_urls.spotify)}><FaShareFromSquare /></button>
                 </h3>
                 <p className='playlist-info-sm'>by: {playlistData?.owner.display_name}</p>
                 <p className='playlist-info-sm'>{playlistData?.description}</p>
