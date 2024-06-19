@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import logo from '../assets/logo2.png';
 import { getAuthURL } from '../services/auth-service';
 import './Intro.css';
-import { FaHeadphones, FaSpotify } from 'react-icons/fa';
+import { FaCheckCircle, FaHeadphones, FaSpotify } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 interface DesktopIntroProps {
@@ -40,6 +40,7 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
         <div>
           {isLoggedIn &&
             <>
+            <h1 className='check'><FaCheckCircle /></h1>
             <h1 className='stellar'>Spotify Connected.</h1>
             <p>You're Stellar-ready. Launch the app below to start creating and playing.</p>
             </>
