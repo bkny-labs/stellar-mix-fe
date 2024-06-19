@@ -26,7 +26,7 @@ interface AppProps {
 }
 
 const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn');
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const sunCalcData = useSelector((state: AppState) => state.sunCalcData);
   const weatherData = useSelector((state: AppState) => state.weather);
@@ -108,8 +108,8 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
       {
         location.pathname === '/' &&
         <Carousel 
-        slidesToScroll={isMobile ? 1 : 3} 
-        slidesToShow={isMobile ? 1 : 3} 
+        slidesToScroll={isMobile ? 1 : 4} 
+        slidesToShow={isMobile ? 1 : 4} 
         dots={!isMobile} />
       }
       <div className="App">

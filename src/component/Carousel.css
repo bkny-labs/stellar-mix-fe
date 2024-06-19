@@ -4,6 +4,14 @@
   padding: 0px 0 40px;
 }
 
+.carousel-container h2 {
+  text-align: center;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
 .carousel-item {
   position: relative;
   text-align: center;

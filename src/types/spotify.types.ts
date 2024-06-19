@@ -22,3 +22,29 @@ export interface Track {
     token: string;
     dispatch: any;
   }
+
+  export interface Playlist {
+    id: string;
+    name: string;
+    description: string;
+    href: string;
+    images: Image[];
+    owner: {
+      display_name: string;
+      id: string;
+    };
+    tracks: {
+      href: string;
+      total: number;
+    };
+    external_urls: {
+      spotify: string;
+    };
+  }
+  
+  interface Image {
+    url: string;
+    height: number | null;
+    width: number | null;
+  }
+  
