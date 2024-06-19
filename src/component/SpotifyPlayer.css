@@ -95,6 +95,10 @@
 
 /* mobile */
 @media (max-width: 768px) {
+
+  .info-button {
+    display: none;
+  }
   .spotify-player {
     padding: 10px;
   }
@@ -124,7 +128,7 @@
     display: none;
   }
   .spotify-player .player-controls input[type="range"] {
-    width: 60px;
+    width: 80px;
   }
 }
 
