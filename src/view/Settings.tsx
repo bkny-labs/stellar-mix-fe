@@ -6,6 +6,7 @@ import { CiLocationOn } from 'react-icons/ci';
 import { FiUsers } from 'react-icons/fi';
 import { FaSpotify } from "react-icons/fa";
 import Toggle from "../component/Toggle";
+import ThemeSwapper from "../component/ThemeSwap";
 
 function Settings() {
     // const userGenresFromStore = useSelector((state: AppState) => state.userSettings.genres);
@@ -91,6 +92,8 @@ function Settings() {
               </div>
           </div>
             <h2>General</h2>
+
+            <ThemeSwapper />
 
             <Toggle 
                 checked={toggleExplicit} 

@@ -103,7 +103,7 @@
   }
   
   .track-list .isPlaying {
-    background-color: var(--secondary);
+    background-color: var(--dark-highlight);
     color: #fff;
   }
   
