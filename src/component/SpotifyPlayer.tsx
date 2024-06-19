@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { fetchUserProfile } from '../services/auth-service';
 import { checkIfPlaylistIsFollowed, followPlaylist, getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume, toggleShufflePlayback, unfollowPlaylist } from '../services/spotify-service';
-import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaRandom, FaHeart, FaRegHeart, FaInfoCircle } from 'react-icons/fa';
-import { IoAlbums } from 'react-icons/io5';
+import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaHeart, FaRegHeart, FaInfoCircle } from 'react-icons/fa';
+import { MdOutlineSpeakerGroup } from "react-icons/md";
 import './SpotifyPlayer.css';
 import { useDispatch } from 'react-redux';
 import { Drawer } from './Drawer';
 import { Track } from '../types/spotify.types';
+import DeviceSelect from './DeviceSelect';
 
 type SpotifyPlayerProps = {
   accessToken: string;
@@ -146,8 +147,8 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
     <>
     <div className="spotify-player">
       {currentTrack && (
-        <div className="track-info" onClick={openDrawer}>
-          <img src={currentTrack?.album.images[0].url} alt="album-cover" />
+        <div className="track-info">
+          <img onClick={openDrawer} src={currentTrack?.album.images[0].url} alt="album-cover" />
           <div className='name'>
             <span className='title'>{currentTrack?.name}</span>
             <span className='artist'>{currentTrack?.artists[0].name}</span>
@@ -155,10 +156,11 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
         </div>
       )}
       <div className="player-play">
-          { isShuffle 
-          ? <FaRandom onClick={toggleShuffle} color={'#fda53a'} size={25} />
+          {/* { isShuffle 
+          ? <FaRandom onClick={toggleShuffle} color={'var(--primary)'} size={25} />
           : <IoAlbums onClick={toggleShuffle} color={'#6f6f6f'} size={25} />
-          }
+          } */}
+          <DeviceSelect token={accessToken} dispatch={dispatch} />
           <FaStepBackward color={'#6f6f6f'} size={25} onClick={handlePreviousTrack} />
           {isPlaying 
               ? <FaPause color={'#aaa'} size={32} onClick={togglePlayPause} />
@@ -166,14 +168,14 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
           }
           <FaStepForward color={'#6f6f6f'} size={25} onClick={handleNextTrack} />
           { isFavorited 
-            ? <FaHeart onClick={toggleFavorite} color={'#fda53a'} size={20} />
+            ? <FaHeart onClick={toggleFavorite} color={'var(--primary)'} size={20} />
             : <FaRegHeart className='favorite' onClick={toggleFavorite} color={'#6f6f6f'} size={20} />
           }
       </div>
 
       <div className="player-controls">
           <button className='info-button' onClick={toggleDrawer}>
-            <FaInfoCircle size={20} color={isDrawerOpen ? '#fda53a' : '#fff' } />
+            <FaInfoCircle size={20} color={isDrawerOpen ? 'var(--primary)' : '#fff' } />
           </button>
         <input 
           type="range" 

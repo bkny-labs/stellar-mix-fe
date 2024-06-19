@@ -42,7 +42,8 @@
 }
 
 .spotify-player .player-controls input[type="range"] {
-  accent-color: #fda53a;
+  accent-color: var(--primary);
+  cursor: pointer;
 }
 
 .spotify-player .track-info {
@@ -53,13 +54,18 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  cursor: pointer;
 }
 
 .spotify-player img {
   width: 60px;
   height: 60px;
   margin-right: 10px;
+  cursor: pointer;
+}
+
+.spotify-player img:hover {
+  border-color: transparent;
+  box-shadow: rgba(4, 0, 255, 0.6) 0px 0px 1rem;
 }
 
 .track-info span {

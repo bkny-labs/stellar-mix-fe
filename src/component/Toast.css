@@ -20,7 +20,7 @@
   }
   
   .toast-success {
-    background-color: #51A351;
+    background-color: var(--primary);
   }
   
   .toast-error {

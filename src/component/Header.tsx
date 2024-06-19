@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { UserProfile } from '../types';
 import logo from '../assets/logo4.png';
 import Spotlight from './Spotlight';
-import { FaWandMagicSparkles } from "react-icons/fa6";
+import { Link } from 'react-router-dom';
+import { RiMenu4Fill } from "react-icons/ri";
+
 
 interface HeaderProps {
   userProfile: UserProfile;
@@ -14,6 +16,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodData, onNavClick }) => {
   const [isSpotlightOpen, setIsSpotlightOpen] = useState(false);
   const [locked, setLocked] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
 
   const toggleSpotlight = () => {
     setIsSpotlightOpen(prevState => !prevState);
@@ -34,6 +38,17 @@ const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodD
   };
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
@@ -52,20 +67,31 @@ const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodD
   }, []);
 
   return (
-    <div className='header'>
+    <>
       <Spotlight isOpen={isSpotlightOpen} toggleSpotlight={toggleSpotlight} updateMoodData={updateMoodData} locked={locked} setLocked={setLocked} />
-      <div className="logo">
-        <img src={logo} alt="Logo" />
-      </div>
-      <div className="header-right">
-        <button onClick={toggleSpotlight}><FaWandMagicSparkles /></button>
-        <div 
-          onClick={onNavClick}
-          className="user-image"
-          style={{ backgroundImage: `url(${userProfile.images[0]?.url})` }}>
+      <div className='header'>
+        <div className="logo">
+          {
+            isMobile && isLoggedIn &&
+            <RiMenu4Fill onClick={onNavClick} />
+          }
+          <Link to="/">
+            <img src={logo} alt="Logo" />  
+          </Link>
+        </div>
+        <div className="header-right">
+          <button onClick={toggleSpotlight}>Create Playlists</button>
+          {
+            !isMobile &&
+            <div 
+              className="user-image"
+              style={{ backgroundImage: `url(${userProfile.images[0]?.url})` }}>
+            </div>
+          }
+          
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
