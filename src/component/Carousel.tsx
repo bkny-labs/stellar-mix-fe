@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
-import fetchNewReleases from '../utils/get-top-artists';
 import './Carousel.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { BsCheck2 } from 'react-icons/bs';
+import fetchFeaturedPlaylists from '../utils/get-top-artists';
 
-interface Album {
+interface Playlist {
   id: string;
   name: string;
   images: { url: string }[];
-  artists: { name: string }[];
+  owner: { display_name: string };
   href: string;
 }
 
@@ -21,17 +21,17 @@ interface CarouselProps {
 }
 
 const Carousel: React.FC<CarouselProps> = ({ slidesToShow, slidesToScroll, dots }) => {
-  const [albums, setAlbums] = useState<Album[]>([]);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [copied, setCopied] = useState<string | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const getAlbums = async () => {
-      const data = await fetchNewReleases();
-      setAlbums(data);
+    const getPlaylists = async () => {
+      const data = await fetchFeaturedPlaylists();
+      setPlaylists(data);
     };
 
-    getAlbums();
+    getPlaylists();
   }, []);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const Carousel: React.FC<CarouselProps> = ({ slidesToShow, slidesToScroll, dots 
   const settings = {
     dots: dots,
     infinite: true,
-    speed: 1000,
+    speed: 1200,
     autoplay: true,
     slidesToShow: slidesToShow,
     slidesToScroll: slidesToScroll,
@@ -66,19 +66,20 @@ const Carousel: React.FC<CarouselProps> = ({ slidesToShow, slidesToScroll, dots 
 
   return (
     <div className="carousel-container">
+      <h2>Featured</h2>
       <Slider {...settings}>
-        {albums.map((album) => (
-            <div key={album.id} className="carousel-item" onClick={() => handleCopy(album.href)}>
-              <div className="carousel-item-content">
-                <img src={album.images[0]?.url} alt={album.name} />
-                <div className="carousel-item-overlay">
-                  <h3>{album.name}</h3>
-                  <p>{album.artists.map(artist => artist.name).join(', ')}</p>
-                  {copied === album.href && <span className="copied-tooltip"><BsCheck2 /> Playlist copied!</span>}
-                </div>
+        {playlists.map((playlist) => (
+          <div key={playlist.id} className="carousel-item" onClick={() => handleCopy(playlist.href)}>
+            <div className="carousel-item-content">
+              <img src={playlist.images[0]?.url} alt={playlist.name} />
+              <div className="carousel-item-overlay">
+                <h3>{playlist.name}</h3>
+                <p>{playlist.owner.display_name}</p>
+                {copied === playlist.href && <span className="copied-tooltip"><BsCheck2 /> Playlist copied!</span>}
               </div>
             </div>
-          ))}
+          </div>
+        ))}
       </Slider>
     </div>
   );

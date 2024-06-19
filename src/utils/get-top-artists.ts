@@ -1,19 +1,11 @@
 import { getClientCredentialsToken } from "../services/auth-service";
+import { Playlist } from "../types/spotify.types";
 
-
-interface Album {
-  id: string;
-  name: string;
-  images: { url: string }[];
-  artists: { name: string }[];
-  href: string;
-}
-
-const fetchNewReleases = async (): Promise<Album[]> => {
+const fetchFeaturedPlaylists = async (): Promise<Playlist[]> => {
   try {
     const token = await getClientCredentialsToken();
 
-    const response = await fetch('https://api.spotify.com/v1/browse/new-releases', {
+    const response = await fetch('https://api.spotify.com/v1/browse/featured-playlists', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -21,16 +13,16 @@ const fetchNewReleases = async (): Promise<Album[]> => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('Error fetching new releases:', errorData);
+      console.error('Error fetching featured playlists:', errorData);
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const data = await response.json();
-    return data.albums.items;
+    return data.playlists.items;
   } catch (error) {
-    console.error('Error fetching new releases:', error);
+    console.error('Error fetching featured playlists:', error);
     return [];
   }
 };
 
-export default fetchNewReleases;
+export default fetchFeaturedPlaylists;

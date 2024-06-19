@@ -49,7 +49,7 @@
 }
 
 .get-started:hover {
-  box-shadow: rgba(145, 0, 255, 0.6) 0px 0px 1rem;
+  box-shadow: var(--dark-highlight) 0px 0px 1rem;
 }
 
 .top {
