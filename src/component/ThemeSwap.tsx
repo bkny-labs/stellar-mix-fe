@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const themes: { [key: string]: string } = {
+const themes = {
   default: `
     --primary: #c14dd4;
     --primary-hover: rgb(179, 74, 184);
@@ -152,18 +152,27 @@ type ThemeKey = keyof typeof themes;
 const ThemeSwapper: React.FC = () => {
   const [theme, setTheme] = useState<ThemeKey>('default');
 
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as ThemeKey | null;
+    if (savedTheme && themes[savedTheme]) {
+      setTheme(savedTheme);
+      const root = document.documentElement;
+      root.style.cssText = themes[savedTheme];
+    }
+  }, []);
+
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTheme = event.target.value as ThemeKey;
     setTheme(selectedTheme);
+    localStorage.setItem('theme', selectedTheme);
     const root = document.documentElement;
     root.style.cssText = themes[selectedTheme];
   };
 
   return (
     <div>
-      <label htmlFor="theme-select">Theme:</label>
       <select id="theme-select" className='theme-select' value={theme} onChange={handleChange}>
-        <option value="default">Default</option>
+        <option value="default">Default Theme</option>
         <option value="darkBlue">Dark Blue</option>
         <option value="darkGreen">Dark Green</option>
         <option value="darkRed">Dark Red</option>

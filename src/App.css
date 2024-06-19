@@ -409,14 +409,18 @@ h4 {
   color: white;
 }
 
+.theme-label {
+  display: block;
+  font-size: 12px;
+}
+
 .theme-select {
   cursor: pointer;
   background: var(--background);
   background-image: none;
   border: none;
-  color: #fff;
-  padding: 10px;
-  margin-left: 10px;
+  color: var(--link-color);
+  padding: 10px 0;
 }
 
 .settings h1 {

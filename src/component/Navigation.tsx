@@ -9,6 +9,7 @@ import { DateTime } from 'luxon';
 import { useDispatch } from 'react-redux';
 import { logout } from '../services/auth-service';
 import { RiPlayListFill } from "react-icons/ri";
+import ThemeSwapper from './ThemeSwap';
 
 interface NavigationProps {
   loggedIn?: boolean;
@@ -87,6 +88,7 @@ export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false, sunCal
       </ul>
       )}
     <div className='sun-calc-data'>
+      <ThemeSwapper />
       {weatherData && (
         <>  
         <p><BsThermometerSun /> {((weatherData?.main?.temp - 273.15) * 9/5 + 32).toFixed(2)}°F</p>
