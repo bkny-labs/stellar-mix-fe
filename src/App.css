@@ -379,10 +379,14 @@ button {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
+h2 {
+  font-weight: 500;
+}
 
 h4 {
   color: white;
   font-size: 12px;
+  font-weight: 500;
   text-align: left;
   margin: 0;
   padding: 0;
