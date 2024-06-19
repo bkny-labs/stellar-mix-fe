@@ -51,6 +51,33 @@ const ErrorToast = styled.p`
   color: red;
 `;
 
+const SamplePromptsContainer = styled.div`
+  margin-top: 20px;
+  color: #fff;
+  position: fixed;
+  top: 120px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SamplePrompt = styled.button`
+  display: block;
+  margin: 10px 0;
+  background: none;
+  border: none;
+  color: var(--link-color);
+  cursor: pointer;
+  text-align: right;
+  font-size: 18px;
+  line-height: 25px;
+
+  &:hover {
+    color: var(--white);
+    text-decoration: underline;
+  }
+`;
+
 const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMoodData, locked, setLocked }) => {
   const apiKey = process.env.REACT_APP_OPEN_AI_KEY;
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,13 +88,26 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
   const location = useLocation();
   const prompt = `Reply with 10 creative search parameters that are synonymous with my how I am feeling: "${userInput}". Include related genres or artists if mentioned. The response should be comma-separated, with no extra characters, list bullets, numbers, dashes or punctuation.`;
 
+  const samplePrompts = [
+    "I'm feeling happy",
+    "I'm in a mellow mood",
+    "I need some energetic vibes",
+    "Feeling a bit nostalgic",
+    "I want something new and exciting",
+    "Kendrick, J. Cole, Biggie kinda day",
+    "Livin on a prayer"
+  ];
+
+  const handleSamplePromptClick = (prompt: string) => {
+    setUserInput(prompt);
+    handleOpenAI();
+  };
+
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       handleOpenAI();
-      setTimeout(() => {
-        handleClose();
-      }, 1000);
     }
     if (event.key === 'Escape' && !locked) {
       handleClose();
@@ -132,10 +172,6 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       const sanitizedCompletion = sanitizeCompletion(completion);
       updateMoodData(sanitizedCompletion.split(',').map(item => item.trim()));
       localStorage.setItem('moodData', JSON.stringify(sanitizedCompletion.split(',')));
-    
-      setTimeout(() => {
-        handleClose();
-      }, 1000);
 
       if (location.pathname !== '/browse') {
         navigate('/browse');
@@ -187,10 +223,19 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
         <div className="return">
           <PiKeyReturn onClick={handleOpenAI} size={30} />
         </div>
+
         <MessageArea>
           {loading && <LoadingToast><SiOpenai /> &nbsp; Contacting OpenAI...</LoadingToast>}
           {error && <ErrorToast><SiOpenai /><span>&nbsp;{error}</span></ErrorToast>}
         </MessageArea>
+
+        <SamplePromptsContainer>
+          {samplePrompts.map((prompt, index) => (
+            <SamplePrompt key={index} onClick={() => handleSamplePromptClick(prompt)}>
+              "{prompt}"
+            </SamplePrompt>
+          ))}
+        </SamplePromptsContainer>
       </div>
     </>
   );
