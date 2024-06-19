@@ -17,9 +17,6 @@ import { useEffect, useState } from 'react';
 import { fetchUserProfile } from './services/auth-service';
 import { UserProfile } from './types';
 import MyFavorites from './view/MyFavorites';
-import { Intro } from './component/Intro';
-import { DesktopIntro } from './component/DesktopIntro';
-import Carousel from './component/Carousel';
 
 interface AppProps {
   updateMoodData: (data: any) => void;
