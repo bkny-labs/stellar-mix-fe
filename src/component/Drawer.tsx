@@ -129,11 +129,11 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
           {playlistData && (
             <>
               <div className="playlist-info">
+                <img width="100%" src={playlistData?.images[0].url} alt="playlist-cover" />
                 <div>
                   <span className='title'>{currentTrack?.name}</span>
                   <span className='artist'>{currentTrack?.artists[0].name}</span>
                 </div>
-                <img width="100%" src={playlistData?.images[0].url} alt="playlist-cover" />
                 <h3>
                 { isFavorited 
                     ? <FaHeart className='favorite' onClick={toggleFavorite} color={'var(--primary)'} size={20} />

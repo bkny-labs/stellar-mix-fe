@@ -175,7 +175,12 @@
   .drawer .title, .drawer .artist {
     font-size: 12px;
     padding: 10px 0 0 0;
+    max-width: 50%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     display: none;
+    justify-content: flex-start;
   }
   .playlist-info img {
     margin-top: 8px;
@@ -197,7 +202,7 @@
 /* mobile  */
 @media (max-width: 768px) {
   .drawer .artist, .drawer .title {
-    display: inline-flex;
+    display: inline-block;
   }
   .track-name {
     width: 200px;
