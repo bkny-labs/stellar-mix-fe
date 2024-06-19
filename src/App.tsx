@@ -49,6 +49,9 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth > 768) {
+        setShowNav(true);
+      }
     };
 
     window.addEventListener('resize', handleResize);
