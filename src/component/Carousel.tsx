@@ -4,7 +4,7 @@ import './Carousel.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { BsCheck2 } from 'react-icons/bs';
-import fetchFeaturedPlaylists from '../utils/get-top-artists';
+import fetchFeaturedPlaylists from '../utils/get-top-playlists';
 
 interface Playlist {
   id: string;
