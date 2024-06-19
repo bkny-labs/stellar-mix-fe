@@ -85,8 +85,8 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
         <Toast
           message={'Welcome to StellarMix, ' + userProfile?.display_name + '!' }
           type="success"
-          duration={5000}
-          position="top-center"
+          duration={50000}
+          position="bottom-center"
           onClose={() => setShowToast(false)}
         />
       )}
