@@ -1,10 +1,14 @@
 :root {
-  --primary: #fda53a;
-  --primary-hover: #ca9553;
+  --primary: #c14dd4;
+  --primary-hover: rgb(179, 74, 184);
+  --secondary: #2f0ca1;
+  --tertiary: #2a9bc0;
   --spotify: #1DB954;
   --background: #1f1e1e;
   --text-color: #fff;
   --link-color: #5d5d5d;
+  --black: #000;
+  --white: #fff;
 }
 
 * {
@@ -42,10 +46,23 @@ body {
 
 .header .logo {
   padding: 8px 5px;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  user-select: none;
 }
 
 .header .logo img {
   width: 130px;
+}
+
+.header .logo svg {
+  color: var(--link-color);
+  cursor: pointer;
+}
+
+.header .logo svg {
+  color: var(--white);
 }
 
 .header-right {
@@ -54,9 +71,19 @@ body {
   gap: 25px;
 }
 .header-right button {
-  color: #fff;
-  font-size: 20px;
+  color: var(--white);
+  font-size: 14px;
+  font-family: sans-serif;
   cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-image: linear-gradient(45deg, var(--primary), var(--tertiary));
+}
+
+.header-right button:hover {
+  box-shadow: rgba(161, 128, 255, 0.6) 0px 0px 1rem 0px;
+  animation-timing-function: ease-out;
+  animation-duration: 200ms;
 }
 
 .filters {
@@ -67,7 +94,7 @@ body {
 }
 
 .filterButton {
-  color: white;
+  color: var(--white);
   cursor: pointer;
   font-size: 20px;
 }
@@ -91,13 +118,13 @@ body {
 
 .filters label {
   font-size: 12px;
-  color: #535353;
+  color: var(--link-color);
 }
 
 .filters select {
   background: #1f1e1e;
   border: none;
-  color: #979696;
+  color: var(--link-color);
   padding: 5px 10px;
   font-size: 14px;
   border-radius: 5px;
@@ -110,7 +137,7 @@ body {
   background-size: cover;
   background-position: center;
   border-radius: 50%;
-  border: 2px solid #fda53a;
+  border: 2px solid var(--primary);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -166,6 +193,7 @@ body {
   height: 100%;
   padding-bottom: 90px;
   padding-top: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .nav-container ul {
@@ -181,6 +209,8 @@ body {
 
 .nav {
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 5;
   width: 180px;
   height: 100%;
@@ -206,7 +236,7 @@ body {
 }
 
 .nav li a.active, .nav li a:hover {
-  color: #fda53a;
+  color: var(--primary);
 }
 
 .content {

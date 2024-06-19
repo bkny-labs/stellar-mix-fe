@@ -8,6 +8,7 @@ import { SpotifyPlayer } from '../component/SpotifyPlayer';
 import SpaceBackground from '../component/Space';
 import './Browse.css';
 import SkeletonLoader from '../component/SkeletonLoader';
+import album from '../assets/album.png';
 
 const Browse: React.FC = () => {
   const dispatch = useDispatch();
@@ -77,14 +78,14 @@ const Browse: React.FC = () => {
           <div 
             className={`album-art ${currentlyPlayingURI === playlist.uri ? 'currently-playing' : ''}`}
             style={{
-              backgroundImage: `url(${playlist?.images?.[0]?.url})`,
+              backgroundImage: `url(${playlist?.images?.[0]?.url || album})`,
             }}
           >
             <div className="playback-controls">
                 <button className='play-circle' onClick={() => playPlaylist(playlist.uri)}>
                   {currentlyPlayingURI === playlist.uri
-                    ? <FaPause size={25} color='#202020' />
-                    : <FaPlay size={25} color='#202020' />
+                    ? <FaPause size={25} color='#fff' />
+                    : <FaPlay size={25} color='#fff' />
                   }
                 </button>
                 <h2 className='playlist-title'>{playlist?.name}</h2>

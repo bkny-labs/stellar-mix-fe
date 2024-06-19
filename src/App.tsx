@@ -43,6 +43,7 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
   };
 
   const handleNav = () => {
+    console.log('showNav', showNav);
     setShowNav(!showNav);
   };
 
@@ -74,6 +75,8 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
   useEffect(() => {
     if (window.innerWidth < 768) {
       setShowNav(false);
+    } else if (window.innerWidth > 900) {
+      setShowNav(true);
     }
   }, []);
 
@@ -110,7 +113,7 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
           {isLoggedIn && userProfile && 
             <>
               <Header onNavClick={handleNav} userProfile={userProfile} toggleFilters={toggleFilters} updateMoodData={updateMoodData} />
-              {showNav && (
+              { showNav && (
                 <nav className='nav'>
                   <Navigation 
                     loggedIn={isLoggedIn}

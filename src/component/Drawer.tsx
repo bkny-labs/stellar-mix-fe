@@ -98,7 +98,7 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
       </div>
   
       {isLoading ? (
-        <div className="playlist-info">
+        <div className="playlist-info skeleton">
           <SkeletonLoader width="100%" height="310px" marginBottom="12px" />
           <SkeletonLoader width="100%" height="22px" marginBottom="17px" />
           <SkeletonLoader width="100%" height="28px" marginBottom="17px" />
@@ -115,7 +115,7 @@ export function Drawer({ accessToken, playlistPlayed, isVisible, toggleDrawer, o
                     {playlistData?.name}
                   </a>
                   {isFavorited && (
-                    <FaHeart color={'#fda53a'} size={15} />
+                    <FaHeart color={'var(--primary)'} size={15} />
                   )}
                 </h3>
                 <p className='playlist-info-sm'>by: {playlistData?.owner.display_name}</p>

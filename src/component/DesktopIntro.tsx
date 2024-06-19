@@ -11,7 +11,7 @@ interface DesktopIntroProps {
 }
 
 export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
-  const isLoggedIn = localStorage.getItem('loggedIn');
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
   const navigate = useNavigate();
   const handleLogin = () => {
     window.location.href = getAuthURL();
@@ -21,7 +21,7 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
   }
 
   return (
-    <>
+    <div className={isLoggedIn ? 'logged-in' : ''}>
       <div className='top'>
           <img src={logo} alt='StellarMix Logo' className='logo' />
       </div>
@@ -37,11 +37,11 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
 
           {isLoggedIn &&
           <div className='login-container'>
-            <button className='get-started' onClick={goToBrowse}><FaHeadphones /> Get Started</button> 
+            <button className='get-started' onClick={goToBrowse}><FaHeadphones /> Launch App</button> 
           </div>
           }
         </div>
       </div> 
-    </>
+    </div>
   );
 }

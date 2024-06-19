@@ -12,7 +12,7 @@ interface IntroProps {
 }
 
 export const Intro: React.FC<IntroProps> = () => {
-  const isLoggedIn = localStorage.getItem('loggedIn');
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
   const navigate = useNavigate();
   const handleLogin = () => {
     window.location.href = getAuthURL();
@@ -23,7 +23,8 @@ export const Intro: React.FC<IntroProps> = () => {
 
   return (
     <>
-      <div className='intro' style={{ backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.8)), url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+      <div style={{ backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.8)), url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center center' }}
+      className={isLoggedIn ? 'intro logged-in' : 'intro'}>
         <div>
           <img src={logo} alt='StellarMix Logo' className='logo' />
         </div>
@@ -39,7 +40,7 @@ export const Intro: React.FC<IntroProps> = () => {
 
           {isLoggedIn &&
           <div className='login-container'>
-            <button className='get-started' onClick={goToBrowse}><FaHeadphones /> Get Started</button> 
+            <button className='get-started' onClick={goToBrowse}><FaHeadphones /> Launch App</button> 
           </div>
           }
         </div>

@@ -1,9 +1,9 @@
 .spotlight-container {
   position: fixed;
-  top: 30%;
+  top: 20%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
+  width: 80%;
   padding: 14px 20px;
   background: #1d1d1d;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -11,6 +11,7 @@
   z-index: 999;
   align-items: center;
   display: none;
+  border: 2px solid #c14dd4;
 }
 
 .spotlight-container .icon {

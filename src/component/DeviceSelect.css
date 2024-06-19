@@ -1,0 +1,62 @@
+/* styles.css */
+
+.device-select-container {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 20px);
+}
+
+.device-select-container.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.device-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.device-list-item {
+  padding: 15px;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
+  color: #fff;
+}
+
+.device-list-item:last-child {
+  border-bottom: none;
+}
+
+.device-list-item:hover {
+  background-color: #333;
+}
+
+.toolbar-button {
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toolbar-button:hover,
+.toolbar-button:focus,
+.toolbar-button:active {
+  background-color: #1e1e1e;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

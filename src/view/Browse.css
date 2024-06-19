@@ -32,6 +32,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    color: var(--white);
     font-size: 30px;
     display: flex;
     justify-content: center;
@@ -40,10 +41,16 @@
     opacity: 0;
 }
 
+.playback-controls .play-circle:hover {
+    border-color: transparent;
+    background: linear-gradient(rgb(16, 22, 34), rgb(16, 22, 34)) padding-box padding-box, linear-gradient(81.02deg, rgb(250, 85, 96) -23.47%, rgb(177, 75, 244) 45.52%, rgb(77, 145, 255) 114.8%) border-box border-box;
+    box-shadow: rgba(4, 0, 255, 0.6) 0px 0px 1rem;
+}
+
 .album-art:hover .playback-controls .play-circle,
 .album-art.currently-playing .playback-controls .play-circle {
     opacity: 1;
-    background: var(--primary);
+    background: var(--black);
     cursor: pointer;
 }
 

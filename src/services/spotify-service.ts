@@ -61,6 +61,77 @@ export const getPlaylistsByQuery = (query: string, token: string, dispatch: any,
     }
   });
 };
+
+export const getAvailableDevices = (token: string, dispatch: any): Promise<any> => {
+  return new Promise(async (resolve, reject) => {
+    const API_ENDPOINT = 'https://api.spotify.com/v1/me/player/devices';
+    const headers = {
+      'Authorization': `Bearer ${token}`
+    };
+
+    try {
+      const response = await fetch(API_ENDPOINT, { headers });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          dispatch(setLoggedInAction(false));
+          localStorage.removeItem('isLoggedIn');
+        }
+        const errorData = await response.json();
+        console.error("Spotify API Error Response:", errorData);
+        reject(`Error ${response.status}: ${errorData.error.message}`);
+        return;
+      }
+
+      const data = await response.json();
+      resolve(data.devices);
+    } catch (error) {
+      console.error("Error fetching available devices:", error);
+      reject(error);
+    }
+  });
+};
+
+export const transferPlayback = (token: string, dispatch: any, deviceId: string): Promise<any> => {
+  return new Promise(async (resolve, reject) => {
+    const API_ENDPOINT = 'https://api.spotify.com/v1/me/player';
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    const body = JSON.stringify({
+      device_ids: [deviceId],
+      play: true
+    });
+
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: 'PUT',
+        headers,
+        body
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          dispatch(setLoggedInAction(false));
+          localStorage.removeItem('isLoggedIn');
+        }
+        const errorData = await response.json();
+        console.error("Spotify API Error Response:", errorData);
+        reject(`Error ${response.status}: ${errorData.error.message}`);
+        return;
+      }
+
+      resolve('Playback transferred successfully');
+    } catch (error) {
+      console.error("Error transferring playback:", error);
+      reject(error);
+    }
+  });
+};
+
+
+
   // Currently Playing
   export const getCurrentlyPlaying = async (accessToken: string, dispatch: any) => {
     const API_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing?market=US`;
