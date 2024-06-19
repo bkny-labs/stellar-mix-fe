@@ -54,6 +54,7 @@
   writing-mode: vertical-lr;
   direction: rtl;
   width: 16px;
+  height: 200px;
   vertical-align: bottom;
 }
 
@@ -117,7 +118,6 @@
 
   .spotify-player .player-controls {
     padding: 0;
-    gap: 2px;
   }
 
   .spotify-player .track-info {
