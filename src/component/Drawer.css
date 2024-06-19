@@ -63,7 +63,7 @@
     width: 100%;
     border-collapse: collapse;
     font-family: Arial, sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     color: #fff;
   }
   
@@ -128,6 +128,26 @@
     text-decoration: underline;
   }
 
+  .track-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 65%;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .artist-name {
+    font-size: 10px;
+    color: #aaa;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 50%;
+    display: block;
+
+  }
+
   .skeleton {
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
@@ -146,6 +166,9 @@
 
 /* mobile  */
 @media (max-width: 768px) {
+    .track-name {
+      width: 200px;
+    }
     .drawer {
       padding: 10px 15px;
       width: var(--drawer-small-width);
@@ -180,6 +203,9 @@
 
 
 @media (min-width: 1200px) {
+    .track-name {
+      width: 230px;
+    }
     .drawer {
       width: var(--drawer-large-width);
     }
