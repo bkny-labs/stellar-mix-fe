@@ -12,7 +12,7 @@ interface IntroProps {
 }
 
 export const Intro: React.FC<IntroProps> = () => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn');
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const navigate = useNavigate();
   const handleLogin = () => {
     window.location.href = getAuthURL();
@@ -29,8 +29,12 @@ export const Intro: React.FC<IntroProps> = () => {
           <img src={logo} alt='StellarMix Logo' className='logo' />
         </div>
         <div>
+        { isLoggedIn &&
+        <>
         <h1 className='stellar'>Spotify Connected.</h1>
         <p>You're Stellar-ready. Launch the app below to start creating and playing.</p>
+        </>
+        }
           {!isLoggedIn &&
           <>
             <h1 className='stellar'>Your AI Companion for the Perfect Spotify Mixtape</h1>
