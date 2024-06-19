@@ -50,9 +50,9 @@
   position: fixed;
   bottom: 60px;
   right: 20px;
+  z-index: 999;
   writing-mode: vertical-lr;
   direction: rtl;
-  appearance: slider-vertical;
   width: 16px;
   vertical-align: bottom;
 }
@@ -107,9 +107,6 @@
 /* mobile */
 @media (max-width: 768px) {
 
-  .info-button {
-    display: none;
-  }
   .spotify-player {
     padding: 10px;
   }
