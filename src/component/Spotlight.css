@@ -11,7 +11,7 @@
   z-index: 999;
   align-items: center;
   display: none;
-  border: 2px solid #c14dd4;
+  border: 2px solid var(--primary);
 }
 
 .spotlight-container .icon {

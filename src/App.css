@@ -5,10 +5,14 @@
   --tertiary: #2a9bc0;
   --spotify: #1DB954;
   --background: #1f1e1e;
+  --player-background: #282828;
+  --page-background: #2b2b2b;
   --text-color: #fff;
   --link-color: #5d5d5d;
+  --body-color: #5d5d5d;
   --black: #000;
   --white: #fff;
+  --dark-highlight: #321437;
 }
 
 * {
@@ -17,9 +21,9 @@
 
 body {
   margin: 0;
-  background: #2b2b2b;
+  background: var(--page-background);
   font-family: Arial, Helvetica, sans-serif;
-  color: #5d5d5d;
+  color: var(--body-color);
 }
 .space-background {
   position: fixed;   /* or absolute depending on your preference */
@@ -34,7 +38,7 @@ body {
   position: fixed;
   z-index: 555;
   width: 100%;
-  background: #1f1e1e;
+  background: var(--background);
   top: 0;
   right: 0;
   display: flex;
@@ -129,7 +133,7 @@ body {
 }
 
 .filters select {
-  background: #1f1e1e;
+  background: var(--background);
   border: none;
   color: var(--link-color);
   padding: 5px 10px;
@@ -222,7 +226,7 @@ body {
   width: 180px;
   height: 100%;
   padding-top: 30px;
-  background: #1f1e1e;
+  background: var(--background);
   transition: 0.2s all ease-in-out;
 }
 
@@ -237,7 +241,7 @@ body {
 .nav li a {
   display: flex;
   gap: 10px;
-  color: #5d5d5d;
+  color: var(--link-color);
   text-decoration: none;
   transition: 0.2s all ease-in-out
 }
@@ -405,6 +409,20 @@ h4 {
   color: white;
 }
 
+.theme-label {
+  display: block;
+  font-size: 12px;
+}
+
+.theme-select {
+  cursor: pointer;
+  background: var(--background);
+  background-image: none;
+  border: none;
+  color: var(--link-color);
+  padding: 10px 0;
+}
+
 .settings h1 {
   font-size: 40px;
   color: white;
@@ -422,7 +440,7 @@ h4 {
 
 .settings .action-bar {
   width: 96%;
-  background: #1f1e1e;
+  background: var(--background);
   padding: 18px;
   display: flex;
   justify-content: flex-start;
@@ -433,7 +451,7 @@ h4 {
 
 .settings .save-button {
     background-color: var(--primary);
-    color: #1f1e1e;
+    color: var(--background);
     border: none;
     border-radius: 25px;
     padding: 10px 20px;
