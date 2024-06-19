@@ -112,7 +112,7 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
           {isLoggedIn && userProfile && 
             <>
               <Header onNavClick={handleNav} userProfile={userProfile} toggleFilters={toggleFilters} updateMoodData={updateMoodData} />
-              { showNav && (
+              { location.pathname !== '/' && showNav && (
                 <nav className='nav'>
                   <Navigation 
                     loggedIn={isLoggedIn}

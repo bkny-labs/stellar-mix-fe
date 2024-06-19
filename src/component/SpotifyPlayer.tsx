@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { fetchUserProfile } from '../services/auth-service';
 import { checkIfPlaylistIsFollowed, followPlaylist, getCurrentlyPlaying, pauseTrack, playNextTrack, playPreviousTrack, playTrack, setSpotifyVolume, toggleShufflePlayback, unfollowPlaylist } from '../services/spotify-service';
 import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaHeart, FaRegHeart, FaInfoCircle } from 'react-icons/fa';
-import { MdOutlineSpeakerGroup } from "react-icons/md";
 import './SpotifyPlayer.css';
 import { useDispatch } from 'react-redux';
 import { Drawer } from './Drawer';
@@ -99,11 +98,11 @@ export function SpotifyPlayer({ accessToken, playlistPlayed, onDrawerToggle, isD
       });
   };
 
-  const toggleShuffle = async () => {
-    const newShuffleState = !isShuffle;
-    await toggleShufflePlayback(accessToken, newShuffleState);
-    setIsShuffle(newShuffleState);
-  };
+  // const toggleShuffle = async () => {
+  //   const newShuffleState = !isShuffle;
+  //   await toggleShufflePlayback(accessToken, newShuffleState);
+  //   setIsShuffle(newShuffleState);
+  // };
 
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = Number(event.target.value);
