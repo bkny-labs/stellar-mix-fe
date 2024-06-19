@@ -322,6 +322,9 @@ body {
   body {
     overflow-x: hidden;
   }
+  .container {
+    display: block;
+  }
   .content {
     padding: 16px 15px;
   }
@@ -332,6 +335,9 @@ body {
   }
   .drawer-open.row.three, .drawer-open.row.four {
     grid-template-columns: repeat(1, 1fr);
+  }
+  .carousel-container {
+    padding-bottom: 0;
   }
 }
 
@@ -615,7 +621,6 @@ h4 {
 
 
 .home {
-  padding: 90px 0;
   color: white;
 }
 
@@ -631,4 +636,11 @@ h4 {
   margin: 0 auto;
   height: auto;
   padding: 15px;
+}
+
+/* mobile  */
+@media (max-width: 768px) {
+  .home {
+    padding: 0;
+  }
 }

@@ -91,7 +91,8 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
         onClose={() => setShowToast(false)}
       />
     )}
-      <div className="App">
+      <div 
+      className={location.pathname === '/' ? 'App home' : 'App ' + location.pathname}>
         <div className="container">
           {isLoggedIn && userProfile && 
             <>
