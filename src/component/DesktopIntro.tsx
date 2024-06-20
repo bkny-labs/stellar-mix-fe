@@ -77,6 +77,9 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
             <h1 className='check'><FaCheckCircle /></h1>
             <h1 className='stellar'>Spotify Connected.</h1>
             <p>You're Stellar-ready. Launch the app below to start creating and playing.</p>
+            <div className='login-container'>
+              <button className='get-started' onClick={goToBrowse}><FaHeadphones /> Launch App</button> 
+            </div>
             </>
           }
           {!isLoggedIn &&
@@ -87,12 +90,6 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
               <button className='spotify-login' onClick={handleLogin}><FaSpotify /> Connect with Spotify</button> 
             </div>
           </>
-          }
-
-          {isLoggedIn &&
-          <div className='login-container'>
-            <button className='get-started' onClick={goToBrowse}><FaHeadphones /> Launch App</button> 
-          </div>
           }
         </div>
       </div> 
