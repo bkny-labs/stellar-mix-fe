@@ -1,5 +1,9 @@
+![logo-horizontal](https://github.com/bkny-labs/stellar-mix-fe/assets/940197/7dd1ecb1-cc67-4eb1-9df1-a65bfa1eacec)
 
-![logo4](https://github.com/bkny-labs/stellar-mix-fe/assets/940197/92d27b23-78e9-4197-a362-075f871c300a)
+</g>
+</svg>
+ding logo-horizontal.svg…]()
+
 
 ---
 
