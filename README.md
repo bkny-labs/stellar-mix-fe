@@ -19,7 +19,7 @@ StellarMix crafts the ultimate playlist for your moment, blending your music tas
    ```bash
    npm install
    ```
-3. **Set Up Environment Variables
+3. **Set Up Environment Variables**
 
 Rename .env.example to .env
 Fill in the required keys from your Spotify Developer Dashboard
@@ -32,7 +32,7 @@ Fill in the required keys from your Spotify Developer Dashboard
 ## 🛰️ Tech Stack
 
 Frontend: React, Redux
-APIs: Spotify API, OpenWeather API, SunCalc
+APIs: Spotify, OpenAI, OpenWeather API, SunCalc
 
 
 ## 📜 License
