@@ -5,6 +5,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { BsCheck2 } from 'react-icons/bs';
 import fetchFeaturedPlaylists from '../utils/get-top-playlists';
+import SkeletonLoader from './SkeletonLoader';
 
 interface Playlist {
   id: string;
@@ -61,7 +62,7 @@ const Carousel: React.FC<CarouselProps> = ({ slidesToShow, slidesToScroll, dots 
     slidesPerRow: 1,
     pauseOnDotsHover: true,
     speed: 1200,
-    autoplay: true,
+    autoplay: false,
     slidesToShow: slidesToShow,
     slidesToScroll: slidesToScroll,
     initialSlide: 0,
@@ -72,18 +73,25 @@ const Carousel: React.FC<CarouselProps> = ({ slidesToShow, slidesToScroll, dots 
     <div className="carousel-container">
       <h2>Featured</h2>
       <Slider {...settings}>
-        {playlists.map((playlist) => (
-          <div key={playlist.id} className="carousel-item" onClick={() => handleCopy(playlist.href)}>
-            <div className="carousel-item-content">
-              <img src={playlist.images[0]?.url} alt={playlist.name} />
-              <div className="carousel-item-overlay">
-                <h3>{playlist.name}</h3>
-                <p>{playlist.owner.display_name}</p>
-                {copied === playlist.href && <span className="copied-tooltip"><BsCheck2 /> Copied!</span>}
+      {playlists.length === 0
+          ? Array.from({ length: slidesToShow * 2 }).map((_, index) => (
+              <div key={index} className="carousel-item">
+                <SkeletonLoader width="100%" height="170px" marginBottom="17px" />
               </div>
-            </div>
-          </div>
-        ))}
+            ))
+          : playlists.map((playlist) => (
+              <div key={playlist.id} className="carousel-item" onClick={() => handleCopy(playlist.href)}>
+                <div className="carousel-item-content">
+                  <img src={playlist.images[0]?.url} alt={playlist.name} />
+                  <div className="carousel-item-overlay">
+                    <h3>{playlist.name}</h3>
+                    <p>{playlist.owner.display_name}</p>
+                    {copied === playlist.href && <span className="copied-tooltip"><BsCheck2 /> Copied!</span>}
+                  </div>
+                </div>
+              </div>
+            ))}
+        
       </Slider>
     </div>
   );

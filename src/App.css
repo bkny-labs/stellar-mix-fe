@@ -76,6 +76,7 @@ body {
 .header-right button {
   position: relative;
   color: var(--white);
+  user-select: none;
   font-size: 14px;
   font-family: sans-serif;
   cursor: pointer;
