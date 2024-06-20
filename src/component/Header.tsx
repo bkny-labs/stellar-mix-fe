@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { UserProfile } from '../types';
-import logo from '../assets/logo4.png';
 import Spotlight from './Spotlight';
 import { Link } from 'react-router-dom';
 import { RiMenu4Fill } from "react-icons/ri";
