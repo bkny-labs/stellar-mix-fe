@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import logo from '../assets/logo2.svg';
 import { getAuthURL } from '../services/auth-service';
 import './Intro.css';
 import { FaCheckCircle, FaHeadphones, FaSpotify } from 'react-icons/fa';
@@ -44,7 +43,6 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
   return (
     <div className={isLoggedIn ? 'logged-in' : ''}>
       <div className='top'>
-          {/* <img src={logo} alt='StellarMix Logo' className='logo' /> */}
           <svg width="100%" viewBox="0 0 1367 835" fill="none" xmlns="http://www.w3.org/2000/svg">
           <mask id="mask0_220_60" maskUnits="userSpaceOnUse" x="0" y="0" width="1367" height="821">
           <path d="M1367 0H0V820.381H1367V0Z" fill="white"/>
