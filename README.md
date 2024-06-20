@@ -1,10 +1,5 @@
 ![logo-horizontal](https://github.com/bkny-labs/stellar-mix-fe/assets/940197/7dd1ecb1-cc67-4eb1-9df1-a65bfa1eacec)
 
-</g>
-</svg>
-ding logo-horizontal.svg…]()
-
-
 ---
 
 StellarMix is a Spotify companion and controller application that crafts the ultimate playlist for your mood using OpenAI to blending your music tastes with cues from the weather, time of day, moon phases and celestial events.
