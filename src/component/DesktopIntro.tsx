@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { getAuthURL } from '../services/auth-service';
 import './Intro.css';
-import { FaCheckCircle, FaHeadphones, FaSpotify } from 'react-icons/fa';
+import { FaHeadphones, FaSpotify } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 interface DesktopIntroProps {

@@ -1,5 +1,4 @@
 import bg from '../assets/bg.png';
-import logo from '../assets/logo2.png';
 import { getAuthURL } from '../services/auth-service';
 import './Intro.css';
 import { FaHeadphones, FaSpotify } from 'react-icons/fa';
