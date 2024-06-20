@@ -75,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ userProfile, toggleFilters, updateMoodD
             <RiMenu4Fill onClick={onNavClick} />
           }
           <Link to="/">
-          <svg width="150px" height="663" viewBox="0 0 3296 663" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="150px" viewBox="0 0 3296 663" fill="none" xmlns="http://www.w3.org/2000/svg">
             <mask id="mask0_220_121" maskUnits="userSpaceOnUse" x="0" y="-206" width="3465" height="1087">
             <path d="M3464.35 -206H0V880.476H3464.35V-206Z" fill="white"/>
             </mask>

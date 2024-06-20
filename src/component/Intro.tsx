@@ -26,7 +26,7 @@ export const Intro: React.FC<IntroProps> = () => {
       <div style={{ backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.8)), url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center center' }}
       className={isLoggedIn ? 'intro logged-in' : 'intro'}>
         <div>
-          <svg width="250px" viewBox="0 0 1367 835" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className='logo' width="250px" viewBox="0 0 1367 835" fill="none" xmlns="http://www.w3.org/2000/svg">
             <mask id="mask0_220_60" maskUnits="userSpaceOnUse" x="0" y="0" width="1367" height="821">
             <path d="M1367 0H0V820.381H1367V0Z" fill="white"/>
             </mask>
