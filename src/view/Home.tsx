@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import './Home.css';
 import { FaGithub, FaStar, FaUserAstronaut } from 'react-icons/fa';
 import SpaceBackground from '../component/Space';
@@ -7,6 +8,7 @@ import { Intro } from '../component/Intro';
 import { DesktopIntro } from '../component/DesktopIntro';
 import Carousel from '../component/Carousel';
 import { useLocation } from 'react-router-dom';
+import PrivacyModal from '../component/Privacy';
 
 function Home() {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -14,6 +16,7 @@ function Home() {
   const [isTablet, setIsTablet] = useState(window.innerWidth >= 768 && window.innerWidth < 1024);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
   const [isXl, setIsXl] = useState(window.innerWidth >= 1200);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const location = useLocation();
 
   const setSlideCount = () => {
@@ -29,6 +32,14 @@ function Home() {
       default:
         return 1;
     }
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   useEffect(() => {
@@ -122,11 +133,17 @@ function Home() {
 
 
       <div className="about">
-        <p className='small'>StellarMix is a free to use open source project by <a href="https://mikefortuna.com" rel="noreferrer">Mike Fortuna</a>.</p>
+        <p className='small'>StellarMix is a free to use open source project by <a target='_blank' href="https://mikefortuna.com" rel="noreferrer">Mike Fortuna</a>.</p>
         <p className='small'>Powered by: <a href='https://openai.com' target='_blank' rel="noreferrer">OpenAI</a> | <a href='https://spotify.com' target='_blank' rel="noreferrer">Spotify</a> | <a href='https://openweathermap.org/' target='_blank' rel="noreferrer">OpenWeather</a> | <a href='http://suncalc.net/' target='_blank' rel="noreferrer">SunCalc</a></p>
+        <p className='small'>
+          <a onClick={openModal} href='#'>
+            Privacy Policy
+          </a>
+        </p>
         <a className="github" href='https://github.com/bkny-labs/stellar-mix-fe' target='_blank' rel="noreferrer"><FaGithub size={25} /></a>
       </div>
     </div>
+    <PrivacyModal isOpen={isModalOpen} onClose={closeModal} />
     </>
   );
 }

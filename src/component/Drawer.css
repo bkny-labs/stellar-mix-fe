@@ -58,7 +58,7 @@
 .track-list {
     overflow-y: auto;
     overflow-x: hidden;
-    height: calc(100% - 440px);
+    height: 65vh;
     margin-top: 12px;
 }
 .track-list table {
@@ -228,7 +228,7 @@
     display: none;
   }
   .track-list {
-    height: calc(100% - 28vh);
+    height: 55vh;
   }
   .playlist-info h3 {
     font-size: 14px;
