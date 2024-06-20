@@ -62,7 +62,7 @@ const Carousel: React.FC<CarouselProps> = ({ slidesToShow, slidesToScroll, dots 
     slidesPerRow: 1,
     pauseOnDotsHover: true,
     speed: 1200,
-    autoplay: true,
+    autoplay: false,
     slidesToShow: slidesToShow,
     slidesToScroll: slidesToScroll,
     initialSlide: 0,
