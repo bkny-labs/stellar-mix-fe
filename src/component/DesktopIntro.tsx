@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
-import { getAuthURL } from '../services/auth-service';
+import { useEffect, useState } from 'react';
+import { fetchUserProfile, getAuthURL } from '../services/auth-service';
 import './Intro.css';
 import { FaHeadphones, FaSpotify } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { setLoggedInAction } from '../store/actions';
 
 interface DesktopIntroProps {
   loggedIn?: boolean;
@@ -11,7 +12,7 @@ interface DesktopIntroProps {
 }
 
 export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const handleLogin = () => {
     window.location.href = getAuthURL();
@@ -31,17 +32,20 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
   }, []);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('spotifyToken');
-    
-    if (!accessToken) {
-      localStorage.removeItem('spotifyToken');
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('tokenExpiryTime');
+    const token = localStorage.getItem('spotifyToken');
+    if (token) {
+      fetchUserProfile(token, setLoggedInAction).then(user => {
+        if (user) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      });
     }
   }, []);
 
   return (
-    <div className={isLoggedIn ? 'logged-in' : ''}>
+    <div className={isAuthenticated ? 'logged-in' : ''}>
       <div className='top'>
           <svg width="420px" className='logo' viewBox="0 0 1367 835" fill="none" xmlns="http://www.w3.org/2000/svg">
             <mask id="mask0_220_60" maskUnits="userSpaceOnUse" x="0" y="0" width="1367" height="821">
@@ -72,7 +76,7 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
       </div>
       <div className='intro desktop'>
         <div>
-          {isLoggedIn &&
+          {isAuthenticated &&
             <>
             <svg width="420px" viewBox="0 0 899 663" fill="none" xmlns="http://www.w3.org/2000/svg">
             <mask id="mask0_223_2" maskUnits="userSpaceOnUse" x="0" y="-206" width="3465" height="1087">
@@ -106,7 +110,7 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
             </div>
             </>
           }
-          {!isLoggedIn &&
+          {!isAuthenticated &&
           <>
             <h1 className='stellar'>Finally, an AI that understands your eclectic music taste better than your friends.</h1>
             <p>Open the Spotify app on your devices and connect your account and start discovering personalized music mixes tailored just for you.</p>

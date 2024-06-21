@@ -17,13 +17,15 @@ import { useEffect, useState } from 'react';
 import { fetchUserProfile } from './services/auth-service';
 import { UserProfile } from './types';
 import MyFavorites from './view/MyFavorites';
+import AuthCallback from './component/AuthCallback';
+import { setLoggedInAction } from './store/actions';
 
 interface AppProps {
   updateMoodData: (data: any) => void;
 }
 
 const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const sunCalcData = useSelector((state: AppState) => state.sunCalcData);
   const weatherData = useSelector((state: AppState) => state.weather);
@@ -54,12 +56,17 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      setShowToast(true);
-    } else {
-      setShowToast(false);
+    const token = localStorage.getItem('spotifyToken');
+    if (token) {
+      fetchUserProfile(token, setLoggedInAction).then(user => {
+        if (user) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      });
     }
-  }, [isLoggedIn]);
+  }, []);
 
   useEffect(() => {
     if (token) {
@@ -91,13 +98,13 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
       <div 
       className={location.pathname === '/' ? 'App home' : 'App ' + location.pathname}>
         <div className="container">
-          {isLoggedIn && userProfile && 
+          {isAuthenticated && userProfile && 
             <>
               <Header onNavClick={handleNav} userProfile={userProfile} toggleFilters={toggleFilters} updateMoodData={updateMoodData} />
               { location.pathname !== '/' && showNav && (
                 <nav className='nav'>
                   <Navigation 
-                    loggedIn={isLoggedIn ? true : false}
+                    loggedIn={isAuthenticated ? true : false}
                     sunCalcData={sunCalcData}
                     weatherData={weatherData}
                   />
@@ -110,6 +117,7 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
             style={location.pathname !== '/' && showNav ? { paddingRight: '18px', paddingLeft: '180px' } : {}}
           >
             <Routes>
+              <Route path="/callback" element={<AuthCallback />} />
               <Route path="/" element={<Home />} />
               <Route path="/browse" element={<Browse />} />
               <Route path="/favorites" element={<MyFavorites />} />

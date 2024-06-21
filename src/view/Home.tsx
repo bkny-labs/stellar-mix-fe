@@ -9,9 +9,11 @@ import { DesktopIntro } from '../component/DesktopIntro';
 import Carousel from '../component/Carousel';
 import { useLocation } from 'react-router-dom';
 import PrivacyModal from '../component/Privacy';
+import { fetchUserProfile } from '../services/auth-service';
+import { setLoggedInAction } from '../store/actions';
 
 function Home() {
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isTablet, setIsTablet] = useState(window.innerWidth >= 768 && window.innerWidth < 1024);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
@@ -43,12 +45,16 @@ function Home() {
   };
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      localStorage.removeItem('spotifyToken');
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('tokenExpiryTime');
+    const token = localStorage.getItem('spotifyToken');
+    if (token) {
+      fetchUserProfile(token, setLoggedInAction).then(user => {
+        if (user) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -82,7 +88,7 @@ function Home() {
           <DesktopIntro />
         </>
       }
-      {!isLoggedIn &&
+      {!isAuthenticated &&
       <div className="instructions">
         <div className="item">
           <p className='step'>Step 1</p>
