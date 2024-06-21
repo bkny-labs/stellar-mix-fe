@@ -260,8 +260,7 @@ body {
   transition: padding 0.3s ease-in-out;
 }
 
-
-.content-full.content {
+.content.nav-open {
   padding-right: 18px;
   padding-left: 190px;
 }
@@ -654,4 +653,5 @@ h4 {
   .home {
     padding: 0;
   }
+  
 }
