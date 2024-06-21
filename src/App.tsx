@@ -106,7 +106,7 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
             </>
           }
           <div 
-            className={showNav ? 'content content-full' : 'content'}>
+            className={showNav && location.pathname !== '/' ? 'content nav-open' : 'content'}>
             <Routes>
               <Route path="/callback" element={<AuthCallback />} />
               <Route path="/" element={<Home />} />
