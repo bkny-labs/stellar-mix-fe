@@ -96,6 +96,7 @@
 @media (max-width: 768px) {
   .intro {
     height: 91vh;
+    width: 100vw;
     margin: 0;
     border-radius: 0;
   }

@@ -221,13 +221,17 @@ body {
 .nav {
   position: fixed;
   top: 0;
-  left: 0;
+  left: -100%;
   z-index: 5;
   width: 180px;
   height: 100%;
   padding-top: 30px;
   background: var(--background);
-  transition: 0.2s all ease-in-out;
+  transition: left 0.3s ease-in-out;
+}
+
+.nav.show {
+  left: 0;
 }
 
 .nav li {
@@ -253,10 +257,13 @@ body {
 .content {
   padding: 25px;
   flex: auto;
+  transition: padding 0.3s ease-in-out;
 }
 
-.content-full .browse-grid {
-  padding-left: 0;
+
+.content-full.content {
+  padding-right: 18px;
+  padding-left: 190px;
 }
 
 .hide {
@@ -339,6 +346,9 @@ body {
   }
   .carousel-container {
     padding-bottom: 0;
+  }
+  .content .browse-grid {
+    padding-left: 0;
   }
 }
 
