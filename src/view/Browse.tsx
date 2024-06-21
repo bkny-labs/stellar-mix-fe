@@ -56,7 +56,9 @@ const Browse: React.FC = () => {
   useEffect(() => {
     if (Array.isArray(playlists)) {
       localStorage.setItem('spotifyPlaylists', JSON.stringify(playlists));
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     }
   }, [playlists]);
 

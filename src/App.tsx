@@ -61,18 +61,11 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
       fetchUserProfile(token, setLoggedInAction).then(user => {
         if (user) {
           setIsAuthenticated(true);
+          setUserProfile(user)
         } else {
           setIsAuthenticated(false);
         }
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (token) {
-      fetchUserProfile(token, dispatch)
-      .then(data => setUserProfile(data))
-      .catch(error => console.error("Error fetching user profile:", error));
+      }).catch(error => console.error("Error fetching user profile:", error));
     }
   }, [token, dispatch]);
 
@@ -101,21 +94,19 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
           {isAuthenticated && userProfile && 
             <>
               <Header onNavClick={handleNav} userProfile={userProfile} toggleFilters={toggleFilters} updateMoodData={updateMoodData} />
-              { location.pathname !== '/' && showNav && (
-                <nav className='nav'>
+              {location.pathname !== '/' &&
+                <nav className={`nav ${showNav ? 'show' : ''}`}>
                   <Navigation 
-                    loggedIn={isAuthenticated ? true : false}
+                    loggedIn={isAuthenticated}
                     sunCalcData={sunCalcData}
                     weatherData={weatherData}
                   />
                 </nav>
-              )}
+                }
             </>
           }
           <div 
-            className={showNav ? 'content' : 'content content-full'}
-            style={location.pathname !== '/' && showNav ? { paddingRight: '18px', paddingLeft: '180px' } : {}}
-          >
+            className={showNav ? 'content content-full' : 'content'}>
             <Routes>
               <Route path="/callback" element={<AuthCallback />} />
               <Route path="/" element={<Home />} />
