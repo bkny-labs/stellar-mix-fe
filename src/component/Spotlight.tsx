@@ -108,7 +108,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
     setUserInput(prompt);
     if (inputRef.current) {
       inputRef.current.value = prompt;
-      handleOpenAI();
+      handleOpenAI(prompt);
     }
   };
 
@@ -120,7 +120,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      handleOpenAI();
+      handleOpenAI(userInput);
     }
     if (event.key === 'Escape' && !locked) {
       handleClose();
@@ -132,14 +132,14 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
     toggleSpotlight();
   };
 
-  const handleOpenAI = async () => {
+  const handleOpenAI = async (input: string) => {
     if (!apiKey) {
       console.error('API key is missing');
       setError('API key is missing');
       return;
     }
 
-    console.log('user input:', userInput);
+    // console.log('user input:', input);
 
     setLoading(true);
     setError(null);
@@ -152,8 +152,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
         },
         {
           role: 'user',
-          content: prompt,
-
+          content: `Reply with 10 creative search parameters that are synonymous with my how I am feeling: "${input}". Include related genres or artists if mentioned. The response should be comma-separated, with no extra characters, list bullets, numbers, dashes or punctuation.`,
         },
       ];
 
@@ -187,7 +186,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       localStorage.setItem('moodData', JSON.stringify(sanitizedCompletion.split(',')));
       
       // Update prompt history in localStorage
-      const newHistory = [userInput, ...history.slice(0, 6)];
+      const newHistory = [input, ...history.slice(0, 6)];
       setHistory(newHistory);
       localStorage.setItem('promptHistory', JSON.stringify(newHistory));
 
@@ -213,7 +212,6 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
       handleClose();
     }
   };
-
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -265,7 +263,7 @@ const Spotlight: React.FC<SpotlightProps> = ({ isOpen, toggleSpotlight, updateMo
           onKeyDown={handleKeyDown}
         />
         <div className="return">
-          <PiKeyReturn onClick={handleOpenAI} size={30} />
+          <PiKeyReturn onClick={() => handleSamplePromptClick(prompt)} size={30} />
         </div>
 
         <MessageArea>

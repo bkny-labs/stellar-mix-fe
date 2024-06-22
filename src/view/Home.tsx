@@ -9,7 +9,7 @@ import { DesktopIntro } from '../component/DesktopIntro';
 import Carousel from '../component/Carousel';
 import { useLocation } from 'react-router-dom';
 import PrivacyModal from '../component/Privacy';
-import { fetchUserProfile } from '../services/auth-service';
+import { fetchUserProfile, getAuthURL } from '../services/auth-service';
 import { setLoggedInAction } from '../store/actions';
 
 function Home() {
@@ -42,6 +42,10 @@ function Home() {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleLogin = () => {
+    window.location.href = getAuthURL();
   };
 
   useEffect(() => {
@@ -80,12 +84,12 @@ function Home() {
     <div className="landing">
       {
         isMobile && location.pathname === '/' &&
-        <Intro />
+        <Intro handleLogin={handleLogin} />
       }
       {
         !isMobile && location.pathname === '/' &&
         <>
-          <DesktopIntro />
+          <DesktopIntro handleLogin={handleLogin} />
         </>
       }
       {!isAuthenticated &&

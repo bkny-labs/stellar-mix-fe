@@ -5,6 +5,15 @@ const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT;
 const CLIENT_SECRET = process.env.REACT_APP_SPOTIFY_SECRET;
 const REDIRECT_URI = process.env.REACT_APP_URL + "/browse"; 
 
+const handleError = async (response: Response) => {
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error('Spotify API Error:', errorData);
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  return response;
+};
+
 export const getClientCredentialsToken = async (): Promise<string> => {
   const tokenUrl = 'https://accounts.spotify.com/api/token';
 
@@ -24,13 +33,7 @@ export const getClientCredentialsToken = async (): Promise<string> => {
     body: body.toString(),
   });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error('Error getting token:', errorData);
-    throw new Error(`HTTP error! Status: ${response.status}`);
-  }
-
-  const data = await response.json();
+  const data = await handleError(response).then(res => res.json());
   return data.access_token;
 };
 
@@ -52,38 +55,43 @@ export const getSpotifyAccessToken = async (code: string, dispatch: any): Promis
   body.append("code", code);
   body.append("redirect_uri", REDIRECT_URI);
   body.append("client_id", CLIENT_ID as string);
-  body.append("client_secret", CLIENT_SECRET as string); 
+  body.append("client_secret", CLIENT_SECRET as string);
 
   const response = await fetch(TOKEN_ENDPOINT, {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: body.toString(),
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: body.toString(),
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    console.error("Spotify API Error Response:", errorData);
-    dispatch(setLoggedInAction(false));
-    localStorage.setItem('isLoggedIn', 'false');
-    throw new Error(`HTTP error! Status: ${response.status}`);
+    const errorText = await response.text();
+    console.error('Failed to fetch access token:', errorText);
+    throw new Error('Failed to fetch access token');
   }
 
   const data = await response.json();
+
+  console.log('Received token data:', data);
+
+  const tokenExpiryTime = Date.now() + data.expires_in * 1000;
   localStorage.setItem('spotifyToken', data.access_token);
+  localStorage.setItem('tokenExpiryTime', tokenExpiryTime.toString());
   localStorage.setItem('isLoggedIn', 'true');
+
   dispatch(setLoggedInAction(true, data.access_token));
 
   return data.access_token;
 };
+
+
 
 export const logout = (dispatch: any) => {
   localStorage.removeItem('spotifyToken');
   localStorage.removeItem('tokenExpiryTime');
   localStorage.removeItem('isLoggedIn');
   dispatch(setLoggedInAction(false));
-  window.location.href = '/';
 }
 
 export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
@@ -95,18 +103,22 @@ export const fetchUserProfile = async (accessToken: string, dispatch: any) => {
       }
     });
 
-    if (!response.ok) {
-      dispatch(setLoggedInAction(false));
-      localStorage.removeItem('isLoggedIn');
-      window.location.href = '/';
-      throw new Error('Failed to fetch user profile');
+    if (response.status === 403) {
+      console.error('Token expired or invalid.');
+      logout(dispatch);
+      return null;
     }
+
+    await handleError(response);
+
     const data = await response.json();
     localStorage.setItem('isLoggedIn', 'true');
     return data;
 
   } catch (error) {
     console.error("Error fetching user profile:", error);
+    dispatch(setLoggedInAction(false));
+    localStorage.removeItem('isLoggedIn');
     return null;
   }
 };

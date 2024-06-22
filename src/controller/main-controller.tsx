@@ -54,7 +54,6 @@ export default class MainController {
     return this.spotifyToken || localStorage.getItem('spotifyToken');
   }
 
-
   public updateMoodData = (data: any) => {
     if (data) {
       this.getSpotifyToken();
@@ -71,38 +70,31 @@ export default class MainController {
 
   public fetchSpotifyPlaylists = () => {
     if (!this.spotifyToken) {
-      console.error('Spotify token is not available.'); 
+      console.error('Spotify token is not available.');
       return;
     }
-  
-    const playlistQuery = buildPlaylistQuery({
-      moods: this.moodData,
-      genres: []
-    });
-  
+
+    const playlistQuery = buildPlaylistQuery({ moods: this.moodData, genres: [] });
+
     if (!playlistQuery) {
       console.error('Playlist query is invalid.');
       return;
     }
-  
+
     getPlaylistsByQuery(playlistQuery, this.spotifyToken, this.store.dispatch)
       .then(data => {
         if (!data || data.length === 0) {
           console.error('No playlists fetched.');
           return;
         }
-  
         this.store.dispatch(setSpotifyPlaylistsAction(data));
         localStorage.setItem('spotifyPlaylists', JSON.stringify(data));
-  
       })
       .catch(err => {
         console.error('Error fetching playlists:', err);
         this.handleSpotifyError(err);
       });
   };
-  
-  
 
   handleSpotifyError = (err: any) => {
     if (err.response) {
@@ -114,50 +106,64 @@ export default class MainController {
     }
   };
 
-  hasValidToken = () => {
-    const expiryTime = localStorage.getItem('tokenExpiryTime'); // get the stored expiry time
+  private hasValidToken = () => {
+    const expiryTime = localStorage.getItem('tokenExpiryTime');
     if (!expiryTime) return false;
-    console.log('EXPIRED?:', new Date().getTime() < parseInt(expiryTime, 10));
-    return new Date().getTime() < parseInt(expiryTime, 10);
+    
+    const currentTime = new Date().getTime();
+    const isValid = currentTime < parseInt(expiryTime, 10);
+    
+    // console.log('Current Time:', currentTime);
+    // console.log('Token Expiry Time:', parseInt(expiryTime, 10));
+    // console.log('EXPIRED?:', !isValid);
+    
+    return isValid;
   };
 
-  userIsLoggedIn = () => {
+  private userIsLoggedIn = () => {
     return localStorage.getItem('isLoggedIn') === 'true';
   }
 
   handleUserLogin = async (code: any) => {
     try {
-      await getSpotifyAccessToken(code, this.store.dispatch);
-
-      const spotifyToken = this.getSpotifyToken();
-
+      // console.log('Handling user login...');
+      const spotifyToken = await getSpotifyAccessToken(code, this.store.dispatch);
+  
       if (spotifyToken) {
-        const tokenExpiryTime = new Date().getTime() + (3600 * 1000);
+        const tokenExpiryTime = new Date().getTime() + (3600 * 1000); // 1 hour expiry
         localStorage.setItem('tokenExpiryTime', tokenExpiryTime.toString());
         localStorage.setItem('isLoggedIn', 'true');
-        fetchUserProfile(spotifyToken, this.store.dispatch);
-        this.fetchSpotifyPlaylists();
-
-        const newUrl = window.location.origin + '/browse';
-        window.history.replaceState(null, '', newUrl);
-        window.location.reload();
-
-        return this.spotifyToken;
+  
+        const userProfile = await fetchUserProfile(spotifyToken, this.store.dispatch);
+        if (userProfile) {
+          await this.fetchSpotifyPlaylists();
+  
+          const newUrl = window.location.origin + '/browse';
+          window.history.replaceState(null, '', newUrl);
+          window.location.reload();
+  
+          return spotifyToken; // Return the token if needed
+        }
       }
     } catch (error) {
+      console.error('Error during user login:', error);
       this.handleSpotifyError(error);
     }
     return null;
   };
-
+  
   init() {
     this.fetchWeatherAndSunCalcData();
-    if (!this.userIsLoggedIn() && !this.hasValidToken()) {
+  
+    if (!this.userIsLoggedIn() || !this.hasValidToken()) {
       this.handleUserLogin(this.code);
+    } else {
       this.fetchSpotifyPlaylists();
     }
+  
     this.render();
   }
+  
 
   fetchWeatherAndSunCalcData = async () => {
     const lat = 40.732542;

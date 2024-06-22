@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import bg from '../assets/bg.png';
-import { fetchUserProfile, getAuthURL } from '../services/auth-service';
+import { fetchUserProfile } from '../services/auth-service';
 import { setLoggedInAction } from '../store/actions';
 import './Intro.css';
 import { FaHeadphones, FaSpotify } from 'react-icons/fa';
@@ -10,14 +10,13 @@ interface IntroProps {
   loggedIn?: boolean;
   sunCalcData?: any;
   weatherData?: any;
+  handleLogin: () => void;
 }
 
-export const Intro: React.FC<IntroProps> = () => {
+export const Intro: React.FC<IntroProps> = ({handleLogin}) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
-  const handleLogin = () => {
-    window.location.href = getAuthURL();
-  };
+
   const goToBrowse = () => {
     navigate('/browse');
   }
