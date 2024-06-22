@@ -17,7 +17,6 @@ import { useEffect, useState } from 'react';
 import { fetchUserProfile } from './services/auth-service';
 import { UserProfile } from './types';
 import MyFavorites from './view/MyFavorites';
-import AuthCallback from './component/AuthCallback';
 import { setLoggedInAction } from './store/actions';
 
 interface AppProps {
@@ -61,7 +60,7 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
       fetchUserProfile(token, setLoggedInAction).then(user => {
         if (user) {
           setIsAuthenticated(true);
-          setUserProfile(user)
+          setUserProfile(user);
         } else {
           setIsAuthenticated(false);
         }
@@ -108,7 +107,7 @@ const AppContent: React.FC<AppProps> = ({ updateMoodData }) => {
           <div 
             className={showNav && location.pathname !== '/' ? 'content nav-open' : 'content'}>
             <Routes>
-              <Route path="/callback" element={<AuthCallback />} />
+              {/* <Route path="/callback" element={<AuthCallback />} /> */}
               <Route path="/" element={<Home />} />
               <Route path="/browse" element={<Browse />} />
               <Route path="/favorites" element={<MyFavorites />} />

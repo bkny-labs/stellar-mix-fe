@@ -45,6 +45,8 @@ export const Navigation: React.FC<NavigationProps> = ({ loggedIn = false, sunCal
   const userLogout = async () => {
     try {
       await logout(dispatch);
+      loggedIn = false;
+      window.location.href = '/';
     } catch (error) {
       console.error("Error logging out:", error);
     }

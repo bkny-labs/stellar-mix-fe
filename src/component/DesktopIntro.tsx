@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchUserProfile, getAuthURL } from '../services/auth-service';
+import { fetchUserProfile } from '../services/auth-service';
 import './Intro.css';
 import { FaHeadphones, FaSpotify } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -9,14 +9,13 @@ interface DesktopIntroProps {
   loggedIn?: boolean;
   sunCalcData?: any;
   weatherData?: any;
+  handleLogin: () => void;
 }
 
-export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
+export const DesktopIntro: React.FC<DesktopIntroProps> = ({handleLogin}) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
-  const handleLogin = () => {
-    window.location.href = getAuthURL();
-  };
+
   const goToBrowse = () => {
     navigate('/browse');
   }
@@ -33,7 +32,10 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('spotifyToken');
-    if (token) {
+    const tokenExpiryTime = localStorage.getItem('tokenExpiryTime');
+    const currentTime = new Date().getTime();
+  
+    if (token && tokenExpiryTime && currentTime < parseInt(tokenExpiryTime)) {
       fetchUserProfile(token, setLoggedInAction).then(user => {
         if (user) {
           setIsAuthenticated(true);
@@ -41,8 +43,12 @@ export const DesktopIntro: React.FC<DesktopIntroProps> = () => {
           setIsAuthenticated(false);
         }
       });
+    } else {
+      // Token is either missing or expired
+      setIsAuthenticated(false);
     }
   }, []);
+  
 
   return (
     <div className={isAuthenticated ? 'logged-in' : ''}>
